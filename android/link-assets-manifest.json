@@ -1,0 +1,25 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/Assets/fonts/FuturaCyrillicBold.ttf",
+      "sha1": "2989a119b87e505033ded08ecd3fefd5ec4ae52e"
+    },
+    {
+      "path": "src/Assets/fonts/FuturaCyrillicBook.ttf",
+      "sha1": "b7b19190884328e2a0a90b72c7546a135128f7d6"
+    },
+    {
+      "path": "src/Assets/fonts/FuturaCyrillicDemi.ttf",
+      "sha1": "6349a64f7a95756f3f43a350166e7d7e47c7c660"
+    },
+    {
+      "path": "src/Assets/fonts/FuturaCyrillicHeavy.ttf",
+      "sha1": "1de37ec5788fa3ec00ae2197f34069f5144d29ee"
+    },
+    {
+      "path": "src/Assets/fonts/FuturaCyrillicMedium.ttf",
+      "sha1": "b69396104293cc9419fc4ab87a6ee64c9faaf9fa"
+    }
+  ]
+}

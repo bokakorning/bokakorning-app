@@ -1,0 +1,11 @@
+export { default as DropdownIcon } from '../src/Assets/Icon/dropdown.svg';
+export { default as ViewIcon } from '../src/Assets/Icon/view.svg';
+export { default as DeleteIcon } from '../src/Assets/Icon/delete.svg';
+export { default as CrossIcon } from '../src/Assets/Icon/cross.svg';
+export { default as CalenderIcon } from '../src/Assets/Icon/calender.svg';
+export { default as SearchIcon } from '../src/Assets/Icon/search.svg';
+export { default as LocationIcon } from '../src/Assets/Icon/location.svg';
+export { default as HomeIcon } from '../src/Assets/Icon/home.svg';
+export { default as NotificationIcon } from '../src/Assets/Icon/notification.svg';
+export { default as HistoryIcon } from '../src/Assets/Icon/history.svg';
+export { default as StatisticsIcon } from '../src/Assets/Icon/statistics.svg';
