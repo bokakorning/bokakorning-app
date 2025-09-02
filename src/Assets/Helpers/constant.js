@@ -1,4 +1,4 @@
-const prodUrl = 'http://192.168.0.187:3000/api/';
+const prodUrl = 'http://192.168.0.187:3000/';
 //  const prodUrl = 'http://192.168.25.1:3000/api/';
 // const prodUrl = 'https://api.mybrainspeed.com/api/';
 // const prodUrl = 'http://10.80.19.68:3000/api/';
@@ -21,6 +21,7 @@ const Constants = {
   customgrey4: '#F1F1F1',
   customgrey5: '#dedede',
   custom_blue: '#4EB0CF',
+  light_blue2: '#cae8f1',
   light_blue: '#74d7fa',
 
 

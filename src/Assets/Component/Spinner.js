@@ -1,46 +1,56 @@
-import React from 'react'
-import { View, Modal,ActivityIndicator ,StyleSheet, Dimensions} from 'react-native'
+import React, { memo} from 'react';
+import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
+import Constants, { FONTS } from '../Helpers/constant';
+import { wp } from '../../../utils/responsiveScreen';
+import {useDispatch,useSelector} from 'react-redux'
 
-const Spinner = (spinnerProp) => {
-    return (
-        <Modal
-            transparent={true}
-            animationType={'none'}
-            visible={spinnerProp.visible}
-            style={{ zIndex: 1100 }}
-            onRequestClose={() => { }}>
-            <View style={Styles.modalBackground}>
-                <View style={Styles.activityIndicatorWrapper}>
-                    <ActivityIndicator color={spinnerProp.color} size="large" />
-                </View>
-            </View>
-        </Modal>
-    )
-}
+const Spinner = () => {
+  const isLoading = useSelector(
+    state =>
+      state.auth.isLoading 
+    // ||state.user.isLoading ||
+    //   state.notification.isLoading,
+  );
+  if (!isLoading) {
+    return <></>;
+  }
 
-const Styles = StyleSheet.create({
-    modalBackground: {
-        // flex: 1,
-        height: Dimensions.get('window').height,
-        width: Dimensions.get('window').width,
-        alignItems: 'center',
-        flexDirection: 'column',
-        justifyContent: 'space-around',
-        backgroundColor: '#rgba(0, 0, 0, 0.5)',
-        zIndex: 9999,
-        // backgroundColor:'red'
-    },
-    activityIndicatorWrapper: {
-        flex: 1,
-        height: 100,
-        width: 100,
-        borderRadius: 10,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-around'
-    }
-})
+  return (
+    <View style={styles.container}>
+      <View style={styles.body}>
+        <ActivityIndicator
+          size={wp(12)}
+          animating={true}
+          color={Constants.white}
+        />
+        <Text style={styles.title}>Loading...</Text>
+      </View>
+    </View>
+  );
+};
 
+export default memo(Spinner);
 
-export default Spinner
-
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: '100%',
+    height: '110%',
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#00000080', // 'transparent'
+    zIndex:9
+  },
+  body: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: wp(2),
+  },
+  title: {
+    fontSize: wp(5),
+    fontFamily: FONTS.Heavy,
+    color: Constants.white,
+    marginTop: wp(2),
+  },
+});

@@ -1,10 +1,10 @@
 import axios from 'axios';
 import {deleteAuthToken} from './storage';
 import * as navigation from './navigationRef';
-import {Constant} from './constants';
+import Constants from '../src/Assets/Helpers/constant';
 
 const axiosInstance = axios.create({
-  baseURL: Constant.BASE_URL,
+  baseURL: Constants.baseUrl,
   headers: {
     'Content-Type': 'application/json',
     app_type: 'user',
@@ -14,7 +14,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.response.use(
   function (response) {
     console.log(response.config.url + ': axios-response', response);
-    if (response.data?.success) {
+    if (response.data?.status) {
       return response.data;
     } else {
       const message = response.data?.message;
@@ -28,7 +28,7 @@ axiosInstance.interceptors.response.use(
       if (error.response.status === 401) {
         removeApiToken();
         await deleteAuthToken();
-        navigation.reset('Auth');
+        navigation.reset('Auth',{screen:'SignIn'});
       }
       message = error.response.data?.message || error?.message;
     } else {
@@ -38,8 +38,8 @@ axiosInstance.interceptors.response.use(
   },
 );
 
-export const setApiToken = (AUTH_TOKEN: string) => {
-  return (axiosInstance.defaults.headers.common.Authorization = `Bearer ${AUTH_TOKEN}`);
+export const setApiToken = (AUTH_TOKEN) => {
+  return (axiosInstance.defaults.headers.common.Authorization = `jwt ${AUTH_TOKEN}`);
 };
 
 export const removeApiToken = () => {

@@ -18,6 +18,11 @@ const styles = StyleSheet.create({
     width: wp(30),
     marginTop:hp(6)
   },
+  proimg2:{
+    height: hp(18),
+    width: wp(40),
+    marginTop:hp(3)
+  },
   buttompart:{
     justifyContent:'center',
     alignItems:'center',
@@ -135,10 +140,6 @@ cencelBtn2: {
   justifyContent: 'center',
   zIndex: 1,
 },
-btntxt: {
-  fontSize: 16,
-  fontWeight: '500',
-},
 activeText: {
   color: Constants.white,
 },
@@ -146,7 +147,86 @@ inactiveText: {
   color: Constants.customgrey,
 },
 /////
+    /////////logout model //////
+    centeredView: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      // marginTop: 22,
+      backgroundColor: '#rgba(0, 0, 0, 0.5)',
+    },
+    modalView: {
+      // margin: 10,
+      backgroundColor: 'white',
+      borderRadius: 25,
+      // padding: 15,
+      alignItems: 'center',
+      position: 'relative',
+    },
 
+    covline: {
+      // flexDirection: 'row',
+      // justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    croscov:{
+      // padding:10,
+      // borderRadius:8,
+      // borderWidth:1,
+      // borderColor:Constants.customgrey5,
+      position:'absolute',
+      top:0,
+      right:0,
+      zIndex:10
+    },
+    weltxt:{
+      color:Constants.custom_blue,
+      fontSize:wp(10),
+      fontFamily:FONTS.Heavy
+    },
+    logo1:{
+      color:Constants.white,
+      fontSize:wp(10),
+      fontFamily:FONTS.Heavy,
+      lineHeight:30,
+      marginTop:hp(1)
+    },
+    logo2:{
+      color:Constants.white,
+      fontSize:wp(5.5),
+      fontFamily:FONTS.Regular
+    },
+    infotxt:{
+      color:Constants.white,
+      fontSize:wp(4.5),
+      fontFamily:FONTS.SemiBold,
+      marginTop:hp(16)
+    },
+    itemscov:{
+      alignItems:'center',
+      justifyContent:'center',
+      marginTop:hp(13),
+      marginBottom:hp(7),
+    },
+    onbbtn:{
+      height:hp(5),
+      borderRadius:wp(2),
+      backgroundColor:Constants.white,
+      boxShadow: '0px 4px 4px 0.1px grey',
+      width:wp(45),
+      justifyContent:'center',
+      alignItems:'center',
+    },
+    onbbtncov:{
+      flexDirection:'row',
+      gap:wp(5),
+      marginTop:hp(1.5),
+    },
+    onbbtntxt:{
+      color:Constants.black,
+      fontSize:wp(4.5),
+      fontFamily:FONTS.SemiBold,
+    }
 })
 
 export default styles;

@@ -2,6 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SignIn from '../screen/auth/SignIn';
+import Onboard from '../screen/auth/Onboard';
 import SignUp from '../screen/auth/SignUp';
 import ForgotPassword from '../screen/auth/ForgotPassword';
 import { navigationRef } from '../../utils/navigationRef';
@@ -16,6 +17,7 @@ const AuthStack = createNativeStackNavigator();
 const AuthNavigate = () => {
   return (
     <AuthStack.Navigator screenOptions={{ headerShown: false }}>
+      <AuthStack.Screen name="Onboard" component={Onboard} />
       <AuthStack.Screen name="SignIn" component={SignIn} />
       <AuthStack.Screen name="SignUp" component={SignUp} />
       <AuthStack.Screen name="ForgotPassword" component={ForgotPassword} />

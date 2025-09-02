@@ -9,3 +9,5 @@ export { default as HomeIcon } from '../src/Assets/Icon/home.svg';
 export { default as NotificationIcon } from '../src/Assets/Icon/notification.svg';
 export { default as HistoryIcon } from '../src/Assets/Icon/history.svg';
 export { default as StatisticsIcon } from '../src/Assets/Icon/statistics.svg';
+export { default as RightArrowIcon } from '../src/Assets/Icon/rightArrow.svg';
+export {default as WifiX} from '../src/Assets/Icon/wifiX.svg';

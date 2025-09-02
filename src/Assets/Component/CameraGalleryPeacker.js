@@ -132,9 +132,9 @@ const CameraGalleryPeacker = (props) => {
         console.log('User tapped custom button: ', response.customButton);
       } else {
         const source = { uri: response.uri };
-      setTimeout(() => {
+      // setTimeout(() => {
         props.refs.current?.hide()
-      }, 500);
+      // }, 100);
         props.getImageValue(response);
         // setSelectedImage(source);
       }

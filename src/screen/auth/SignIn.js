@@ -10,23 +10,18 @@ import {
 import React, {  useContext, useEffect, useState } from 'react';
 import styles from './styles';
 import { navigate, reset } from '../../../utils/navigationRef';
-import { Post } from '../../Assets/Helpers/Service';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import InAppBrowser from 'react-native-inappbrowser-reborn';
-import { LoadContext, ToastContext, UserContext } from '../../../App';
 import Constants from '../../Assets/Helpers/constant';
 import * as Yup from 'yup';
 import { Formik, useFormik } from 'formik';
 import { OneSignal } from 'react-native-onesignal';
 import { hp } from '../../../utils/responsiveScreen';
 import LinearGradient from 'react-native-linear-gradient';
+import { useDispatch } from 'react-redux';
+import { login } from '../../../redux/auth/authAction';
 
 const SignIn = () => {
   const [showPass, setShowPass] = useState(true);
-  const [toast, setToast] = useContext(ToastContext);
-  const [loading, setLoading] = useContext(LoadContext);
-  const [user, setUser] = useContext(UserContext);
-
+const dispatch = useDispatch();
   const validationSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Email is required'),
     password: Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
@@ -43,57 +38,22 @@ const SignIn = () => {
     },
   });
 
-  const submit = async (value, { resetForm }) => {
-    setLoading(true);
-    const player_id = await OneSignal.User.pushSubscription.getIdAsync()
-    const device_token = await OneSignal.User.pushSubscription.getTokenAsync()
+ const submit = async (value, { resetForm }) => {
+  console.log('enter')
+  // const player_id = await OneSignal.User.pushSubscription.getIdAsync()
+  //   const device_token = await OneSignal.User.pushSubscription.getTokenAsync()
 
-      value.player_id= player_id
-      value.device_token =device_token,
-      
-    Post('auth/login', value, {}).then(
-      async res => {
-        setLoading(false);
-        console.log('userdetilllllll', res);
-        if (res.status) {
-          resetForm()
-          setToast('Signin successfully')
-          setLoading(false);
-          await AsyncStorage.setItem('userDetail', JSON.stringify({ ...res.data.user, token: res.data.token }));
-          setUser({ ...res.data.user, token: res.data.token })
-          reset('TabNav')
-        } else {
-          setLoading(false);
-        }
-      },
-      err => {
-        setLoading(false);
-      },
-    );
-  };
-const InAppBrowserFunc = async (props) => {
-    try {
-      if (await InAppBrowser.isAvailable()) {
-        await InAppBrowser.open(
-          props,
-          {
-            // Customization options
-            dismissButtonStyle: 'cancel',
-            preferredBarTintColor: Constants.normal_green,
-            preferredControlTintColor: 'white',
-            readerMode: false,
-            animated: true,
-            modalPresentationStyle: 'fullScreen',
-            modalTransitionStyle: 'coverVertical',
-            enableBarCollapsing: false,
-          },
-        );
-      } else {
-        Linking.openURL(props);
-      }
-    } catch (error) {
-      console.error(error);
-    }
+  //     value.player_id= player_id
+  //     value.device_token =device_token,
+    dispatch(login(value))
+      .unwrap()
+      .then(data => {
+        console.log('data', data);
+        resetForm();
+      })
+      .catch(error => {
+        console.error('Signin failed:', error);
+      });
   };
   return (
     // <View style={styles.container}>
@@ -106,7 +66,7 @@ const InAppBrowserFunc = async (props) => {
       {/* <View > */}
       <View style={styles.buttompart} >
         <Image source={require('../../Assets/Images/pro-img.png')} style={styles.proimg}/>
-        <Text style={styles.headtxt} onPress={()=>navigate("App")}>Log In</Text>
+        <Text style={styles.headtxt} onPress={()=>navigate("App")}>Login</Text>
         <View style={styles.inpcov}>
           <TextInput
             style={styles.inputfield}
@@ -153,7 +113,7 @@ const InAppBrowserFunc = async (props) => {
         }
 
             <TouchableOpacity style={styles.btncov} onPress={formik.handleSubmit}>
-              <Text style={styles.btntxt}>Log In</Text>
+              <Text style={styles.btntxt}>Login</Text>
             </TouchableOpacity>
         <Text style={styles.forgtxt} onPress={() => navigate('ForgotPassword')}>
           Forgot Password ?

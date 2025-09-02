@@ -117,7 +117,7 @@ export const  TabNav=()=>{
           width: '100%',
           height: 70,
           backgroundColor: Constants.white,
-          boxShadow: '0px 0px 3px 0.2px grey',
+          // boxShadow: '0px 0px 3px 0.2px grey',
           borderTopLeftRadius:15,
           borderTopRightRadius:15,
           borderWidth:1,
