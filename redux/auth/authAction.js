@@ -10,15 +10,24 @@ export const checkLogin = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const token = await getAuthToken();
+      console.log("token",token)
       if (!token) {
         await deleteAuthToken();
         reset('Auth');
         return null;
       }
       setApiToken(token);
-      const {data} = await axios.get('user/getprofile');
+      const {data} = await axios.get('auth/profile');
       if (data) {
-        reset('App');
+        if (data?.type==='instructer') {
+            if (data?.status==='Approved') {
+              reset('InstructerApp');
+            } else {
+              navigate('Form')
+            }
+          } else {
+            reset('App');
+          }
         return data;
       } else {
         await deleteAuthToken();
@@ -42,8 +51,17 @@ export const login = createAsyncThunk(
       showToaster('success',res?.data?.message);
       if (res?.data) {
           setApiToken(res?.data.token);
+          console.log('logintoken',res?.data.token)
           await setAuthToken(res?.data.token);
-          reset('App');
+          if (res?.data?.user?.type==='instructer') {
+            if (res?.data?.user?.status==='Approved') {
+              reset('InstructerApp');
+            } else {
+              navigate('Form')
+            }
+          } else {
+            reset('App');
+          }
       }
       return res?.data;
     } catch (error) {
@@ -94,10 +112,6 @@ export const verifyOtp = createAsyncThunk(
     try {
       const {data} = await axios.post('auth/verifyOtp', params);
       showToaster('success',data?.message);
-      if (data) {
-        setApiToken(data.token);
-        await setAuthToken(data.token);
-      }
       return data;
     } catch (error) {
       showToaster('error',error);
@@ -118,6 +132,24 @@ export const resetPassword = createAsyncThunk(
       if (data) {
         navigate('SignIn');
       }
+      showToaster('success',data?.message);
+      return data;
+    } catch (error) {
+      showToaster('error',error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+//For updateprofile
+export const updateProfile = createAsyncThunk(
+  'auth/updateprofile',
+  async (params, thunkAPI) => {
+    try {
+      const {data}= await axios.post('auth/updateprofile',params,{
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       showToaster('success',data?.message);
       return data;
     } catch (error) {

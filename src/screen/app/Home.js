@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Constants, { FONTS } from '../../Assets/Helpers/constant';
 import { LocationIcon, RightArrowIcon, SearchIcon } from '../../../Theme';
 import { hp, wp } from '../../../utils/responsiveScreen';
@@ -18,9 +18,19 @@ import MapView, {
   PROVIDER_GOOGLE,
 } from 'react-native-maps';
 import { mapStyle } from '../../../Theme/MapStyle';
+import RequestCurrentLocation from '../../Assets/Component/RequestCurrentLocation';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Home = () => {
   const [vehicleType, setvehicleType] = useState('automatic');
+  const dispatch = useDispatch();
+  const userAddress = useSelector(state => state.location.userAddress);
+  const user = useSelector(state => state.auth.user);
+  const loginuser = useSelector(state => state.auth.loginuser);
+
+  useEffect(() => {
+      {loginuser&&RequestCurrentLocation(dispatch,loginuser);}
+    }, [loginuser]);
   return (
     <View style={styles.container}>
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -28,20 +38,20 @@ const Home = () => {
         <View style={styles.toppart}>
           <Image
             source={
-              // orderdetail?.seller_profile?.image
-              //   ? {
-              //       uri: `${orderdetail?.seller_profile?.image}`,
-              //     }:
+              user?.image
+                ? {
+                    uri: `${user?.image}`,
+                  }:
               require('../../Assets/Images/profile4.png')
             }
             style={styles.imgst}
           />
           <View>
-            <Text style={styles.nametxt}>Regina Title</Text>
+            <Text style={styles.nametxt}>{user?.name}</Text>
             <View style={styles.loccov}>
               <LocationIcon />
               <Text style={styles.loctxt} numberOfLines={1}>
-                Sweden hsgvc hsgvcs hsgchs hsg ch shgcvs
+                {userAddress}
               </Text>
             </View>
           </View>

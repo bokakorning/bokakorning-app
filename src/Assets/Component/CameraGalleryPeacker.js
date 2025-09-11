@@ -76,7 +76,12 @@ const CameraGalleryPeacker = (props) => {
       } else {
         const source = { uri: response.uri };
         onCancel()
-        props.getImageValue(response);
+        // props.getImageValue(response);
+        props.getImageValue({
+          uri: response.assets[0].uri,
+      type: response.assets[0].type,
+      name: response.assets[0].fileName
+        });
         // setSelectedImage(source);
       }
     });
@@ -135,7 +140,12 @@ const CameraGalleryPeacker = (props) => {
       // setTimeout(() => {
         props.refs.current?.hide()
       // }, 100);
-        props.getImageValue(response);
+        // props.getImageValue(response);
+        props.getImageValue({
+          uri: response.assets[0].uri,
+      type: response.assets[0].type,
+      name: response.assets[0].fileName
+        });
         // setSelectedImage(source);
       }
     });

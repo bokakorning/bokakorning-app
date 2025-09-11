@@ -4,14 +4,15 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Navigation from './src/navigation';
 import Constants, { FONTS } from './src/Assets/Helpers/constant';
 import { OneSignal } from 'react-native-onesignal';
-import Spinner from './src/Assets/Component/Spinner';
 import Toast from 'react-native-toast-message';
 import 'react-native-gesture-handler';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
+import { checkLogin } from './redux/auth/authAction';
 
 const App = () => {
   const APP_ID = '';
+
   // useEffect(() => {
   //   OneSignal.initialize(APP_ID);
   //   OneSignal.Notifications.requestPermission(true);
@@ -23,7 +24,7 @@ const App = () => {
   //       i18n.changeLanguage(x);
   //     }
   //   };
-
+store.dispatch(checkLogin())
   return (
     <Provider store={store}>
       <SafeAreaView
@@ -34,7 +35,6 @@ const App = () => {
         }
         style={styles.container}
       >
-        <Spinner />
         <StatusBar barStyle="dark-content" backgroundColor={Constants.white} />
         <Navigation />
         <Toast />

@@ -71,12 +71,8 @@ const SignUp = () => {
 
   const getImageValue = async img => {
     // setDocument(img.assets[0])
-    console.log('image data', img.assets[0]);
-    setDocument({
-      uri: img.assets[0].uri,
-      type: img.assets[0].type,
-      name: img.assets[0].fileName,
-    });
+    // console.log('image data', img.assets[0]);
+    setDocument(img);
   };
   const cancel = () => {};
   const [tabopt, settabopt] = useState(0);

@@ -6,12 +6,14 @@ import {
   sendOtp,
   signup,
   verifyOtp,
+  updateProfile
 } from './authAction';
 
 
 const initialState = {
   isLoading: false,
   user: null,
+  loginuser: null,
   error: null,
 };
 
@@ -26,7 +28,8 @@ const authSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(login.fulfilled, (state, action) => {
-      state.user = action.payload;
+      state.user = action.payload?.user;
+      state.loginuser = action.payload?.user;
       state.isLoading = false;
       state.error = null;
     });
@@ -76,6 +79,7 @@ const authSlice = createSlice({
     //checkLogin reducer
     builder.addCase(checkLogin.fulfilled, (state, action) => {
       state.user = action.payload;
+      state.loginuser = action.payload;
       state.error = null;
     });
 
@@ -92,7 +96,19 @@ const authSlice = createSlice({
       state.error = action.payload;
     });
 
+    //updateProfile reducer
+    builder.addCase(updateProfile.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(updateProfile.fulfilled, (state, action) => {
+      state.user = action.payload?.user;
+      state.isLoading = false;
+      state.error = null;
+    });
+    builder.addCase(updateProfile.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
   },
 });
-
 export default authSlice.reducer;

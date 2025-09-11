@@ -11,3 +11,8 @@ export { default as HistoryIcon } from '../src/Assets/Icon/history.svg';
 export { default as StatisticsIcon } from '../src/Assets/Icon/statistics.svg';
 export { default as RightArrowIcon } from '../src/Assets/Icon/rightArrow.svg';
 export {default as WifiX} from '../src/Assets/Icon/wifiX.svg';
+export {default as RequestIcon} from '../src/Assets/Icon/request.svg';
+export {default as UserIcon} from '../src/Assets/Icon/user.svg';
+export {default as BankNoteIcon} from '../src/Assets/Icon/banknote.svg';
+export {default as PencilIcon} from '../src/Assets/Icon/pencil.svg';
+export {default as BackIcon} from '../src/Assets/Icon/back.svg';

@@ -6,7 +6,9 @@ import Onboard from '../screen/auth/Onboard';
 import SignUp from '../screen/auth/SignUp';
 import ForgotPassword from '../screen/auth/ForgotPassword';
 import { navigationRef } from '../../utils/navigationRef';
-import {TabNav} from './TabNavigation'
+import {TabNav} from './TabNavigation';
+import {InstruterTabNav} from './InstructerTabNavigation';
+import Form from '../screen/instructer/Form';
 
 
 
@@ -37,6 +39,8 @@ export default function Navigation(props) {
       >
         <Stack.Screen name="Auth" component={AuthNavigate} />
         <Stack.Screen name="App" component={TabNav} />
+        <Stack.Screen name="InstructerApp" component={InstruterTabNav} />
+        <Stack.Screen name="Form" component={Form} />
 
       </Stack.Navigator>
 

@@ -1,10 +1,10 @@
 const prodUrl = 'http://192.168.0.187:3000/';
 //  const prodUrl = 'http://192.168.25.1:3000/api/';
-// const prodUrl = 'https://api.mybrainspeed.com/api/';
-// const prodUrl = 'http://10.80.19.68:3000/api/';
+// const prodUrl = 'https://api.bokakorning.online/';
+// const prodUrl = 'http://10.80.19.98:3000/';
 
 let apiUrl = prodUrl;
-export const Googlekey = ''
+export const Googlekey = 'AIzaSyA4GB0zYGkYF8blPqwF57GKnw4ON2EEN80'
 
 const Constants = {
   baseUrl: apiUrl,
@@ -22,6 +22,7 @@ const Constants = {
   customgrey5: '#dedede',
   custom_blue: '#4EB0CF',
   light_blue2: '#cae8f1',
+  light_blue3: '#eaf8ff',
   light_blue: '#74d7fa',
 
 

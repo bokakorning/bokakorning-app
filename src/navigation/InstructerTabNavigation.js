@@ -2,17 +2,16 @@ import React, {useCallback, useContext, useEffect, useRef, useState} from 'react
 import {Animated, Dimensions, Easing, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Constants, { FONTS } from '../Assets/Helpers/constant';
-import {HistoryIcon, HomeIcon, NotificationIcon, StatisticsIcon} from '../../Theme'
-import Home from '../screen/app/Home'
-import Notification from '../screen/app/Notification'
-import History from '../screen/app/History'
-import Statistics from '../screen/app/Statistics';
-
+import {BankNoteIcon, NotificationIcon, RequestIcon, UserIcon} from '../../Theme'
+import Request from '../screen/instructer/Request'
+import Notification from '../screen/instructer/Notification';
+import Account from '../screen/instructer/Account';
+import Earning from '../screen/instructer/Earning';
 
 
 const Tab = createBottomTabNavigator();
 
-export const  TabNav=()=>{
+export const  InstruterTabNav=()=>{
  const tabOffsetValue = useRef(new Animated.Value(0)).current;
   function getWidth() {
     let width = Dimensions.get("window").width
@@ -22,28 +21,28 @@ export const  TabNav=()=>{
 
   const TabArr = [
     {
-      iconActive: <HomeIcon color={Constants.white} height={22} width={22} />,
-      iconInActive: <HomeIcon color={Constants.custom_blue} height={24} width={24} />,
-      component: Home,
-      routeName: 'Home',
+      iconActive: <RequestIcon color={Constants.white} height={22} width={22} />,
+      iconInActive: <RequestIcon color={Constants.custom_blue} height={24} width={24} />,
+      component: Request,
+      routeName: 'Request',
     },
     {
-      iconActive: <NotificationIcon color={Constants.white} height={20} width={20} />,
+      iconActive: <NotificationIcon color={Constants.white} height={22} width={22} />,
       iconInActive: <NotificationIcon color={Constants.custom_blue} height={22} width={22} />,
       component: Notification,
       routeName: 'Notification',
     },
     {
-      iconActive: <HistoryIcon color={Constants.white} height={20} width={20} />,
-      iconInActive: <HistoryIcon color={Constants.custom_blue} height={22} width={22} />,
-      component: History,
-      routeName: 'History',
+      iconActive: <BankNoteIcon color={Constants.white} height={22} width={22} />,
+      iconInActive: <BankNoteIcon color={Constants.custom_blue} height={22} width={22} />,
+      component: Earning,
+      routeName: 'Earning',
     },
     {
-      iconActive: <StatisticsIcon color={Constants.white} height={20} width={20} />,
-      iconInActive: <StatisticsIcon color={Constants.custom_blue} height={20} width={20} />,
-      component: Statistics,
-      routeName: 'Statistics',
+      iconActive: <UserIcon color={Constants.white} height={24} width={24} />,
+      iconInActive: <UserIcon color={Constants.custom_blue} height={28} width={28} />,
+      component: Account,
+      routeName: 'Account',
     },
   ];
 
@@ -77,7 +76,7 @@ export const  TabNav=()=>{
          {index ===0 &&<Animated.View style={{
         // width: getWidth() -15,
         height: 48,
-    width: 48,
+        width: 48,
         backgroundColor: Constants.custom_blue,
         position: 'absolute',
         top:11,
