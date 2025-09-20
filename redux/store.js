@@ -5,11 +5,13 @@ import {
 import {configureStore} from '@reduxjs/toolkit';
 import authSlice from './auth/authSlice';
 import locationSlice from './location/locationSlice';
+import bookingSlice from './booking/bookingSlice';
 
 export const store = configureStore({
   reducer: {
     auth: authSlice,
     location: locationSlice,
+    booking: bookingSlice,
   },
 });
 

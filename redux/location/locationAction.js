@@ -16,5 +16,18 @@ export const updateInstLocation = createAsyncThunk(
     }
   },
 );
+//For get Instructer Location
+export const getNearbyocation = createAsyncThunk(
+  'location/getnearbyinstructer',
+  async (params, thunkAPI) => {
+    try {
+      const {data} = await axios.post('auth/getnearbyinstructer', params);
+      return data;
+    } catch (error) {
+      showToaster('error',error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
 
 

@@ -140,6 +140,18 @@ export const resetPassword = createAsyncThunk(
     }
   },
 );
+//For getprofile
+export const getProfile = createAsyncThunk(
+  'auth/getprofile',
+  async (params, thunkAPI) => {
+    try {
+      const {data}= await axios.get('auth/profile',params,);
+      return data;
+    } catch (error) {
+      showToaster('error',error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  },)
 //For updateprofile
 export const updateProfile = createAsyncThunk(
   'auth/updateprofile',

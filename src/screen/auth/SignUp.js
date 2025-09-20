@@ -239,7 +239,7 @@ const SignUp = () => {
                   <Text style={styles.upltxt}>1 Document Attached</Text>
                   <View style={{ flexDirection: 'row', gap: 10 }}>
                     <ViewIcon onPress={() => setModalVisible(true)} />
-                    <DeleteIcon onPress={() => setDocument('')} />
+                    <DeleteIcon onPress={() => setDocument('')} color={Constants.red}/>
                   </View>
                 </TouchableOpacity>
               )}

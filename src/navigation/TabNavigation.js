@@ -6,7 +6,7 @@ import {HistoryIcon, HomeIcon, NotificationIcon, StatisticsIcon} from '../../The
 import Home from '../screen/app/Home'
 import Notification from '../screen/app/Notification'
 import History from '../screen/app/History'
-import Statistics from '../screen/app/Statistics';
+import Account from '../screen/app/Account';
 
 
 
@@ -42,8 +42,8 @@ export const  TabNav=()=>{
     {
       iconActive: <StatisticsIcon color={Constants.white} height={20} width={20} />,
       iconInActive: <StatisticsIcon color={Constants.custom_blue} height={20} width={20} />,
-      component: Statistics,
-      routeName: 'Statistics',
+      component: Account,
+      routeName: 'Account',
     },
   ];
 

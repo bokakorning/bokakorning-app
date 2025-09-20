@@ -9,6 +9,11 @@ import { navigationRef } from '../../utils/navigationRef';
 import {TabNav} from './TabNavigation';
 import {InstruterTabNav} from './InstructerTabNavigation';
 import Form from '../screen/instructer/Form';
+import InstructerDetail from '../screen/app/InstructerDetail';
+import BookingConfirm from '../screen/app/BookingConfirm';
+import AssignedInstructor from '../screen/app/AssignedInstructor';
+import Account from '../screen/app/Account';
+import Profile from '../screen/app/Profile';
 
 
 
@@ -35,12 +40,17 @@ export default function Navigation(props) {
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator
         screenOptions={{ headerShown: false }}
-        initialRouteName={props.initial}
+        initialRouteName={"Auth"}
       >
         <Stack.Screen name="Auth" component={AuthNavigate} />
         <Stack.Screen name="App" component={TabNav} />
         <Stack.Screen name="InstructerApp" component={InstruterTabNav} />
         <Stack.Screen name="Form" component={Form} />
+        <Stack.Screen name="InstructerDetail" component={InstructerDetail} />
+        <Stack.Screen name="BookingConfirm" component={BookingConfirm} />
+        <Stack.Screen name="AssignedInstructor" component={AssignedInstructor} />
+        <Stack.Screen name="Account" component={Account} />
+        <Stack.Screen name="Profile" component={Profile} />
 
       </Stack.Navigator>
 

@@ -24,7 +24,7 @@ import { getNearbyocation } from '../../../redux/location/locationAction';
 import { navigate } from '../../../utils/navigationRef';
 import LocationDropdown from '../../Assets/Component/LocationDropdown'
 
-const Home = () => {
+const Schedule = () => {
   const [vehicleType, setvehicleType] = useState('automatic');
   const [driverlist, setDriverList] = useState([]);
   const [showinput, setshowinput] = useState(false);
@@ -82,38 +82,10 @@ console.log("userEnteredlocation",userEnteredLocation)
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
-        <View style={styles.topcov}>
-          <View style={styles.toppart}>
-            <TouchableOpacity onPress={() => navigate('Profile')}>
-            <Image
-              source={
-                user?.image
-                  ? {
-                      uri: `${user?.image}`,
-                    }
-                  : require('../../Assets/Images/profile4.png')
-              }
-              style={styles.imgst}
-            />
-            </TouchableOpacity>
-            <View>
-              <Text style={styles.nametxt}>{user?.name}</Text>
-              <View style={styles.loccov}>
-                <LocationIcon />
-                <Text style={styles.loctxt} numberOfLines={1}>
-                  {userAddress}
-                </Text>
-              </View>
-            </View>
-          </View>
-          <TouchableOpacity style={styles.iconcov} onPress={()=>setshowinput(!showinput)}>
-            {showinput?<Cross2Icon height={22} width={22} color={Constants.white}/>:<SearchIcon height={22} width={22} color={Constants.white} />}
-          </TouchableOpacity>
-        </View>
-        {showinput&&<View style={styles.textInput}>
+        <View style={styles.textInput}>
           <LocationDropdown
           />
-          </View>}
+          </View>
         <Text style={styles.headtxt}>Book a session now </Text>
         <Text style={styles.seltxt}>Select your preferred vehicle:</Text>
         <View style={styles.caroptcov}>
@@ -282,7 +254,7 @@ console.log("userEnteredlocation",userEnteredLocation)
   );
 };
 
-export default Home;
+export default Schedule;
 
 const styles = StyleSheet.create({
   container: {

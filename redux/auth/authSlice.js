@@ -6,7 +6,8 @@ import {
   sendOtp,
   signup,
   verifyOtp,
-  updateProfile
+  updateProfile,
+  getProfile
 } from './authAction';
 
 
@@ -96,6 +97,20 @@ const authSlice = createSlice({
       state.error = action.payload;
     });
 
+    //getProfile reducer
+    builder.addCase(getProfile.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getProfile.fulfilled, (state, action) => {
+      state.user = action.payload;
+      state.isLoading = false;
+      state.error = null;
+    });
+    builder.addCase(getProfile.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+    
     //updateProfile reducer
     builder.addCase(updateProfile.pending, (state) => {
       state.isLoading = true;

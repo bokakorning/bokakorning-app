@@ -5,10 +5,10 @@ import Navigation from './src/navigation';
 import Constants, { FONTS } from './src/Assets/Helpers/constant';
 import { OneSignal } from 'react-native-onesignal';
 import Toast from 'react-native-toast-message';
-import 'react-native-gesture-handler';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import { checkLogin } from './redux/auth/authAction';
+import Spinner from './src/Assets/Component/Spinner';
 
 const App = () => {
   const APP_ID = '';
@@ -36,6 +36,7 @@ store.dispatch(checkLogin())
         style={styles.container}
       >
         <StatusBar barStyle="dark-content" backgroundColor={Constants.white} />
+        <Spinner />
         <Navigation />
         <Toast />
       </SafeAreaView>

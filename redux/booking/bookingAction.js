@@ -1,0 +1,60 @@
+import {createAsyncThunk} from '@reduxjs/toolkit';
+import {showToaster} from '../../utils/toaster';
+import axios from '../../utils/axios';
+import {navigate} from '../../utils/navigationRef';
+
+//For create Booking
+export const createBooking = createAsyncThunk(
+  'booking/createBooking',
+  async (params, thunkAPI) => {
+    try {
+      const {data} = await axios.post('booking/createBooking', params);
+      return data;
+    } catch (error) {
+      showToaster('error',error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+//For get Instructer Request
+export const getInstructerReqs = createAsyncThunk(
+  'booking/getinstructerreqs',
+  async (params, thunkAPI) => {
+    try {
+      const {data} = await axios.get('booking/getinstructerreqs', params);
+      return data;
+    } catch (error) {
+      showToaster('error',error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+//For update Instructer Request
+export const updateInstructerReqs = createAsyncThunk(
+  'booking/updatebookingstatus',
+  async (params, thunkAPI) => {
+    try {
+      const {data} = await axios.put('booking/updatebookingstatus', params);
+      showToaster('success',data.message);
+      return data;
+    } catch (error) {
+      showToaster('error',error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+//For get User Bookings
+export const getUserBookings = createAsyncThunk(
+  'booking/getuserbookings',
+  async (params, thunkAPI) => {
+    try {
+      const {data} = await axios.get(`booking/getuserbookings?status=${params}`);
+      return data;
+    } catch (error) {
+      showToaster('error',error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
+

@@ -6,11 +6,14 @@ import Constants, { FONTS } from '../../Assets/Helpers/constant'
 import { updateInstLocation } from '../../../redux/location/locationAction'
 import { useDispatch, useSelector } from 'react-redux'
 import RequestCurrentLocation from '../../Assets/Component/RequestCurrentLocation'
+import { getInstructerReqs, updateInstructerReqs } from '../../../redux/booking/bookingAction'
+import moment from 'moment'
 
 const Request = () => {
   const dispatch = useDispatch();
   const loginuser = useSelector(state => state.auth.loginuser);
   const [startupdateloc, setStartupdateloc] = useState(false);
+  const [reqlist, setreqList] = useState([]);
   const intervalRef = useRef(null);
   useEffect(() => {
       {loginuser&&RequestCurrentLocation(dispatch,loginuser);}
@@ -18,6 +21,7 @@ const Request = () => {
 
   useEffect(() => {
     setStartupdateloc(true);
+    getInstructerReqscall()
   }, []);
 
   useEffect(() => {
@@ -54,20 +58,48 @@ const Request = () => {
         });
     });
   };
+  const getInstructerReqscall = () => {
+      dispatch(getInstructerReqs())
+        .unwrap()
+        .then(data => {
+          console.log('data', data);
+          setreqList(data);
+        })
+        .catch(error => {
+          console.error('Instructer req failed:', error);
+        });
+    };
+  const updatebookingreq = (id,status) => {
+    const body={
+      status:status,
+      id:id
+    }
+    console.log('body', body);
+      dispatch(updateInstructerReqs(body))
+        .unwrap()
+        .then(data => {
+          console.log('data', data);
+          getInstructerReqscall()
+        })
+        .catch(error => {
+          console.error('Instructer req failed:', error);
+        });
+    };
   return (
     <View style={styles.container}>
       <InstructerHeader item={"Lesson Request"} showback={false}/>
       <FlatList 
-      data={[1,2,3,4]}
+      data={reqlist}
+      style={{marginBottom:70}}
       showsVerticalScrollIndicator={false}
-      renderItem={()=><View style={styles.card}>
-        <Text style={styles.boxtxt}>Session Request From Anny</Text>
-        <Text style={styles.boxtxt}>Wednesday, 5 August </Text>
-        <Text style={styles.boxtxt}>At 2 PM</Text>
-        <Text style={styles.boxtxt}>Some Street, Any Road, Pincode- 12345</Text>
+      renderItem={({item,index})=><View style={[styles.card,{marginTop:index+1===1?15:0}]}>
+        <Text style={styles.boxtxt}>Session Request From {item?.user?.name}</Text>
+        <Text style={styles.boxtxt}>{moment(item?.date).format('dddd, DD MMMM')}</Text>
+        <Text style={styles.boxtxt}>At {item?.selectedTime}</Text>
+        <Text style={styles.boxtxt}>{item?.pickup_address}</Text>
         <View style={styles.btncov}>
-          <TouchableOpacity style={[styles.btn,{backgroundColor:'#B5FC7F'}]}><Text style={styles.boxtxt2}>Accept</Text></TouchableOpacity>
-          <TouchableOpacity style={[styles.btn,{backgroundColor:'#FFA6A6'}]}><Text style={styles.boxtxt2}>Decline</Text></TouchableOpacity>
+          <TouchableOpacity style={[styles.btn,{backgroundColor:'#B5FC7F'}]} onPress={()=>updatebookingreq(item?._id,"accepted")}><Text style={styles.boxtxt2}>Accept</Text></TouchableOpacity>
+          <TouchableOpacity style={[styles.btn,{backgroundColor:'#FFA6A6'}]} onPress={()=>updatebookingreq(item?._id,"cancel")}><Text style={styles.boxtxt2}>Decline</Text></TouchableOpacity>
           </View>
       </View>
       }/>
@@ -87,7 +119,7 @@ const styles = StyleSheet.create({
     borderRadius:10,
     padding:10,
     boxShadow:'0px 2px 4px 0.01px grey',
-    marginTop:15,
+    marginBottom:15,
     width:'90%',
     alignSelf:'center'
   },

@@ -8,8 +8,8 @@ const Spinner = () => {
   const isLoading = useSelector(
     state =>
       state.auth.isLoading 
-    // ||state.user.isLoading ||
-    //   state.notification.isLoading,
+    ||state.location.isLoading ||
+      state.booking.isLoading,
   );
   if (!isLoading) {
     return <></>;
