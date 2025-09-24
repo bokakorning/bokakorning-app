@@ -9,7 +9,8 @@ const Spinner = () => {
     state =>
       state.auth.isLoading 
     ||state.location.isLoading ||
-      state.booking.isLoading,
+      state.booking.isLoading||
+      state.notification.isLoading
   );
   if (!isLoading) {
     return <></>;

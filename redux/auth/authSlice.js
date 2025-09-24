@@ -7,7 +7,8 @@ import {
   signup,
   verifyOtp,
   updateProfile,
-  getProfile
+  getProfile,
+  logout
 } from './authAction';
 
 
@@ -123,6 +124,12 @@ const authSlice = createSlice({
     builder.addCase(updateProfile.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
+    });
+
+    builder.addCase(logout.fulfilled, (state, action) => {
+      state.user = null;
+      state.loginuser = null;
+      state.error = null;
     });
   },
 });

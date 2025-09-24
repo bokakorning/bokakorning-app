@@ -29,3 +29,6 @@ export { default as PrivacyIcon } from '../src/Assets/Icon/privacy.svg';
 export { default as ProfileIcon } from '../src/Assets/Icon/profile.svg';
 export { default as SupportIcon } from '../src/Assets/Icon/support.svg';
 export { default as DocIcon } from '../src/Assets/Icon/doc.svg';
+export { default as ClockIcon } from '../src/Assets/Icon/clock.svg';
+export { default as Notification2Icon } from '../src/Assets/Icon/notification2.svg';
+export { default as WorkIcon } from '../src/Assets/Icon/work.svg';

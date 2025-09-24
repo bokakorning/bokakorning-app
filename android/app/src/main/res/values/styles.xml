@@ -4,6 +4,9 @@
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="android:editTextBackground">@drawable/rn_edit_text_material</item>
+        <item name="colorAccent">#4EB0CF</item> <!-- Affects OK/Cancel buttons -->
+        <item name="colorPrimary">#4EB0CF</item> <!-- Optional -->
+        <item name="android:colorAccent">#4EB0CF</item>
     </style>
 
 </resources>

@@ -1,7 +1,7 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {deleteAuthToken, getAuthToken, setAuthToken} from '../../utils/storage';
 import {showToaster} from '../../utils/toaster';
-import axios, { setApiToken} from '../../utils/axios';
+import axios, { removeApiToken, setApiToken} from '../../utils/axios';
 import {navigate, reset} from '../../utils/navigationRef';
 
 // For Check user login or not
@@ -168,6 +168,16 @@ export const updateProfile = createAsyncThunk(
       showToaster('error',error);
       return thunkAPI.rejectWithValue(error);
     }
+  },
+);
+
+//For logout
+export const logout = createAsyncThunk(
+  'auth/logout',
+  async (params, thunkAPI) => {
+    removeApiToken();
+    await deleteAuthToken();
+    reset('Auth');
   },
 );
 

@@ -1,15 +1,16 @@
 import {
   FlatList,
   Image,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { createRef, useEffect, useState } from 'react';
 import Constants, { FONTS } from '../../Assets/Helpers/constant';
-import { CarIcon, Cross2Icon, LocationIcon, PinIcon, SearchIcon } from '../../../Theme';
+import { CalenderIcon, CarIcon, ClockIcon, Cross2Icon, CrossIcon, LocationIcon, PinIcon, SearchIcon } from '../../../Theme';
 import { hp, wp } from '../../../utils/responsiveScreen';
 import MapView, {
   Marker,
@@ -20,51 +21,92 @@ import MapView, {
 import { mapStyle } from '../../../Theme/MapStyle';
 import RequestCurrentLocation from '../../Assets/Component/RequestCurrentLocation';
 import { useDispatch, useSelector } from 'react-redux';
-import { getNearbyocation } from '../../../redux/location/locationAction';
 import { navigate } from '../../../utils/navigationRef';
 import LocationDropdown from '../../Assets/Component/LocationDropdown'
+import moment from 'moment';
+import DateTimePicker from '@react-native-community/datetimepicker'
+import { Picker } from 'react-native-wheel-pick';
+import ActionSheet from 'react-native-actions-sheet';
+import { createBooking } from '../../../redux/booking/bookingAction';
+import { showToaster } from '../../../utils/toaster';
 
 const Schedule = () => {
   const [vehicleType, setvehicleType] = useState('automatic');
-  const [driverlist, setDriverList] = useState([]);
-  const [showinput, setshowinput] = useState(false);
+  const [sheduleDate, setSheduleDate] = useState();
+  const [dateModel, setDateModel] = useState(false);
   const dispatch = useDispatch();
   const userAddress = useSelector(state => state.location.userAddress);
   const userLocation = useSelector(state => state.location.userLocation);
   const userEnteredLocation = useSelector(state => state.location.userEnteredLocation);
-  const user = useSelector(state => state.auth.user);
-  const loginuser = useSelector(state => state.auth.loginuser);
-console.log("userEnteredlocation",userEnteredLocation)
-  useEffect(() => {
-    {
-      loginuser && RequestCurrentLocation(dispatch, loginuser);
-    }
-  }, [loginuser]);
-  useEffect(() => {
-    {
-      userLocation && getNearbyInstructer('Automatic');
-    }
-  }, [userLocation,userEnteredLocation]);
+  const userEnteredAddress = useSelector(state => state.location.userEnteredAddress);
+  const timeRef = createRef();
+  const [selectedTime, setSelectedTime] = useState();
+    const [times, setTimes] = useState();
+    useEffect(() => {
+      const generatedSlots = generateTimeSlots();
+      setTimes(generatedSlots);
+      // setSelectedTime(generatedSlots[0]);
+    }, []);
 
-  const getNearbyInstructer = type => {
-    const body = {
-      location: {
+const onDateChange=(event,selectDate)=>{
+setSheduleDate(selectDate)
+setDateModel(false)
+}
+const submit = async () => {
+  if (!selectedTime) {
+    showToaster('error',"Please select the time");
+    return
+  }
+  if (!sheduleDate) {
+    showToaster('error',"Please select the date");
+    return
+  }
+    const body={
+    selectedTime: selectedTime,
+    payment_mode:"online",
+    user_location: {
         type: 'Point',
-        coordinates: [(showinput&&userEnteredLocation?.long)?userEnteredLocation.long:userLocation?.long, (showinput&&userEnteredLocation?.lat)?userEnteredLocation.lat:userLocation?.lat],
+        coordinates: [userEnteredLocation?.long?userEnteredLocation.long:userLocation?.long, userEnteredLocation?.lat?userEnteredLocation.lat:userLocation?.lat],
       },
-      transmission: type,
+    pickup_address: userEnteredAddress?userEnteredAddress:userAddress
+    }
+      dispatch(createBooking(body))
+        .unwrap()
+        .then(res => {
+          console.log('res', res);
+          navigate("App",{screen:"History"})
+        })
+        .catch(error => {
+          console.error('Booking failed:', error);
+        });
     };
-    console.log('body', body);
-    dispatch(getNearbyocation(body))
-      .unwrap()
-      .then(data => {
-        console.log('data', data);
-        setDriverList(data);
-      })
-      .catch(error => {
-        console.error('Nearby instructer failed:', error);
-      });
-  };
+
+ function generateTimeSlots(start = '00:00', end = '23:50', gapMinutes = 30) {
+    const now = new Date();
+    const [startHour, startMin] = start.split(':').map(Number);
+    const [endHour, endMin] = end.split(':').map(Number);
+
+    const startTime = new Date();
+    startTime.setHours(startHour, startMin, 0, 0);
+
+    const endTime = new Date();
+    endTime.setHours(endHour, endMin, 0, 0);
+
+    const slots = [];
+    let current = new Date(startTime);
+
+    while (current <= endTime) {
+      // Only push slots that are in the future (>= now)
+      if (current >= now) {
+      slots.push(
+        current.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      );
+      }
+      current = new Date(current.getTime() + gapMinutes * 60000); // add 30 min
+    }
+
+    return slots;
+  }
   const PackageIcon = () => {
     return (
       <TouchableOpacity style={{ height: 60, width: 60, position: 'relative' }}>
@@ -72,21 +114,11 @@ console.log("userEnteredlocation",userEnteredLocation)
       </TouchableOpacity>
     );
   };
-  const PackageIcon2 = () => {
-    return (
-      <TouchableOpacity style={{ height: 60, width: 60, position: 'relative' }}>
-        <CarIcon height={50} width={50}  />
-      </TouchableOpacity>
-    );
-  };
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
-        <View style={styles.textInput}>
-          <LocationDropdown
-          />
-          </View>
-        <Text style={styles.headtxt}>Book a session now </Text>
+        
+        <Text style={styles.headtxt}>Schedule session for later </Text>
         <Text style={styles.seltxt}>Select your preferred vehicle:</Text>
         <View style={styles.caroptcov}>
           <View
@@ -107,7 +139,7 @@ console.log("userEnteredlocation",userEnteredLocation)
                 },
               ]}
               onPress={() => {
-                setvehicleType('automatic'), getNearbyInstructer('Automatic');
+                setvehicleType('automatic')
               }}
             >
               <Image source={require('../../Assets/Images/smart-car.png')} />
@@ -132,7 +164,7 @@ console.log("userEnteredlocation",userEnteredLocation)
                 },
               ]}
               onPress={() => {
-                setvehicleType('manual'), getNearbyInstructer('Manual');
+                setvehicleType('manual')
               }}
             >
               <Image source={require('../../Assets/Images/smart-car.png')} />
@@ -141,114 +173,121 @@ console.log("userEnteredlocation",userEnteredLocation)
           </View>
         </View>
         <Text style={[styles.seltxt, { marginVertical: 10 }]}>
-          Instructors Available Near you:
+          Select your pickup location:
+        </Text>
+        <View style={styles.textInput}>
+          <LocationDropdown
+          />
+          </View>
+        <Text style={[styles.seltxt2, { marginVertical: 10 }]}>
+          Or f ind it on map
         </Text>
         <View style={styles.mapThumbnail}>
           {userLocation?.long&&<MapView
-          // key={userEnteredLocation?.lat}
             style={styles.mapThumbnailView}
             provider={PROVIDER_GOOGLE}
-            // ref={mapRef}
             customMapStyle={mapStyle}
             region={{
-              latitude: (showinput&&userEnteredLocation?.lat)?userEnteredLocation.lat:userLocation?.lat,
-              longitude: (showinput&&userEnteredLocation?.long)?userEnteredLocation.long:userLocation?.long,
+              latitude: userEnteredLocation?.lat?userEnteredLocation.lat:userLocation?.lat,
+              longitude: userEnteredLocation?.long?userEnteredLocation.long:userLocation?.long,
               latitudeDelta: 0.115,
               longitudeDelta: 0.1121,
             }}
-            // scrollEnabled={false}
-            // zoomEnabled={false}
-            // rotateEnabled={false}
-            // pitchEnabled={false}
           >
             {userLocation?.long && (
               <Marker
                 zIndex={8}
                 draggable={false}
                 coordinate={{
-                  latitude: (showinput&&userEnteredLocation?.lat)?userEnteredLocation.lat:userLocation?.lat,
-                  longitude: (showinput&&userEnteredLocation?.long)?userEnteredLocation.long:userLocation?.long,
+                  latitude: userEnteredLocation?.lat?userEnteredLocation.lat:userLocation?.lat,
+                  longitude: userEnteredLocation?.long?userEnteredLocation.long:userLocation?.long,
                 }}
                 anchor={{ x: 0.5, y: 0.5 }}
               >
                 <PackageIcon />
               </Marker>
             )}
-            {driverlist &&
-              driverlist?.length > 0 &&
-              driverlist.map((item, index) => (
-                <Marker
-                  zIndex={8}
-                  key={index}
-                  draggable={false}
-                  coordinate={{
-                    latitude: item?.location.coordinates[1],
-                    longitude: item?.location.coordinates[0],
-                  }}
-                  anchor={{ x: 0.5, y: 0.5 }}
-                  onPress={()=>navigate('InstructerDetail',item)}
-                >
-                  <PackageIcon2 />
-                </Marker>
-              ))}
           </MapView>}
         </View>
-        <Text style={styles.headtxt2}>Available Instructors</Text>
-        {driverlist && driverlist?.length > 0 ? (
-          driverlist.map((item, index) => (
-            <TouchableOpacity
-            onPress={()=>navigate('InstructerDetail',item)}
-              style={[
-                styles.box,
-                { marginBottom: driverlist.length === index + 1 ? 150 : 0 },
-              ]}
-              key={index}
-            >
-              <View style={styles.frow}>
-                <View style={{ alignItems: 'center' }}>
-                  <Image
-                    source={
-                      item?.image
-                        ? {
-                            uri: `${item?.image}`,
-                          }
-                        : require('../../Assets/Images/profile4.png')
-                    }
-                    style={styles.proimg}
-                  />
-                  <Text style={styles.awatxt}>
-                    {item?.distance > 0
-                      ? (item?.distance / 1609.34).toFixed(0)
-                      : 0}{' '}
-                    Miles Away
-                  </Text>
-                </View>
-                <View>
-                  <Text style={styles.drivtxt}>{item?.name}</Text>
-                  <Text style={styles.drivinftxt}>Experience/Lesson Type</Text>
-                  <Text style={styles.drivtxt}>$150/h</Text>
-                </View>
-              </View>
-              <View>
-                <TouchableOpacity style={styles.bookbtn} onPress={()=>navigate('InstructerDetail',item)}>
-                  <Text style={styles.booktxt}>Details</Text>
-                </TouchableOpacity>
-                {/* <TouchableOpacity
-                  style={{ flexDirection: 'row', alignItems: 'center' }}
-                  onPress={()=>navigate('InstructerDetail',item)}
-                >
-                  <Text style={styles.viwdetxt}>View Details</Text>
-                  <RightArrowIcon height={15} width={15} />
-                </TouchableOpacity> */}
-              </View>
-            </TouchableOpacity>
-          ))
-        ) : (
-          <Text style={styles.noinsttxt}>No Instructor Available</Text>
-        )}
+        <View style={{flexDirection:'row',justifyContent:'space-evenly',marginTop:30}}>
+         <TouchableOpacity style={styles.actionButton} onPress={() => setDateModel(true)}>
+            <CalenderIcon color={Constants.white}/>
+            <Text style={styles.actionText}>{sheduleDate ? moment(sheduleDate).format('DD MMM') : "Schedule Date"}</Text>
+          </TouchableOpacity>
+         <TouchableOpacity style={styles.actionButton} onPress={() => timeRef?.current.show()}>
+            <ClockIcon color={Constants.white} height={17} width={17}/>
+            <Text style={styles.actionText}>{selectedTime?selectedTime : "Schedule Time"}</Text>
+          </TouchableOpacity>
+          </View>
       </ScrollView>
-      <TouchableOpacity style={styles.shdbtn}>
-        <Text style={styles.shdbtntxt}>Schedule session for later</Text>
+      {dateModel&&<DateTimePicker
+        mode='date'
+        value={sheduleDate?sheduleDate:new Date()}
+        display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+        onChange={onDateChange}
+      />}
+<ActionSheet
+        ref={timeRef}
+        closeOnTouchBackdrop={true}
+        containerStyle={{ backgroundColor: Constants.white }}
+      >
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingVertical: 15,
+            paddingHorizontal: 10,
+          }}
+        >
+          <Text style={styles.sheetheadtxt}>
+            Pickup Time :
+          </Text>
+          <CrossIcon
+            style={styles.popupcross}
+            height={26}
+            width={26}
+            onPress={() => {timeRef.current.hide()}}
+          />
+        </View>
+         <View style={styles.horline}></View>
+          <View style={styles.timePickerView}>
+            {times && times?.length > 0 && (
+              <Picker
+                textSize={20}
+                textColor="#888"
+                selectTextColor="#000000"
+                isShowSelectLine={true}
+                selectLineColor="#F3F4F8"
+                selectLineSize={20}
+                style={styles.timePickerStyle}
+                selectedValue={selectedTime}
+                pickerData={times}
+                onValueChange={value => {
+                  setSelectedTime(value);
+                }}
+              />
+            )}
+          </View>
+
+        <View style={styles.horline}></View>
+        <View>
+        
+        </View>
+
+        <TouchableOpacity
+          style={styles.shdbtn2}
+          onPress={() => {
+              timeRef.current.hide();
+          }}
+        >
+          <Text style={styles.shdbtntxt}>
+            Confirm Time
+          </Text>
+        </TouchableOpacity>
+      </ActionSheet>
+      <TouchableOpacity style={styles.shdbtn} onPress={()=>submit()}>
+        <Text style={styles.shdbtntxt}>Confirm</Text>
       </TouchableOpacity>
     </View>
   );
@@ -322,6 +361,12 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.SemiBold,
     fontSize: 16,
   },
+  seltxt2: {
+    color: Constants.black,
+    fontFamily: FONTS.SemiBold,
+    fontSize: 14,
+    textAlign:'center'
+  },
   carcov: {
     height: hp(14),
     backgroundColor: Constants.customgrey5,
@@ -342,7 +387,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   mapThumbnail: {
-    height: 220,
+    height: 250,
     borderRadius: 10,
     overflow: 'hidden',
   },
@@ -415,9 +460,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    bottom: 75,
+    bottom: 15,
     width: wp(90),
     alignSelf: 'center',
+  },
+  shdbtn2: {
+    backgroundColor: Constants.black,
+    borderRadius: 10,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: wp(90),
+    alignSelf: 'center',
+    marginBottom: 20, 
+    marginTop: 10
   },
   shdbtntxt: {
     fontSize: 16,
@@ -435,5 +491,49 @@ const styles = StyleSheet.create({
     backgroundColor:Constants.customgrey4,
     borderRadius:10,
     marginTop:8
-  }
+  },
+  actionButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: Constants.custom_blue,
+    borderRadius: 20,
+    paddingHorizontal: 25,
+    paddingVertical: 8,
+    gap:5
+    // marginRight: 10,
+  },
+  actionText: {
+    fontSize: 14,
+    color: Constants.white,
+    fontFamily: FONTS.SemiBold,
+  },
+
+  horline: {
+    borderTopWidth: 1,
+    borderColor: Constants.customgrey5,
+  },
+  popupcross: {
+    alignSelf: 'flex-end',
+    marginRight: 15,
+    // marginTop: -5,
+    // marginBottom: 20,
+  },
+  sheetheadtxt: {
+    fontSize: 16,
+    color: Constants.black,
+    fontFamily: FONTS.SemiBold,
+  },
+    timePickerStyle: {
+    backgroundColor: Constants.white,
+    width: '90%',
+    height: 170,
+    alignSelf: 'center',
+    fontFamily: FONTS.Medium,
+  },
+  timePickerView: {
+    borderRadius: 20,
+    overflow: 'hidden',
+    marginBottom: 10,
+    paddingVertical: 20,
+  },
 });

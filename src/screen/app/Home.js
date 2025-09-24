@@ -23,12 +23,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getNearbyocation } from '../../../redux/location/locationAction';
 import { navigate } from '../../../utils/navigationRef';
 import LocationDropdown from '../../Assets/Component/LocationDropdown'
+import { useIsFocused } from '@react-navigation/native';
 
 const Home = () => {
   const [vehicleType, setvehicleType] = useState('automatic');
   const [driverlist, setDriverList] = useState([]);
   const [showinput, setshowinput] = useState(false);
   const dispatch = useDispatch();
+  const IsFocused = useIsFocused();
   const userAddress = useSelector(state => state.location.userAddress);
   const userLocation = useSelector(state => state.location.userLocation);
   const userEnteredLocation = useSelector(state => state.location.userEnteredLocation);
@@ -42,7 +44,7 @@ console.log("userEnteredlocation",userEnteredLocation)
   }, [loginuser]);
   useEffect(() => {
     {
-      userLocation && getNearbyInstructer('Automatic');
+      userLocation &&IsFocused&& getNearbyInstructer('Automatic');
     }
   }, [userLocation,userEnteredLocation]);
 
@@ -275,7 +277,7 @@ console.log("userEnteredlocation",userEnteredLocation)
           <Text style={styles.noinsttxt}>No Instructor Available</Text>
         )}
       </ScrollView>
-      <TouchableOpacity style={styles.shdbtn}>
+      <TouchableOpacity style={styles.shdbtn} onPress={()=>navigate("Schedule")}>
         <Text style={styles.shdbtntxt}>Schedule session for later</Text>
       </TouchableOpacity>
     </View>

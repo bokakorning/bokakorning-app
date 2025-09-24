@@ -1,7 +1,6 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {showToaster} from '../../utils/toaster';
 import axios from '../../utils/axios';
-import {navigate} from '../../utils/navigationRef';
 
 //For create Booking
 export const createBooking = createAsyncThunk(
@@ -29,6 +28,21 @@ export const getInstructerReqs = createAsyncThunk(
     }
   },
 );
+
+//For get Accepted Instructer Request
+export const getAccepInstructerReqs = createAsyncThunk(
+  'booking/getaccinstructerreqs',
+  async (params, thunkAPI) => {
+    try {
+      const {data} = await axios.get('booking/getaccinstructerreqs', params);
+      return data;
+    } catch (error) {
+      showToaster('error',error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
 //For update Instructer Request
 export const updateInstructerReqs = createAsyncThunk(
   'booking/updatebookingstatus',

@@ -1,7 +1,7 @@
-// const prodUrl = 'http://192.168.0.187:3000/';
+const prodUrl = 'http://192.168.0.187:3000/';
 //  const prodUrl = 'http://192.168.25.1:3000/api/';
-const prodUrl = 'https://api.bokakorning.online/';
-// const prodUrl = 'http://10.80.19.98:3000/';
+// const prodUrl = 'https://api.bokakorning.online/';
+// const prodUrl = 'http://10.80.19.103:3000/';
 
 let apiUrl = prodUrl;
 export const Googlekey = 'AIzaSyA4GB0zYGkYF8blPqwF57GKnw4ON2EEN80'

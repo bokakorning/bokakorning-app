@@ -9,11 +9,13 @@ import { navigationRef } from '../../utils/navigationRef';
 import {TabNav} from './TabNavigation';
 import {InstruterTabNav} from './InstructerTabNavigation';
 import Form from '../screen/instructer/Form';
+import InstProfile from '../screen/instructer/Profile';
 import InstructerDetail from '../screen/app/InstructerDetail';
 import BookingConfirm from '../screen/app/BookingConfirm';
 import AssignedInstructor from '../screen/app/AssignedInstructor';
 import Account from '../screen/app/Account';
 import Profile from '../screen/app/Profile';
+import Schedule from '../screen/app/Schedule';
 
 
 
@@ -51,6 +53,8 @@ export default function Navigation(props) {
         <Stack.Screen name="AssignedInstructor" component={AssignedInstructor} />
         <Stack.Screen name="Account" component={Account} />
         <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="InstProfile" component={InstProfile} />
+        <Stack.Screen name="Schedule" component={Schedule} />
 
       </Stack.Navigator>
 

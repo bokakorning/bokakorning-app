@@ -21,10 +21,12 @@ import {
   TermIcon,
 } from '../../../Theme';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { navigate } from '../../../utils/navigationRef';
+import { logout } from '../../../redux/auth/authAction';
 
 const Account = () => {
+  const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisible2, setModalVisible2] = useState(false);
   const user = useSelector(state => state.auth.user);
@@ -49,6 +51,9 @@ const Account = () => {
     } catch (error) {
       console.error(error);
     }
+  }
+  const logOut=()=>{
+dispatch(logout())
   }
   return (
     <View style={styles.container}>
@@ -226,7 +231,7 @@ const Account = () => {
                   activeOpacity={0.9}
                   onPress={async () => {
                     setModalVisible(!modalVisible);
-                    // logout();
+                    logOut();
                   }}
                   style={styles.logOutButtonStyle2}>
                   <Text style={styles.modalText}>Log Out</Text>
@@ -273,7 +278,7 @@ const Account = () => {
                   activeOpacity={0.9}
                   onPress={async () => {
                     setModalVisible2(!modalVisible2);
-                    // logout();
+                    logOut();
                   }}
                   style={styles.logOutButtonStyle}>
                   <Text style={styles.modalText}>Delete Account</Text>

@@ -1,5 +1,5 @@
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import { Dimensions, FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import InstructerHeader from '../../Assets/Component/InstructerHeader'
 import CuurentLocation from '../../Assets/Component/CuurentLocation'
 import Constants, { FONTS } from '../../Assets/Helpers/constant'
@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import RequestCurrentLocation from '../../Assets/Component/RequestCurrentLocation'
 import { getInstructerReqs, updateInstructerReqs } from '../../../redux/booking/bookingAction'
 import moment from 'moment'
+import { useIsFocused } from '@react-navigation/native'
 
 const Request = () => {
   const dispatch = useDispatch();
@@ -15,6 +16,7 @@ const Request = () => {
   const [startupdateloc, setStartupdateloc] = useState(false);
   const [reqlist, setreqList] = useState([]);
   const intervalRef = useRef(null);
+  const IsFocused = useIsFocused();
   useEffect(() => {
       {loginuser&&RequestCurrentLocation(dispatch,loginuser);}
     }, [loginuser]);
@@ -85,6 +87,11 @@ const Request = () => {
           console.error('Instructer req failed:', error);
         });
     };
+    const [refreshing, setRefreshing] = useState(false);
+          const onRefresh = useCallback(() => {
+            setRefreshing(true);
+            getInstructerReqscall()
+          }, []);
   return (
     <View style={styles.container}>
       <InstructerHeader item={"Lesson Request"} showback={false}/>
@@ -102,7 +109,27 @@ const Request = () => {
           <TouchableOpacity style={[styles.btn,{backgroundColor:'#FFA6A6'}]} onPress={()=>updatebookingreq(item?._id,"cancel")}><Text style={styles.boxtxt2}>Decline</Text></TouchableOpacity>
           </View>
       </View>
-      }/>
+      }
+      ListEmptyComponent={() => (
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: Dimensions.get('window').height - 200,
+            }}>
+            <Text
+              style={{
+                color: Constants.black,
+                fontSize: 18,
+                fontFamily: FONTS.Medium,
+              }}>
+              No Request Available
+            </Text>
+          </View>
+        )}
+        refreshControl={
+                          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                        }/>
     </View>
   )
 }

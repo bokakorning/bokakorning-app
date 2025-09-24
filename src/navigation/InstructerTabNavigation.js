@@ -2,11 +2,11 @@ import React, {useCallback, useContext, useEffect, useRef, useState} from 'react
 import {Animated, Dimensions, Easing, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Constants, { FONTS } from '../Assets/Helpers/constant';
-import {BankNoteIcon, NotificationIcon, RequestIcon, UserIcon} from '../../Theme'
+import {BankNoteIcon, NotificationIcon, RequestIcon, UserIcon, WorkIcon} from '../../Theme'
 import Request from '../screen/instructer/Request'
 import Notification from '../screen/instructer/Notification';
 import Account from '../screen/instructer/Account';
-import Earning from '../screen/instructer/Earning';
+import MyBookings from '../screen/instructer/MyBookings';
 
 
 const Tab = createBottomTabNavigator();
@@ -27,16 +27,16 @@ export const  InstruterTabNav=()=>{
       routeName: 'Request',
     },
     {
+      iconActive: <WorkIcon color={Constants.white} height={22} width={22} />,
+      iconInActive: <WorkIcon color={Constants.custom_blue} height={22} width={22} />,
+      component: MyBookings,
+      routeName: 'MyBookings',
+    },
+    {
       iconActive: <NotificationIcon color={Constants.white} height={22} width={22} />,
       iconInActive: <NotificationIcon color={Constants.custom_blue} height={22} width={22} />,
       component: Notification,
       routeName: 'Notification',
-    },
-    {
-      iconActive: <BankNoteIcon color={Constants.white} height={22} width={22} />,
-      iconInActive: <BankNoteIcon color={Constants.custom_blue} height={22} width={22} />,
-      component: Earning,
-      routeName: 'Earning',
     },
     {
       iconActive: <UserIcon color={Constants.white} height={24} width={24} />,

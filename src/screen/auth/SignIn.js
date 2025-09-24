@@ -40,11 +40,11 @@ const dispatch = useDispatch();
 
  const submit = async (value, { resetForm }) => {
   console.log('enter')
-  // const player_id = await OneSignal.User.pushSubscription.getIdAsync()
-  //   const device_token = await OneSignal.User.pushSubscription.getTokenAsync()
+  const player_id = await OneSignal.User.pushSubscription.getIdAsync()
+    const device_token = await OneSignal.User.pushSubscription.getTokenAsync()
 
-  //     value.player_id= player_id
-  //     value.device_token =device_token,
+      value.player_id= player_id
+      value.device_token =device_token,
     dispatch(login(value))
       .unwrap()
       .then(data => {

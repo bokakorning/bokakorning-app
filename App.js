@@ -11,12 +11,12 @@ import { checkLogin } from './redux/auth/authAction';
 import Spinner from './src/Assets/Component/Spinner';
 
 const App = () => {
-  const APP_ID = '';
+  const APP_ID = 'df0d1c60-c14f-4226-8ba1-927c55e75f3a';
 
-  // useEffect(() => {
-  //   OneSignal.initialize(APP_ID);
-  //   OneSignal.Notifications.requestPermission(true);
-  // }, [OneSignal]);
+  useEffect(() => {
+    OneSignal.initialize(APP_ID);
+    OneSignal.Notifications.requestPermission(true);
+  }, [OneSignal]);
 
   // const checkLng = async () => {
   //     const x = await AsyncStorage.getItem('LANG');
