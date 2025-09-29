@@ -25,7 +25,7 @@ import {
   LocationIcon,
   PinIcon,
 } from '../../../Theme';
-import Constants, { FONTS } from '../../Assets/Helpers/constant';
+import Constants, { Currency, FONTS } from '../../Assets/Helpers/constant';
 import { hp, wp } from '../../../utils/responsiveScreen';
 import { Picker } from 'react-native-wheel-pick';
 import ActionSheet from 'react-native-actions-sheet';
@@ -42,8 +42,8 @@ const InstructerDetail = props => {
   const userAddress = useSelector(state => state.location.userAddress);
   const userLocation = useSelector(state => state.location.userLocation);
   const user = useSelector(state => state.auth.user);
-  const [selectedTime, setSelectedTime] = useState();
   const [timeconf, settimeconf] = useState(false);
+  const [selectedTime, setSelectedTime] = useState();
   const [times, setTimes] = useState();
   useEffect(() => {
     const generatedSlots = generateTimeSlots();
@@ -52,7 +52,8 @@ const InstructerDetail = props => {
   }, []);
    const submit = async () => {
     const body={
-instructer: data?._id,
+    instructer: data?._id,
+    total: data?.rate_per_hour,
     selectedTime: selectedTime,
     payment_mode:"online",
     user_location: {
@@ -168,6 +169,10 @@ instructer: data?._id,
         />
         <Text style={styles.drivnametxt}>{data?.name}</Text>
         <Text style={styles.biotxt}>{data?.bio}</Text>
+        <Text style={styles.ratetxt}>
+          <Text style={styles.drivnametxt}>Rate: </Text>
+          <Text style={styles.vehinam}>{Currency} {data?.rate_per_hour}/Hour</Text>
+        </Text>
         <Text style={[styles.bactxt, { fontSize: 16 }]}>Vehicle:</Text>
         <Text style={{ marginTop: 7 }}>
           <Text style={styles.drivnametxt}>Vehicle: </Text>
@@ -423,7 +428,6 @@ const styles = StyleSheet.create({
     color: Constants.black,
     fontFamily: FONTS.Medium,
     fontSize: 14,
-    marginBottom: 30,
   },
   vehinam: {
     color: Constants.black,
@@ -552,4 +556,8 @@ const styles = StyleSheet.create({
     marginTop:20,
     marginBottom:90
   },
+  ratetxt:{ 
+    marginTop: 7,
+    marginBottom: 30,
+   }
 });

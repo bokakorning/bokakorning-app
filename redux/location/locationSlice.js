@@ -29,6 +29,9 @@ const locationSlice = createSlice({
     setEnteredLocation: (state, action) => {
       state.userEnteredLocation = action.payload;
     },
+    setInvoiceLoading: (state, action) => {
+      state.isLoading = action.payload;
+    },
   },
   extraReducers: builder => {
     //updateInstLocation reducer
@@ -62,5 +65,6 @@ export const {
   setLocation,
   setEnteredAddress,
   setEnteredLocation,
+  setInvoiceLoading,
 } = locationSlice.actions;
 export default locationSlice.reducer;

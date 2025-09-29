@@ -3,10 +3,9 @@ import axios from 'axios';
 import Constants from './constant';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ConnectionCheck from './ConnectionCheck';
-import RNFetchBlob from 'rn-fetch-blob';
+import RNFetchBlob from 'react-native-blob-util';
 import { Platform } from 'react-native';
 import { navigate, reset } from '../../../utils/navigationRef';
-// import RNFetchBlob from 'rn-fetch-blob';
 
 const GetApi = async (url, props) => {
   return new Promise(function (resolve, reject) {

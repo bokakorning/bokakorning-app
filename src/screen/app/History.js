@@ -7,15 +7,17 @@ import { getUserBookings } from '../../../redux/booking/bookingAction'
 import moment from 'moment'
 import { RightArrowIcon } from '../../../Theme'
 import { navigate } from '../../../utils/navigationRef'
+import { useIsFocused } from '@react-navigation/native'
 
 const History = () => {
   const dispatch = useDispatch();
   const [bookinglist, setbookingList] = useState([]);
   const [selOpt, setselOpt] = useState("upcomming");
+  const IsFocused = useIsFocused();
 
   useEffect(() => {
-    getUserBooking()
-  }, []);
+    {IsFocused&&getUserBooking(),setselOpt('upcomming')}
+  }, [IsFocused]);
 
   const getUserBooking = (status) => {
       dispatch(getUserBookings(status))
@@ -106,13 +108,16 @@ const History = () => {
               <Text style={styles.boxtxt}>Session Request From {item?.user?.name}</Text>
               <Text style={styles.boxtxt}>{moment(item?.date).format('dddd, DD MMMM')}</Text>
               <Text style={styles.boxtxt}>At {item?.selectedTime}</Text>
+              <View style={styles.frow}>
               <TouchableOpacity
                   style={{ flexDirection: 'row', alignItems: 'center' }}
-                  onPress={()=>navigate('AssignedInstructor',item?.instructer)}
+                  onPress={()=>navigate('AssignedInstructor',{...item?.instructer,type:item?.status!='cancel'?"show_invoice":null,booking_id:item?._id})}
                 >
                   <Text style={styles.viwdetxt}>Details</Text>
                   <RightArrowIcon height={15} width={15} />
                 </TouchableOpacity>
+                 {item?.status==='cancel'&& <Text style={styles.booktxt} onPress={()=>navigate('ReBookInstructer',item)}>Book another instructer</Text>}
+                  </View>
             </View>
             }
             ListEmptyComponent={() => (
@@ -184,5 +189,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: Constants.black,
     fontFamily: FONTS.SemiBold,
+  },
+  booktxt: {
+    fontSize: 14,
+    color: Constants.custom_blue,
+    fontFamily: FONTS.SemiBold,
+  },
+  frow:{
+    flexDirection:'row',
+    justifyContent:'space-between'
   },
 })

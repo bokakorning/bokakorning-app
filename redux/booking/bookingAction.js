@@ -71,4 +71,18 @@ export const getUserBookings = createAsyncThunk(
   },
 );
 
+//For get User ReBooking
+export const reBookings = createAsyncThunk(
+  'booking/reBooking',
+  async (params, thunkAPI) => {
+    try {
+      const {data} = await axios.post(`booking/reBooking`,params);
+      return data;
+    } catch (error) {
+      showToaster('error',error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
 

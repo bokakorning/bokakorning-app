@@ -3,7 +3,8 @@ import {
   createBooking,
   getInstructerReqs,
   updateInstructerReqs,
-  getUserBookings
+  getUserBookings,
+  reBookings
 } from './bookingAction';
 
 const initialState = {
@@ -62,6 +63,19 @@ const bookingSlice = createSlice({
       state.error = null;
     });
     builder.addCase(getUserBookings.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+
+    //reBookings reducer
+    builder.addCase(reBookings.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(reBookings.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.error = null;
+    });
+    builder.addCase(reBookings.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     });

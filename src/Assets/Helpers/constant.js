@@ -5,6 +5,7 @@ const prodUrl = 'http://192.168.0.187:3000/';
 
 let apiUrl = prodUrl;
 export const Googlekey = 'AIzaSyA4GB0zYGkYF8blPqwF57GKnw4ON2EEN80'
+export const Currency = 'KR'
 
 const Constants = {
   baseUrl: apiUrl,

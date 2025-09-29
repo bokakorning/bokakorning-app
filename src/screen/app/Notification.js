@@ -142,9 +142,12 @@ const styles = StyleSheet.create({
   },
   box: {
     flexDirection: 'row',
+    alignItems:'center',
     paddingRight: 20,
-    marginVertical: 10,
-    // backgroundColor:'red'
+    marginTop: 15,
+    backgroundColor:Constants.light_blue2,
+    padding:10,
+    borderRadius:7
   },
   toptxt1: {
     color: Constants.black,
@@ -156,6 +159,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: FONTS.Regular,
     alignSelf: 'flex-end',
+    marginRight:5
   },
   txtm2: {
     color: Constants.customgrey,

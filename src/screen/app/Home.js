@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import Constants, { FONTS } from '../../Assets/Helpers/constant';
+import Constants, { Currency, FONTS } from '../../Assets/Helpers/constant';
 import { CarIcon, Cross2Icon, LocationIcon, PinIcon, SearchIcon } from '../../../Theme';
 import { hp, wp } from '../../../utils/responsiveScreen';
 import MapView, {
@@ -216,7 +216,7 @@ console.log("userEnteredlocation",userEnteredLocation)
                     longitude: item?.location.coordinates[0],
                   }}
                   anchor={{ x: 0.5, y: 0.5 }}
-                  onPress={()=>navigate('InstructerDetail',item)}
+                  onPress={()=>navigate('InstructerDetail',{...item,vehicleType:vehicleType})}
                 >
                   <PackageIcon2 />
                 </Marker>
@@ -227,7 +227,7 @@ console.log("userEnteredlocation",userEnteredLocation)
         {driverlist && driverlist?.length > 0 ? (
           driverlist.map((item, index) => (
             <TouchableOpacity
-            onPress={()=>navigate('InstructerDetail',item)}
+            onPress={()=>navigate('InstructerDetail',{...item,vehicleType:vehicleType})}
               style={[
                 styles.box,
                 { marginBottom: driverlist.length === index + 1 ? 150 : 0 },
@@ -256,11 +256,11 @@ console.log("userEnteredlocation",userEnteredLocation)
                 <View>
                   <Text style={styles.drivtxt}>{item?.name}</Text>
                   <Text style={styles.drivinftxt}>Experience/Lesson Type</Text>
-                  <Text style={styles.drivtxt}>$150/h</Text>
+                  <Text style={styles.drivtxt}>{Currency} {item?.rate_per_hour}/h</Text>
                 </View>
               </View>
               <View>
-                <TouchableOpacity style={styles.bookbtn} onPress={()=>navigate('InstructerDetail',item)}>
+                <TouchableOpacity style={styles.bookbtn} onPress={()=>navigate('InstructerDetail',{...item,vehicleType:vehicleType})}>
                   <Text style={styles.booktxt}>Details</Text>
                 </TouchableOpacity>
                 {/* <TouchableOpacity

@@ -32,3 +32,4 @@ export { default as DocIcon } from '../src/Assets/Icon/doc.svg';
 export { default as ClockIcon } from '../src/Assets/Icon/clock.svg';
 export { default as Notification2Icon } from '../src/Assets/Icon/notification2.svg';
 export { default as WorkIcon } from '../src/Assets/Icon/work.svg';
+export { default as InvoiceIcon } from '../src/Assets/Icon/invoice.svg';

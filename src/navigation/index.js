@@ -16,6 +16,7 @@ import AssignedInstructor from '../screen/app/AssignedInstructor';
 import Account from '../screen/app/Account';
 import Profile from '../screen/app/Profile';
 import Schedule from '../screen/app/Schedule';
+import ReBookInstructer from '../screen/app/ReBookInstructer';
 
 
 
@@ -55,6 +56,7 @@ export default function Navigation(props) {
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="InstProfile" component={InstProfile} />
         <Stack.Screen name="Schedule" component={Schedule} />
+        <Stack.Screen name="ReBookInstructer" component={ReBookInstructer} />
 
       </Stack.Navigator>
 

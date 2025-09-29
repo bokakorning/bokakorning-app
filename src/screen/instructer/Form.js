@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 import React, { createRef, useEffect, useRef, useState } from 'react';
-import Constants, { FONTS } from '../../Assets/Helpers/constant';
+import Constants, { Currency, FONTS } from '../../Assets/Helpers/constant';
 import { PencilIcon } from '../../../Theme';
 import { Dropdown } from 'react-native-element-dropdown';
 import CameraGalleryPeacker from '../../Assets/Component/CameraGalleryPeacker';
@@ -33,6 +33,7 @@ const Form = () => {
     experience_year: '',
     experience_month: '',
     bio: '',
+    // rate_per_hour:''
   });
   const dropdownRef = useRef();
   const dropdownRef2 = useRef();
@@ -40,20 +41,27 @@ const Form = () => {
 
 useEffect(() => {
   if (user?.name) {
-    setUserDetail(prev => ({
-      ...prev,
-      name: user.name,
-    }));
+    setUserDetail(user);
+    setImage(user?.image)
+    if (user?.transmission==="Both") {
+    setaumaticopt(true)
+    setmanuopt(true)
+  } else if (user?.transmission==="Automatic"){
+    setaumaticopt(true)
+  } else{
+    setmanuopt(true)
+  }
   }
 }, [user]);
   const submit = () => {
     if (
       userDetail.name === '' ||
-      !image?.uri ||
-      userDetail.vehicle_model==='' ||
-      userDetail.model_year==='' ||
-      userDetail.experience_year==='' ||
-      userDetail.experience_month==='' ||
+      (!image?.uri&&!image) ||
+      userDetail.vehicle_model==='' ||!userDetail.vehicle_model ||
+      userDetail.model_year==='' ||!userDetail.model_year ||
+      userDetail.experience_year==='' ||!userDetail.experience_year ||
+      userDetail.experience_month==='' || !userDetail.experience_month||
+      // userDetail.rate_per_hour==='' || !userDetail.rate_per_hour||
       userDetail.bio===''||(!aumaticopt&&!manuopt)
     ) {
       setSubmitted(true);
@@ -67,6 +75,7 @@ useEffect(() => {
       formData.append('bio', userDetail.bio);
       formData.append('experience_year', userDetail.experience_year?.label);
       formData.append('experience_month', userDetail.experience_month?.label);
+      // formData.append('rate_per_hour', userDetail.rate_per_hour);
       formData.append('transmission', aumaticopt&&manuopt ? 'Both' : aumaticopt?'Automatic':'Manual');
       formData.append('status', "Approved");
       dispatch(updateProfile(formData))
@@ -121,19 +130,27 @@ useEffect(() => {
   ];
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <Image
-        source={image?.uri
-              ? {
-                  uri: `${image?.uri}`
-                }
-              :require('../../Assets/Images/profile4.png')}
-        style={styles.img}
-      />
+      {image?.uri?<Image
+              source={image?.uri
+                    ? {
+                        uri: `${image?.uri}`
+                      }
+                    :require('../../Assets/Images/profile4.png')}
+              style={styles.img}
+            />:
+            <Image
+              source={image
+                    ? {
+                        uri: `${image}`
+                      }
+                    :require('../../Assets/Images/profile4.png')}
+              style={styles.img}
+            />}
       <TouchableOpacity style={styles.frow} onPress={()=>cameraRef?.current?.show()}>
         <Text style={styles.chgtxt}>Change your Profile Picture</Text>
         <PencilIcon color={Constants.black} />
       </TouchableOpacity>
-      {submitted && !image?.uri&& (
+      {submitted && (!image?.uri&&!image)&& (
         <Text style={styles.require}>Image is required</Text>
       )}
       <Text style={styles.tittxt}>Name</Text>
@@ -149,6 +166,26 @@ useEffect(() => {
       {submitted && (userDetail.name === '' || !userDetail.name) && (
         <Text style={styles.require}>Name is required</Text>
       )}
+      {/* <Text style={styles.partheadtxt}>Rate:</Text>
+      <View style={[styles.frow2,{marginTop:5}]}>
+        <Text style={styles.tittxt}>Your Rate</Text>
+        <View style={[styles.inpcov, { flex: 1 }]}>
+          <TextInput
+            style={styles.inputfield}
+            placeholder="rate/hour"
+            keyboardType='number-pad'
+            placeholderTextColor={Constants.customgrey2}
+            value={userDetail?.rate_per_hour}
+            onChangeText={rate_per_hour =>
+              setUserDetail({ ...userDetail, rate_per_hour })
+            }
+          />
+        </View>
+        <Text style={styles.tittxt}>   {Currency} / Hour</Text>
+      </View>
+       {submitted && (userDetail.rate_per_hour === '' || !userDetail.rate_per_hour) && (
+        <Text style={styles.require}>Rate is required</Text>
+      )} */}
       <Text style={styles.partheadtxt}>Vehicle Details:</Text>
       <View style={styles.frow2}>
         <Text style={styles.tittxt}>Model Name</Text>

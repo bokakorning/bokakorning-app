@@ -1,5 +1,6 @@
 import {
   Image,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -9,13 +10,55 @@ import {
 import Constants, { FONTS } from '../../Assets/Helpers/constant';
 import { hp, wp } from '../../../utils/responsiveScreen';
 import UserHeader from '../../Assets/Component/UserHeader'
+import { InvoiceIcon } from '../../../Theme';
+import RNBlobUtil from 'react-native-blob-util';
+import { showToaster } from '../../../utils/toaster';
+import { useDispatch } from 'react-redux';
+import { setInvoiceLoading } from '../../../redux/location/locationSlice';
 
 const AssignedInstructor = props => {
   const data = props?.route?.params;
   // console.log('data', data);
+  const dispatch = useDispatch();
+  const getinvoice = async () => {
+  dispatch(setInvoiceLoading(true))
+// const x = await AsyncStorage.getItem('LANG');
+  const { DownloadDir, DocumentDir } = RNBlobUtil.fs.dirs;
+  const filePath = `${
+    Platform.OS === 'android' ? DownloadDir : DocumentDir
+  }/invoice-${Date.now()}.pdf`;
+
+  try {
+    const res = await RNBlobUtil.config({
+      fileCache: true,
+      path: filePath,
+      addAndroidDownloads: {
+        useDownloadManager: true,
+        notification: true,
+        path: filePath,
+        title: 'Invoice',
+        description: 'Downloading invoice...',
+        mime: 'application/pdf',
+        mediaScannable: true,
+      },
+    }).fetch(
+      'GET',
+      `http://192.168.0.187:3000/booking/generateInvoice?bookingId=${data?.booking_id}`
+      // `https://api.bokakorning.online/booking/generateInvoice?bookingId=${data?._id}`
+      // `https://api.chmp.world/v1/api/generateInvoice?orderId=${orderId}&lang=${lang}`
+    );
+
+    console.log('Invoice downloaded:', res.path());
+    dispatch(setInvoiceLoading(false))
+    showToaster('success',"Invoice downloaded successfully");
+    // if (Platform.OS === 'ios') Linking.openURL(`file://${res.path()}`);
+  } catch (err) {
+    console.error('Error downloading invoice:', err);
+  }
+};
   return (
     <View style={styles.container}>
-        <UserHeader item={"Assigned Instructor"} showback={true}/>
+        <UserHeader item={"Instructor Detail"} showback={true}/>
       <ScrollView showsVerticalScrollIndicator={false} style={{padding:20}}>
         <View style={styles.frow2}>
           <Text style={styles.instytxt}>
@@ -48,6 +91,16 @@ const AssignedInstructor = props => {
           <Text style={styles.drivnametxt}>Category: </Text>
           <Text style={styles.vehinam}>Car</Text>
         </Text>
+        {data?.type==='show_invoice'&&<TouchableOpacity
+              style={styles.contactopt}
+              onPress={() =>
+                getinvoice()
+              }>
+              <InvoiceIcon color={Constants.custom_blue} height={20} width={20} />
+              <Text style={styles.othrttxt2}>
+                Download Invoice
+              </Text>
+            </TouchableOpacity>}
       </ScrollView>
     </View>
   );
@@ -88,7 +141,7 @@ const styles = StyleSheet.create({
   },
   proimg: {
     height: hp(35),
-    // width: 50,
+    width: '100%',
     borderRadius: 30,
     marginVertical: 20,
   },
@@ -108,5 +161,25 @@ const styles = StyleSheet.create({
     color: Constants.black,
     fontFamily: FONTS.Medium,
     fontSize: 14,
+  },
+  othrttxt2: {
+    color: Constants.custom_blue,
+    fontSize: 16,
+    fontFamily: FONTS.SemiBold,
+  },
+  contactopt: {
+    borderWidth: 1.5,
+    borderColor: Constants.custom_blue,
+    borderRadius: 10,
+    flexDirection: 'row',
+    height: 55,
+    width: '100%',
+    justifyContent: 'center',
+    // flex:1,
+    alignItems: 'center',
+    alignSelf: 'center',
+    gap: 15,
+    marginTop:50,
+    marginBottom:90
   },
 });

@@ -8,8 +8,8 @@ import {
   View,
 } from 'react-native';
 import React, { createRef, useEffect, useRef, useState } from 'react';
-import Constants, { FONTS } from '../../Assets/Helpers/constant';
-import { PencilIcon } from '../../../Theme';
+import Constants, { Currency, FONTS } from '../../Assets/Helpers/constant';
+import { BackIcon, PencilIcon } from '../../../Theme';
 import { Dropdown } from 'react-native-element-dropdown';
 import CameraGalleryPeacker from '../../Assets/Component/CameraGalleryPeacker';
 import { getProfile, updateProfile } from '../../../redux/auth/authAction';
@@ -30,6 +30,7 @@ const InstProfile = () => {
     experience_year: '',
     experience_month: '',
     bio: '',
+    // rate_per_hour:""
   });
   const dropdownRef = useRef();
   const dropdownRef2 = useRef();
@@ -66,6 +67,7 @@ useEffect(() => {
       userDetail.model_year==='' ||
       userDetail.experience_year==='' ||
       userDetail.experience_month==='' ||
+      // userDetail.rate_per_hour==='' ||
       userDetail.bio===''||(!aumaticopt&&!manuopt)
     ) {
       setSubmitted(true);
@@ -78,6 +80,7 @@ useEffect(() => {
       formData.append('bio', userDetail.bio);
       formData.append('experience_year', userDetail.experience_year);
       formData.append('experience_month', userDetail.experience_month);
+      // formData.append('rate_per_hour', userDetail.rate_per_hour);
       formData.append('transmission', aumaticopt&&manuopt ? 'Both' : aumaticopt?'Automatic':'Manual');
       formData.append('status', "Approved");
       if (image?.uri) {
@@ -125,6 +128,9 @@ goBack()
   ];
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      <TouchableOpacity style={styles.backcov} onPress={() => goBack()}>
+          <BackIcon color={Constants.black}/>
+        </TouchableOpacity>
       {image?.uri?<Image
         source={image?.uri
               ? {
@@ -162,6 +168,27 @@ goBack()
       {submitted && (userDetail.name === '' || !userDetail.name) && (
         <Text style={styles.require}>Name is required</Text>
       )}
+      {/* <Text style={styles.partheadtxt}>Rate:</Text>
+      <View style={[styles.frow2,{marginTop:5}]}>
+        <Text style={styles.tittxt}>Your Rate</Text>
+        <View style={[styles.inpcov, { flex: 1 }]}>
+          <TextInput
+            style={styles.inputfield}
+            editable={edit}
+            placeholder="rate/hour"
+            keyboardType='number-pad'
+            placeholderTextColor={Constants.customgrey2}
+            value={userDetail?.rate_per_hour}
+            onChangeText={rate_per_hour =>
+              setUserDetail({ ...userDetail, rate_per_hour })
+            }
+          />
+        </View>
+        <Text style={styles.tittxt}>   {Currency} / Hour</Text>
+      </View>
+       {submitted && (userDetail.rate_per_hour === '' || !userDetail.rate_per_hour) && (
+        <Text style={styles.require}>Rate is required</Text>
+      )} */}
       <Text style={styles.partheadtxt}>Vehicle Details:</Text>
       <View style={styles.frow2}>
         <Text style={styles.tittxt}>Model Name</Text>
@@ -508,5 +535,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     alignSelf:'flex-start'
     // marginTop:10
+  },
+  backcov: {
+    height: 30,
+    width: 30,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Constants.customgrey4,
   },
 });
