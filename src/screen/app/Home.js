@@ -44,15 +44,15 @@ console.log("userEnteredlocation",userEnteredLocation)
   }, [loginuser]);
   useEffect(() => {
     {
-      userLocation &&IsFocused&& getNearbyInstructer('Automatic');
+      userLocation &&IsFocused&& getNearbyInstructer('Automatic',true);
     }
   }, [userLocation,userEnteredLocation]);
 
-  const getNearbyInstructer = type => {
+  const getNearbyInstructer = (type,inpfil) => {
     const body = {
       location: {
         type: 'Point',
-        coordinates: [(showinput&&userEnteredLocation?.long)?userEnteredLocation.long:userLocation?.long, (showinput&&userEnteredLocation?.lat)?userEnteredLocation.lat:userLocation?.lat],
+        coordinates: [(showinput&&userEnteredLocation?.long&&inpfil)?userEnteredLocation.long:userLocation?.long, (showinput&&userEnteredLocation?.lat&&inpfil)?userEnteredLocation.lat:userLocation?.lat],
       },
       transmission: type,
     };
@@ -108,7 +108,7 @@ console.log("userEnteredlocation",userEnteredLocation)
               </View>
             </View>
           </View>
-          <TouchableOpacity style={styles.iconcov} onPress={()=>setshowinput(!showinput)}>
+          <TouchableOpacity style={styles.iconcov} onPress={()=>{showinput&&getNearbyInstructer(vehicleType,false),setshowinput(!showinput)}}>
             {showinput?<Cross2Icon height={22} width={22} color={Constants.white}/>:<SearchIcon height={22} width={22} color={Constants.white} />}
           </TouchableOpacity>
         </View>
@@ -137,7 +137,7 @@ console.log("userEnteredlocation",userEnteredLocation)
                 },
               ]}
               onPress={() => {
-                setvehicleType('automatic'), getNearbyInstructer('Automatic');
+                setvehicleType('automatic'), getNearbyInstructer('Automatic',true);
               }}
             >
               <Image source={require('../../Assets/Images/smart-car.png')} />
@@ -162,7 +162,7 @@ console.log("userEnteredlocation",userEnteredLocation)
                 },
               ]}
               onPress={() => {
-                setvehicleType('manual'), getNearbyInstructer('Manual');
+                setvehicleType('manual'), getNearbyInstructer('Manual',true);
               }}
             >
               <Image source={require('../../Assets/Images/smart-car.png')} />
@@ -216,7 +216,7 @@ console.log("userEnteredlocation",userEnteredLocation)
                     longitude: item?.location.coordinates[0],
                   }}
                   anchor={{ x: 0.5, y: 0.5 }}
-                  onPress={()=>navigate('InstructerDetail',{...item,vehicleType:vehicleType})}
+                  onPress={()=>navigate('InstructerDetail',{...item,vehicleType:vehicleType,selloc:{long:(showinput&&userEnteredLocation?.long)?userEnteredLocation.long:userLocation?.long, lat:(showinput&&userEnteredLocation?.lat)?userEnteredLocation.lat:userLocation?.lat}})}
                 >
                   <PackageIcon2 />
                 </Marker>
@@ -227,7 +227,7 @@ console.log("userEnteredlocation",userEnteredLocation)
         {driverlist && driverlist?.length > 0 ? (
           driverlist.map((item, index) => (
             <TouchableOpacity
-            onPress={()=>navigate('InstructerDetail',{...item,vehicleType:vehicleType})}
+            onPress={()=>navigate('InstructerDetail',{...item,vehicleType:vehicleType,selloc:{long:(showinput&&userEnteredLocation?.long)?userEnteredLocation.long:userLocation?.long, lat:(showinput&&userEnteredLocation?.lat)?userEnteredLocation.lat:userLocation?.lat}})}
               style={[
                 styles.box,
                 { marginBottom: driverlist.length === index + 1 ? 150 : 0 },
@@ -260,7 +260,7 @@ console.log("userEnteredlocation",userEnteredLocation)
                 </View>
               </View>
               <View>
-                <TouchableOpacity style={styles.bookbtn} onPress={()=>navigate('InstructerDetail',{...item,vehicleType:vehicleType})}>
+                <TouchableOpacity style={styles.bookbtn} onPress={()=>navigate('InstructerDetail',{...item,vehicleType:vehicleType,selloc:{long:(showinput&&userEnteredLocation?.long)?userEnteredLocation.long:userLocation?.long, lat:(showinput&&userEnteredLocation?.lat)?userEnteredLocation.lat:userLocation?.lat}})}>
                   <Text style={styles.booktxt}>Details</Text>
                 </TouchableOpacity>
                 {/* <TouchableOpacity

@@ -36,11 +36,12 @@ import { createBooking } from '../../../redux/booking/bookingAction';
 
 const InstructerDetail = props => {
   const data = props?.route?.params;
-  // console.log('data', data);
+  console.log('data', data);
   const timeRef = createRef();
   const dispatch = useDispatch();
   const userAddress = useSelector(state => state.location.userAddress);
   const userLocation = useSelector(state => state.location.userLocation);
+  const userEnteredAddress = useSelector(state => state.location.userEnteredAddress);
   const user = useSelector(state => state.auth.user);
   const [timeconf, settimeconf] = useState(false);
   const [selectedTime, setSelectedTime] = useState();
@@ -58,9 +59,9 @@ const InstructerDetail = props => {
     payment_mode:"online",
     user_location: {
         type: 'Point',
-        coordinates: [userLocation?.long, userLocation?.lat],
+        coordinates: [data?.selloc?.long?data?.selloc?.long:userLocation?.long, data?.selloc?.lat?data?.selloc?.lat:userLocation?.lat],
       },
-    pickup_address: userAddress
+    pickup_address: data?.selloc?.long?userEnteredAddress:userAddress
     }
       dispatch(createBooking(body))
         .unwrap()
@@ -236,8 +237,8 @@ const InstructerDetail = props => {
                 // ref={mapRef}
                 customMapStyle={mapStyle}
                 region={{
-                  latitude: userLocation?.lat,
-                  longitude: userLocation?.long,
+                  latitude: data?.selloc?.lat?data?.selloc?.lat:userLocation?.lat,
+                  longitude: data?.selloc?.long?data?.selloc?.long:userLocation?.long,
                   latitudeDelta: 0.015,
                   longitudeDelta: 0.0121,
                 }}
@@ -251,8 +252,8 @@ const InstructerDetail = props => {
                     zIndex={8}
                     draggable={false}
                     coordinate={{
-                      latitude: userLocation?.lat,
-                      longitude: userLocation?.long,
+                      latitude: data?.selloc?.lat?data?.selloc?.lat:userLocation?.lat,
+                      longitude: data?.selloc?.long?data?.selloc?.long:userLocation?.long,
                     }}
                     anchor={{ x: 0.5, y: 0.5 }}
                   >

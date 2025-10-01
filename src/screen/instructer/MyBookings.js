@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getAccepInstructerReqs } from '../../../redux/booking/bookingAction'
 import moment from 'moment'
 import { useIsFocused } from '@react-navigation/native'
+import { RightArrowIcon } from '../../../Theme'
+import { navigate } from '../../../utils/navigationRef'
 
 const MyBookings = () => {
   const dispatch = useDispatch();
@@ -45,6 +47,13 @@ const IsFocused = useIsFocused();
         <Text style={styles.boxtxt}>{moment(item?.date).format('dddd, DD MMMM')}</Text>
         <Text style={styles.boxtxt}>At {item?.selectedTime}</Text>
         <Text style={styles.boxtxt}>{item?.pickup_address}</Text>
+        <TouchableOpacity
+                          style={{ flexDirection: 'row', alignItems: 'center' }}
+                          onPress={()=>navigate('BookingDetail',item)}
+                        >
+                          <Text style={styles.viwdetxt}>Details</Text>
+                          <RightArrowIcon height={18} width={18} />
+                        </TouchableOpacity>
       </View>
       }
       ListEmptyComponent={() => (
@@ -110,5 +119,10 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     alignItems:'center',
     height:40
-  }
+  },
+  viwdetxt: {
+    fontSize: 14,
+    color: Constants.black,
+    fontFamily: FONTS.SemiBold,
+  },
 })

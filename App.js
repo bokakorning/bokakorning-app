@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import { checkLogin } from './redux/auth/authAction';
 import Spinner from './src/Assets/Component/Spinner';
+import Splash from 'react-native-splash-screen';
 
 const App = () => {
   const APP_ID = 'df0d1c60-c14f-4226-8ba1-927c55e75f3a';
@@ -24,7 +25,14 @@ const App = () => {
   //       i18n.changeLanguage(x);
   //     }
   //   };
-store.dispatch(checkLogin())
+  useEffect(()=>{
+    store.dispatch(checkLogin()).unwrap()
+      .finally(() => {
+        setTimeout(() => {
+          Splash.hide();
+        }, 500);
+      });
+  },[])
   return (
     <Provider store={store}>
       <SafeAreaView
