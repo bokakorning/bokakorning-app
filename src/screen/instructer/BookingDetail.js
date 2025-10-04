@@ -10,16 +10,19 @@ import {
 } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { mapStyle } from '../../../Theme/MapStyle';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import Constants, { FONTS, Googlekey } from '../../Assets/Helpers/constant';
 import MapViewDirections from 'react-native-maps-directions';
 import { CallIcon, LocationIcon } from '../../../Theme';
 import moment from 'moment';
+import { finishSession } from '../../../redux/booking/bookingAction';
+import { goBack } from '../../../utils/navigationRef';
 
 const BookingDetail = props => {
   const data = props?.route?.params;
   //   console.log('data',data)
+  const dispatch = useDispatch();
   const [modelvsible, setmodelvsible] = useState(false);
   const userLocation = useSelector(state => state.location.userLocation);
   const mapRef = useRef(null);
@@ -38,6 +41,21 @@ const BookingDetail = props => {
       useNativeDriver: false,
     }).start();
   };
+  const finishsession = () => {
+      const body={
+        status:'complete',
+        id:data?._id
+      }
+      console.log('body', body);
+        dispatch(finishSession(body))
+          .unwrap()
+          .then(data => {
+            goBack()
+          })
+          .catch(error => {
+            console.error('Instructer req failed:', error);
+          });
+      };
   return (
     <View style={styles.container}>
       <View style={{ height: '65%' }}>
@@ -220,7 +238,7 @@ const BookingDetail = props => {
                   activeOpacity={0.9}
                   style={styles.logOutButtonStyle}
                   onPress={() => {
-                    deleteFood(foodid), setmodelvsible(false);
+                    finishsession(), setmodelvsible(false);
                   }}>
                   <Text style={styles.modalText}>Yes</Text>
                 </TouchableOpacity>

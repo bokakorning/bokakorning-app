@@ -3,6 +3,7 @@ import {
   createBooking,
   getInstructerReqs,
   updateInstructerReqs,
+  finishSession,
   getUserBookings,
   reBookings
 } from './bookingAction';
@@ -51,6 +52,18 @@ const bookingSlice = createSlice({
       state.error = null;
     });
     builder.addCase(updateInstructerReqs.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+    //finishSession reducer
+    builder.addCase(finishSession.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(finishSession.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.error = null;
+    });
+    builder.addCase(finishSession.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     });

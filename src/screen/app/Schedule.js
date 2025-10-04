@@ -63,6 +63,8 @@ const submit = async () => {
   }
     const body={
     selectedTime: selectedTime,
+    sheduleDate: sheduleDate,
+    sheduleSeesion:true,
     payment_mode:"online",
     user_location: {
         type: 'Point',

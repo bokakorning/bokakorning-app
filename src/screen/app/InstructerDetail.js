@@ -183,7 +183,7 @@ const InstructerDetail = props => {
           <Text style={styles.drivnametxt}>Category: </Text>
           <Text style={styles.vehinam}>Car</Text>
         </Text>
-        <TouchableOpacity
+        {/* <TouchableOpacity
               style={styles.contactopt}
               onPress={() =>
                 Linking.openURL(`tel:${data?.phone}`)
@@ -192,7 +192,7 @@ const InstructerDetail = props => {
               <Text style={styles.othrttxt2}>
                 Contact {data?.name}
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
       </ScrollView>
       <View style={styles.btmpart}>
         <TouchableOpacity

@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import React, { useState} from 'react';
-import Constants, { FONTS} from '../../Assets/Helpers/constant';
+import Constants, { Currency, FONTS} from '../../Assets/Helpers/constant';
 import {
   CrossIcon,
   DeleteIcon,
@@ -19,6 +19,7 @@ import {
   RightArrowIcon,
   SupportIcon,
   TermIcon,
+  TransactionIcon,
 } from '../../../Theme';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
 import { useDispatch, useSelector } from 'react-redux';
@@ -31,13 +32,13 @@ const Account = () => {
   const [modalVisible2, setModalVisible2] = useState(false);
   const user = useSelector(state => state.auth.user);
   
-  const Privacy=async()=>{
+  const InAppBrowserFunc=async(props)=>{
     try {
       if (await InAppBrowser.isAvailable()) {
-        await InAppBrowser.open('https://www.chmp.world/Policy', {
+        await InAppBrowser.open(props, {
           // Customization options
           dismissButtonStyle: 'cancel',
-          preferredBarTintColor: Constants.normal_green,
+          preferredBarTintColor: Constants.custom_blue,
           preferredControlTintColor: 'white',
           readerMode: false,
           animated: true,
@@ -46,7 +47,7 @@ const Account = () => {
           enableBarCollapsing: false,
         });
       } else {
-        Linking.openURL('https://www.chmp.world/Policy');
+        Linking.openURL(props);
       }
     } catch (error) {
       console.error(error);
@@ -57,14 +58,12 @@ dispatch(logout())
   }
   return (
     <View style={styles.container}>
+      <View style={styles.toppart}>
       <Text style={styles.headtxt}>Profile Settings</Text>
-
-      <ScrollView showsVerticalScrollIndicator={false}>
         <TouchableOpacity
           style={styles.topcard}
           onPress={() => navigate('InstProfile')}>
           <Image
-            // source={require('../../../Assets/Images/profile.png')}
             source={
               user?.image
                 ? {
@@ -74,15 +73,15 @@ dispatch(logout())
             }
             style={styles.proimg}
           />
-          <View style={{marginTop: 5, alignItems: 'center'}}>
-            <Text style={styles.protxt}>{user?.name}</Text>
-            <Text style={styles.protxt2}>{user?.phone}</Text>
-          </View>
         </TouchableOpacity>
-        <View style={[styles.horline, {marginHorizontal: 20}]}></View>
+        <Text style={styles.headtxt2}>Available Balance</Text>
+        <Text style={styles.headtxt3}>{Currency} {user?.wallet?user?.wallet:0}</Text>
+      </View>
+
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
-            marginTop: 10,
+            marginTop: 30,
             backgroundColor: Constants.white,
             marginBottom: 70,
           }}>
@@ -95,6 +94,22 @@ dispatch(logout())
                 <ProfileIcon height={20} width={20} color={Constants.black}/>
               </View>
               <Text style={styles.protxt}>Personal Data</Text>
+            </View>
+            <RightArrowIcon
+              color={Constants.black}
+              height={15}
+              width={15}
+              style={styles.aliself}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.box]}
+            onPress={() => navigate('InstructerTransactionHistory')}>
+            <View style={styles.btmboxfirpart}>
+              <View style={styles.iconcov}>
+                <TransactionIcon height={20} width={20} color={Constants.black}/>
+              </View>
+              <Text style={styles.protxt}>Transaction History</Text>
             </View>
             <RightArrowIcon
               color={Constants.black}
@@ -159,7 +174,7 @@ dispatch(logout())
           <Text style={styles.partheadtxt}>Support</Text>
           <TouchableOpacity
             style={[styles.box]}
-            // onPress={() => Help()}
+            onPress={() => InAppBrowserFunc('https://tawk.to/chat/68e0fa0c4db84c19518e60e8/1j6nd1gbd')}
             >
             <View style={styles.btmboxfirpart}>
               <View style={styles.iconcov}>
@@ -297,15 +312,16 @@ export default Account;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F8F8',
+    backgroundColor: '#ffffff',
+    // backgroundColor: '#F8F8F8',
     // paddingVertical: 20,
   },
   headtxt: {
     fontSize: 16,
-    color: Constants.black,
+    color: Constants.white,
     fontFamily: FONTS.SemiBold,
     textAlign: 'center',
-    marginTop: 10,
+    // marginTop: 10,
   },
   protxt: {
     color: Constants.black,
@@ -347,7 +363,7 @@ const styles = StyleSheet.create({
     // width: '80%',
     // alignSelf: 'center',
     marginBottom: 20,
-    marginTop: 10,
+    marginTop: 20,
   },
   proimg: {
     // marginRight: 10,
@@ -499,7 +515,46 @@ const styles = StyleSheet.create({
     marginHorizontal: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 10,
+  },
+
+  toppart: {
+    backgroundColor: Constants.custom_blue,
+    padding: 20,
+    minHeight: '25%',
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+  },
+  headtxt1: {
+    fontSize: 16,
+    color: Constants.white,
+    fontFamily: FONTS.Medium,
+    textAlign: 'center',
+  },
+  headtxt2: {
+    fontSize: 14,
+    color: Constants.customgrey4,
+    fontFamily: FONTS.Light,
+    textAlign: 'center',
+    marginTop: 10,
+  },
+  headtxt3: {
+    fontSize: 24,
+    color: Constants.white,
+    fontFamily: FONTS.SemiBold,
+    textAlign: 'center',
     marginBottom: 15,
+  },
+  headtxt4: {
+    fontSize: 14,
+    color: Constants.customgrey4,
+    fontFamily: FONTS.Regular,
+    textAlign: 'center',
+    borderWidth: 1,
+    borderColor: Constants.customgrey4,
+    padding: 10,
+    width: '30%',
+    borderRadius: 15,
+    alignSelf: 'center',
   },
 });

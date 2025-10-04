@@ -31,13 +31,13 @@ const Account = () => {
   const [modalVisible2, setModalVisible2] = useState(false);
   const user = useSelector(state => state.auth.user);
   
-  const Privacy=async()=>{
+  const InAppBrowserFunc=async(props)=>{
     try {
       if (await InAppBrowser.isAvailable()) {
-        await InAppBrowser.open('https://www.chmp.world/Policy', {
+        await InAppBrowser.open(props, {
           // Customization options
           dismissButtonStyle: 'cancel',
-          preferredBarTintColor: Constants.normal_green,
+          preferredBarTintColor: Constants.custom_blue,
           preferredControlTintColor: 'white',
           readerMode: false,
           animated: true,
@@ -46,7 +46,7 @@ const Account = () => {
           enableBarCollapsing: false,
         });
       } else {
-        Linking.openURL('https://www.chmp.world/Policy');
+        Linking.openURL(props);
       }
     } catch (error) {
       console.error(error);
@@ -124,7 +124,7 @@ dispatch(logout())
           </TouchableOpacity> */}
           <TouchableOpacity
             style={[styles.box]}
-            // onPress={() => Privacy()}
+            onPress={() => InAppBrowserFunc('https://tawk.to/chat/68e0fa0c4db84c19518e60e8/1j6nd1gbd')}
             >
             <View style={styles.btmboxfirpart}>
               <View style={styles.iconcov}>

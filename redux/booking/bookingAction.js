@@ -57,6 +57,21 @@ export const updateInstructerReqs = createAsyncThunk(
     }
   },
 );
+//For finish Session
+export const finishSession = createAsyncThunk(
+  'booking/finishbooking',
+  async (params, thunkAPI) => {
+    try {
+      const {data} = await axios.put('booking/finishbooking', params);
+      showToaster('success',data.message);
+      return data;
+    } catch (error) {
+      showToaster('error',error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
 //For get User Bookings
 export const getUserBookings = createAsyncThunk(
   'booking/getuserbookings',

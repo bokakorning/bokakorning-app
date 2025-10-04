@@ -7,12 +7,14 @@ import authSlice from './auth/authSlice';
 import locationSlice from './location/locationSlice';
 import bookingSlice from './booking/bookingSlice';
 import notificationSlice from './notification/notificationSlice';
+import transactionSlice from './transaction/transactionSlice';
 
 export const store = configureStore({
   reducer: {
     auth: authSlice,
     location: locationSlice,
     booking: bookingSlice,
+    transaction: transactionSlice,
     notification: notificationSlice,
   },
 });

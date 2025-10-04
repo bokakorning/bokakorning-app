@@ -33,3 +33,8 @@ export { default as ClockIcon } from '../src/Assets/Icon/clock.svg';
 export { default as Notification2Icon } from '../src/Assets/Icon/notification2.svg';
 export { default as WorkIcon } from '../src/Assets/Icon/work.svg';
 export { default as InvoiceIcon } from '../src/Assets/Icon/invoice.svg';
+export {default as GlassIcon} from '../src/Assets/Icon/glass.svg';
+export {default as ToprightIcon} from '../src/Assets/Icon/topright.svg';
+export {default as DownleftIcon} from '../src/Assets/Icon/downleft.svg';
+export {default as WalletIcon} from '../src/Assets/Icon/wallet.svg';
+export {default as TransactionIcon} from '../src/Assets/Icon/transaction.svg';

@@ -315,13 +315,14 @@ const styles = StyleSheet.create({
     color: Constants.black,
     fontFamily: FONTS.SemiBold,
     fontSize: wp(7),
-    marginVertical: hp(0.5),
+    marginTop: hp(0.3),
   },
   headtxt2: {
     color: Constants.black,
     fontFamily: FONTS.SemiBold,
     fontSize: wp(5),
-    marginVertical: hp(1),
+    marginTop: hp(1),
+    marginBottom: hp(0.5),
   },
   loctxt: {
     color: Constants.white,
@@ -353,7 +354,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   carcov: {
-    height: hp(14),
+    height: hp(12),
     backgroundColor: Constants.customgrey5,
     flex: 1,
     justifyContent: 'center',
@@ -372,7 +373,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   mapThumbnail: {
-    height: 220,
+    height: hp(30),
     borderRadius: 10,
     overflow: 'hidden',
   },
