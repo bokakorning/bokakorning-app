@@ -124,7 +124,7 @@ dispatch(logout())
           </TouchableOpacity> */}
           <TouchableOpacity
             style={[styles.box]}
-            onPress={() => InAppBrowserFunc('https://tawk.to/chat/68e0fa0c4db84c19518e60e8/1j6nd1gbd')}
+            onPress={() => InAppBrowserFunc('https://main.d2i61b55rlnfpm.amplifyapp.com/PrivacyPolicy')}
             >
             <View style={styles.btmboxfirpart}>
               <View style={styles.iconcov}>
@@ -141,7 +141,7 @@ dispatch(logout())
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.box]}
-            // onPress={() => Term()}
+            onPress={() => InAppBrowserFunc('https://main.d2i61b55rlnfpm.amplifyapp.com/TermsandConditions')}
             >
             <View style={styles.btmboxfirpart}>
               <View style={styles.iconcov}>
@@ -159,7 +159,7 @@ dispatch(logout())
           <Text style={styles.partheadtxt}>Support</Text>
           <TouchableOpacity
             style={[styles.box]}
-            // onPress={() => Help()}
+            onPress={() => InAppBrowserFunc('https://tawk.to/chat/68e0fa0c4db84c19518e60e8/1j6nd1gbd')}
             >
             <View style={styles.btmboxfirpart}>
               <View style={styles.iconcov}>

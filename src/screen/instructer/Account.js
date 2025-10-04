@@ -139,7 +139,7 @@ dispatch(logout())
           </TouchableOpacity> */}
           <TouchableOpacity
             style={[styles.box]}
-            // onPress={() => Privacy()}
+            onPress={() => InAppBrowserFunc('https://main.d2i61b55rlnfpm.amplifyapp.com/PrivacyPolicy')}
             >
             <View style={styles.btmboxfirpart}>
               <View style={styles.iconcov}>
@@ -156,7 +156,7 @@ dispatch(logout())
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.box]}
-            // onPress={() => Term()}
+            onPress={() => InAppBrowserFunc('https://main.d2i61b55rlnfpm.amplifyapp.com/TermsandConditions')}
             >
             <View style={styles.btmboxfirpart}>
               <View style={styles.iconcov}>
