@@ -9,13 +9,13 @@
 /* Begin PBXBuildFile section */
 		0C80B921A6F3F58F76C31292 /* libPods-BokaKorning.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-BokaKorning.a */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		5FD50495E50548478A029EA2 /* FuturaCyrillicBook.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 55D6CBBF10924DD2BE28772A /* FuturaCyrillicBook.ttf */; };
+		66865DC5EE054A78BC89A852 /* FuturaCyrillicHeavy.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31EE60AC6F1B4CBFB1D7E94A /* FuturaCyrillicHeavy.ttf */; };
 		6911E2B769B633BB5E233050 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
-		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		7848126D1692442F8F73983B /* FuturaCyrillicBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5F7C69209B4941CFBE85FEE2 /* FuturaCyrillicBold.ttf */; };
-		5FD50495E50548478A029EA2 /* FuturaCyrillicBook.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 55D6CBBF10924DD2BE28772A /* FuturaCyrillicBook.ttf */; };
+		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		F9F939BA92DA4B058DC4C3EF /* FuturaCyrillicDemi.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AC40EE88615C40C69873FE9F /* FuturaCyrillicDemi.ttf */; };
-		66865DC5EE054A78BC89A852 /* FuturaCyrillicHeavy.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31EE60AC6F1B4CBFB1D7E94A /* FuturaCyrillicHeavy.ttf */; };
 		FC24FDF40DF1431A87F7694D /* FuturaCyrillicMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9D01214BA9364BF794313D6B /* FuturaCyrillicMedium.ttf */; };
 /* End PBXBuildFile section */
 
@@ -24,17 +24,17 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = BokaKorning/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = BokaKorning/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = BokaKorning/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		31EE60AC6F1B4CBFB1D7E94A /* FuturaCyrillicHeavy.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = FuturaCyrillicHeavy.ttf; path = ../src/Assets/fonts/FuturaCyrillicHeavy.ttf; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-BokaKorning.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BokaKorning.debug.xcconfig"; path = "Target Support Files/Pods-BokaKorning/Pods-BokaKorning.debug.xcconfig"; sourceTree = "<group>"; };
+		55D6CBBF10924DD2BE28772A /* FuturaCyrillicBook.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = FuturaCyrillicBook.ttf; path = ../src/Assets/fonts/FuturaCyrillicBook.ttf; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-BokaKorning.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BokaKorning.release.xcconfig"; path = "Target Support Files/Pods-BokaKorning/Pods-BokaKorning.release.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-BokaKorning.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BokaKorning.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5F7C69209B4941CFBE85FEE2 /* FuturaCyrillicBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = FuturaCyrillicBold.ttf; path = ../src/Assets/fonts/FuturaCyrillicBold.ttf; sourceTree = "<group>"; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = BokaKorning/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = BokaKorning/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		9D01214BA9364BF794313D6B /* FuturaCyrillicMedium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = FuturaCyrillicMedium.ttf; path = ../src/Assets/fonts/FuturaCyrillicMedium.ttf; sourceTree = "<group>"; };
+		AC40EE88615C40C69873FE9F /* FuturaCyrillicDemi.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = FuturaCyrillicDemi.ttf; path = ../src/Assets/fonts/FuturaCyrillicDemi.ttf; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		5F7C69209B4941CFBE85FEE2 /* FuturaCyrillicBold.ttf */ = {isa = PBXFileReference; name = "FuturaCyrillicBold.ttf"; path = "../src/Assets/fonts/FuturaCyrillicBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		55D6CBBF10924DD2BE28772A /* FuturaCyrillicBook.ttf */ = {isa = PBXFileReference; name = "FuturaCyrillicBook.ttf"; path = "../src/Assets/fonts/FuturaCyrillicBook.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		AC40EE88615C40C69873FE9F /* FuturaCyrillicDemi.ttf */ = {isa = PBXFileReference; name = "FuturaCyrillicDemi.ttf"; path = "../src/Assets/fonts/FuturaCyrillicDemi.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		31EE60AC6F1B4CBFB1D7E94A /* FuturaCyrillicHeavy.ttf */ = {isa = PBXFileReference; name = "FuturaCyrillicHeavy.ttf"; path = "../src/Assets/fonts/FuturaCyrillicHeavy.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		9D01214BA9364BF794313D6B /* FuturaCyrillicMedium.ttf */ = {isa = PBXFileReference; name = "FuturaCyrillicMedium.ttf"; path = "../src/Assets/fonts/FuturaCyrillicMedium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,17 +100,8 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				3B4392A12AC88292D35C810B /* Pods-BokaKorning.debug.xcconfig */,
-				5709B34CF0A7D63546082F79 /* Pods-BokaKorning.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		95C43A2E91E046DABD56E24E /* Resources */ = {
-			isa = "PBXGroup";
+			isa = PBXGroup;
 			children = (
 				5F7C69209B4941CFBE85FEE2 /* FuturaCyrillicBold.ttf */,
 				55D6CBBF10924DD2BE28772A /* FuturaCyrillicBook.ttf */,
@@ -119,8 +110,17 @@
 				9D01214BA9364BF794313D6B /* FuturaCyrillicMedium.ttf */,
 			);
 			name = Resources;
-			sourceTree = "<group>";
 			path = "";
+			sourceTree = "<group>";
+		};
+		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3B4392A12AC88292D35C810B /* Pods-BokaKorning.debug.xcconfig */,
+				5709B34CF0A7D63546082F79 /* Pods-BokaKorning.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 

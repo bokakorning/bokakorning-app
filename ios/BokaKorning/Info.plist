@@ -31,7 +31,16 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>BokaKorning Will use Camera to click and upload the documents for verification.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>BokaKorning Will use Location to show nearby drivers </string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>BokaKorning Will use Location to show nearby drivers </string>
 	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>BokaKorning Will use Location to show nearby drivers.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>BokaKorning Will use Photo Library to upload the documents for verification.</string>
 	<string/>
 	<key>RCTNewArchEnabled</key>
 	<false/>

@@ -7,6 +7,8 @@
         <item name="colorAccent">#4EB0CF</item> <!-- Affects OK/Cancel buttons -->
         <item name="colorPrimary">#4EB0CF</item> <!-- Optional -->
         <item name="android:colorAccent">#4EB0CF</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowSplashScreenBackground">#FFFFFF</item>
     </style>
 
 </resources>

@@ -43,8 +43,8 @@ const AssignedInstructor = props => {
       },
     }).fetch(
       'GET',
-      // `http://192.168.0.187:3000/booking/generateInvoice?bookingId=${data?.booking_id}`
-      `https://api.bokakorning.online/booking/generateInvoice?bookingId=${data?._id}`
+      `http://192.168.0.187:3000/booking/generateInvoice?bookingId=${data?.booking_id}`
+      // `https://api.bokakorning.online/booking/generateInvoice?bookingId=${data?.booking_id}`
       // `https://api.chmp.world/v1/api/generateInvoice?orderId=${orderId}&lang=${lang}`
     );
 
