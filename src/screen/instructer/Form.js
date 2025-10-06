@@ -1,5 +1,7 @@
 import {
   Image,
+  KeyboardAvoidingView,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -131,6 +133,10 @@ useEffect(() => {
   ];
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      <KeyboardAvoidingView 
+                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                    style={{flex:1}}
+                  >
       {image?.uri?<Image
               source={image?.uri
                     ? {
@@ -353,6 +359,7 @@ useEffect(() => {
         base64={false}
         cancel={()=>{}}
       />
+      </KeyboardAvoidingView>
     </ScrollView>
   );
 };

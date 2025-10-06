@@ -114,6 +114,7 @@ const styles = StyleSheet.create({
     ////toggle button
 btnCov: {
   height: 50,
+  marginHorizontal:20,
   flexDirection: 'row',
   backgroundColor: Constants.customgrey5,
   borderRadius: 12,
@@ -190,7 +191,7 @@ inactiveText: {
       color:Constants.white,
       fontSize:wp(10),
       fontFamily:FONTS.Heavy,
-      lineHeight:30,
+      // lineHeight:30,
       marginTop:hp(1)
     },
     logo2:{
@@ -202,7 +203,7 @@ inactiveText: {
       color:Constants.white,
       fontSize:wp(4.5),
       fontFamily:FONTS.SemiBold,
-      marginTop:hp(16)
+      marginTop:hp(14)
     },
     itemscov:{
       alignItems:'center',
@@ -228,7 +229,18 @@ inactiveText: {
       color:Constants.black,
       fontSize:wp(4.5),
       fontFamily:FONTS.SemiBold,
-    }
+    },
+    backcov: {
+    height: 30,
+    width: 30,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft:20,
+    marginTop:20,
+    backgroundColor: Constants.customgrey4,
+    boxShadow:'0px 2px 5px 0.08px grey'
+  },
 })
 
 export default styles;

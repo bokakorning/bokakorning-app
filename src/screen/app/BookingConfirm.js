@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import Constants, { FONTS } from '../../Assets/Helpers/constant';
 import LinearGradient from 'react-native-linear-gradient';
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Constants.white,
-    padding: 20,
+    padding: Platform.OS==='ios'?0:20,
   },
   buttompart: {
     justifyContent: 'center',
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     borderColor:Constants.black,
     padding:10,
     borderRadius:15,
-    width:'100%',
+    width:Platform.OS==='ios'?'90%':'100%',
     marginTop:30
   },
    shdbtn: {

@@ -6,6 +6,7 @@ import {
   Image,
   Linking,
   ScrollView,
+  Platform,
 } from 'react-native';
 import React, { useState } from 'react';
 import styles from './styles';
@@ -19,6 +20,8 @@ import {
   sendOtp,
   verifyOtp,
 } from '../../../redux/auth/authAction';
+import { goBack } from '../../../utils/navigationRef';
+import { BackIcon } from '../../../Theme';
 
 const ForgotPassword = () => {
   const [showPass, setShowPass] = useState(true);
@@ -123,8 +126,11 @@ const ForgotPassword = () => {
       end={{ x: 0, y: 1 }}
       colors={['#4EB0CF', '#FFFFFF', '#FFFFFF', '#4EB0CF']}
       locations={[0, 0.3, 0.7, 1]}
-      style={styles.container}
+      style={[styles.container,{padding: Platform.OS==='ios'?0: wp(4)}]}
     >
+      <TouchableOpacity style={styles.backcov} onPress={() => goBack()}>
+                     <BackIcon  />
+      </TouchableOpacity>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.buttompart}>
           <Image

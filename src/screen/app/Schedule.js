@@ -182,7 +182,7 @@ const submit = async () => {
           />
           </View>
         <Text style={[styles.seltxt2, { marginVertical: 10 }]}>
-          Or f ind it on map
+          Or find it on map
         </Text>
         <View style={styles.mapThumbnail}>
           {userLocation?.long&&<MapView
@@ -224,6 +224,7 @@ const submit = async () => {
       </ScrollView>
       {dateModel&&<DateTimePicker
         mode='date'
+        textColor='black'
         value={sheduleDate?sheduleDate:new Date()}
         display={Platform.OS === 'ios' ? 'spinner' : 'default'}
         onChange={onDateChange}

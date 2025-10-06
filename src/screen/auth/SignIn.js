@@ -6,6 +6,7 @@ import {
   Image,
   Linking,
   ScrollView,
+  Platform,
 } from 'react-native';
 import React, {  useContext, useEffect, useState } from 'react';
 import styles from './styles';
@@ -62,7 +63,7 @@ const dispatch = useDispatch();
                   end={{x: 0, y: 1}}
                   colors={['#4EB0CF', '#FFFFFF', '#FFFFFF', '#4EB0CF']}
                   locations={[0, 0.3, 0.7, 1]} 
-                  style={styles.container}>
+                  style={[styles.container,{padding: Platform.OS==='ios'?0: wp(4)}]}>
       {/* <View > */}
       <View style={styles.buttompart} >
         <Image source={require('../../Assets/Images/pro-img.png')} style={styles.proimg}/>

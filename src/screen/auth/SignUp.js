@@ -97,7 +97,7 @@ const SignUp = () => {
       end={{ x: 0, y: 1 }}
       colors={['#4EB0CF', '#FFFFFF', '#FFFFFF', '#4EB0CF']}
       locations={[0, 0.3, 0.7, 1]}
-      style={styles.container}
+      style={[styles.container,{padding: Platform.OS==='ios'?0: wp(4)}]}
     >
       <KeyboardAvoidingView 
               behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -156,7 +156,7 @@ const SignUp = () => {
                       tabopt === 1 ? styles.activeText : styles.inactiveText,
                     ]}
                   >
-                    Instructer
+                    Instructor
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -260,7 +260,7 @@ const SignUp = () => {
             </View>
           )}
         </Formik>
-        <Text style={styles.textcov2} onPress={() => navigate('SignUp')}>
+        <Text style={styles.textcov2} onPress={() => navigate('SignIn')}>
           <Text style={[styles.lasttxt, { color: Constants.white }]}>
             Have an account ?{' '}
           </Text>
@@ -270,7 +270,7 @@ const SignUp = () => {
               { color: Constants.black, textDecorationLine: 'underline' },
             ]}
           >
-            Sign Up
+            Sign In
           </Text>
         </Text>
       </ScrollView>

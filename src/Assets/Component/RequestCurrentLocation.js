@@ -1,4 +1,4 @@
-import { PERMISSIONS, request, RESULTS } from 'react-native-permissions';
+import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 import Geolocation from 'react-native-geolocation-service';
 import { Alert, Linking, PermissionsAndroid, Platform } from 'react-native';
 import GetCurrentAddressByLatLong from './GetCurrentAddressByLatLong';
@@ -13,6 +13,19 @@ const RequestCurrentLocation = async (dispatch, user) => {
         Geolocation.getCurrentPosition(
           position => {
             console.log(position);
+            dispatch(setLocation({
+                lat: position.coords.latitude,
+                long: position.coords.longitude,
+              }));
+            if (user?.type === 'user') {
+              GetCurrentAddressByLatLong({
+                lat: position.coords.latitude,
+                long: position.coords.longitude,
+              }).then(res => {
+                console.log('res===>', res);
+                dispatch(setAddress(res?.results[0]?.formatted_address));
+              });
+            }
           },
           error => {
             console.log(error.code, error.message);
@@ -25,6 +38,19 @@ const RequestCurrentLocation = async (dispatch, user) => {
           Geolocation.getCurrentPosition(
             position => {
               console.log(position);
+              dispatch(setLocation({
+                lat: position.coords.latitude,
+                long: position.coords.longitude,
+              }));
+            if (user?.type === 'user') {
+              GetCurrentAddressByLatLong({
+                lat: position.coords.latitude,
+                long: position.coords.longitude,
+              }).then(res => {
+                console.log('res===>', res);
+                dispatch(setAddress(res?.results[0]?.formatted_address));
+              });
+            }
             },
             error => {
               console.log(error.code, error.message);
