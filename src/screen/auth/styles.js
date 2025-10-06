@@ -16,12 +16,14 @@ const styles = StyleSheet.create({
   proimg:{
     height: hp(14),
     width: wp(30),
-    marginTop:hp(6)
+    marginTop:hp(6),
+    resizeMode:'contain'
   },
   proimg2:{
     height: hp(18),
     width: wp(40),
-    marginTop:hp(3)
+    marginTop:hp(3),
+    resizeMode:'contain'
   },
   buttompart:{
     justifyContent:'center',

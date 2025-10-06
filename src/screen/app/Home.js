@@ -1,6 +1,7 @@
 import {
   FlatList,
   Image,
+  Keyboard,
   ScrollView,
   StyleSheet,
   Text,
@@ -19,6 +20,7 @@ import MapView, {
 } from 'react-native-maps';
 import { mapStyle } from '../../../Theme/MapStyle';
 import RequestCurrentLocation from '../../Assets/Component/RequestCurrentLocation';
+import Scheliton from '../../Assets/Component/Scheliton';
 import { useDispatch, useSelector } from 'react-redux';
 import { getNearbyocation } from '../../../redux/location/locationAction';
 import { navigate } from '../../../utils/navigationRef';
@@ -26,7 +28,7 @@ import LocationDropdown from '../../Assets/Component/LocationDropdown'
 import { useIsFocused } from '@react-navigation/native';
 
 const Home = () => {
-  const [vehicleType, setvehicleType] = useState('automatic');
+  const [vehicleType, setvehicleType] = useState('Automatic');
   const [driverlist, setDriverList] = useState([]);
   const [showinput, setshowinput] = useState(false);
   const dispatch = useDispatch();
@@ -44,7 +46,7 @@ console.log("userEnteredlocation",userEnteredLocation)
   }, [loginuser]);
   useEffect(() => {
     {
-      userLocation &&IsFocused&& getNearbyInstructer('Automatic',true);
+      userLocation &&IsFocused&& getNearbyInstructer('Automatic',true);setvehicleType('Automatic')
     }
   }, [userLocation,userEnteredLocation]);
 
@@ -81,6 +83,21 @@ console.log("userEnteredlocation",userEnteredLocation)
       </TouchableOpacity>
     );
   };
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardVisible(true);
+    });
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardVisible(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
@@ -121,7 +138,7 @@ console.log("userEnteredlocation",userEnteredLocation)
         <View style={styles.caroptcov}>
           <View
             style={[
-              vehicleType === 'automatic' && {
+              vehicleType === 'Automatic' && {
                 borderWidth: 2,
                 borderColor: Constants.custom_blue,
                 borderRadius: 10,
@@ -132,12 +149,12 @@ console.log("userEnteredlocation",userEnteredLocation)
             <TouchableOpacity
               style={[
                 styles.carcov,
-                vehicleType === 'automatic' && {
+                vehicleType === 'Automatic' && {
                   backgroundColor: Constants.light_blue2,
                 },
               ]}
               onPress={() => {
-                setvehicleType('automatic'), getNearbyInstructer('Automatic',true);
+                setvehicleType('Automatic'), getNearbyInstructer('Automatic',true);
               }}
             >
               <Image source={require('../../Assets/Images/smart-car.png')} />
@@ -146,7 +163,7 @@ console.log("userEnteredlocation",userEnteredLocation)
           </View>
           <View
             style={[
-              vehicleType === 'manual' && {
+              vehicleType === 'Manual' && {
                 borderWidth: 2,
                 borderColor: Constants.custom_blue,
                 borderRadius: 10,
@@ -157,12 +174,12 @@ console.log("userEnteredlocation",userEnteredLocation)
             <TouchableOpacity
               style={[
                 styles.carcov,
-                vehicleType === 'manual' && {
+                vehicleType === 'Manual' && {
                   backgroundColor: Constants.light_blue2,
                 },
               ]}
               onPress={() => {
-                setvehicleType('manual'), getNearbyInstructer('Manual',true);
+                setvehicleType('Manual'), getNearbyInstructer('Manual',true);
               }}
             >
               <Image source={require('../../Assets/Images/smart-car.png')} />
@@ -174,7 +191,7 @@ console.log("userEnteredlocation",userEnteredLocation)
           Instructors Available Near you:
         </Text>
         <View style={styles.mapThumbnail}>
-          {userLocation?.long&&<MapView
+          {userLocation?.long?<MapView
           // key={userEnteredLocation?.lat}
             style={styles.mapThumbnailView}
             provider={PROVIDER_GOOGLE}
@@ -221,12 +238,12 @@ console.log("userEnteredlocation",userEnteredLocation)
                   <PackageIcon2 />
                 </Marker>
               ))}
-          </MapView>}
+          </MapView>:<Scheliton height={hp(29)} width={'95%'} borderRadius={10}/>}
         </View>
         <Text style={styles.headtxt2}>Available Instructors</Text>
         {driverlist && driverlist?.length > 0 ? (
           driverlist.map((item, index) => (
-            <TouchableOpacity
+           item?.rate_per_hour&& <TouchableOpacity
             onPress={()=>navigate('InstructerDetail',{...item,vehicleType:vehicleType,selloc:{long:(showinput&&userEnteredLocation?.long)?userEnteredLocation.long:userLocation?.long, lat:(showinput&&userEnteredLocation?.lat)?userEnteredLocation.lat:userLocation?.lat}})}
               style={[
                 styles.box,
@@ -277,9 +294,9 @@ console.log("userEnteredlocation",userEnteredLocation)
           <Text style={styles.noinsttxt}>No Instructor Available</Text>
         )}
       </ScrollView>
-      <TouchableOpacity style={styles.shdbtn} onPress={()=>navigate("Schedule")}>
+      {!keyboardVisible &&<TouchableOpacity style={styles.shdbtn} onPress={()=>navigate("Schedule")}>
         <Text style={styles.shdbtntxt}>Schedule session for later</Text>
-      </TouchableOpacity>
+      </TouchableOpacity>}
     </View>
   );
 };

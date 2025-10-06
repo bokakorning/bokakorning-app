@@ -77,8 +77,8 @@ const Notification = props => {
             </View>
           )}
           showsVerticalScrollIndicator={false}
-          renderItem={({item}) => (
-            <View style={[styles.box]}>
+          renderItem={({item,index}) => (
+            <View style={[styles.box,{marginBottom:notification?.length===index+1&&15}]}>
               <View style={{justifyContent: 'center', alignItems: 'center'}}>
                 <View style={styles.iconcov}>
                   <Notification2Icon

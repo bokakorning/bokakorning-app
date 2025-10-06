@@ -41,7 +41,6 @@
 	<string>BokaKorning Will use Location to show nearby drivers.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>BokaKorning Will use Photo Library to upload the documents for verification.</string>
-	<string/>
 	<key>RCTNewArchEnabled</key>
 	<false/>
 	<key>UILaunchStoryboardName</key>

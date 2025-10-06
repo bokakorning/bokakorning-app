@@ -81,7 +81,7 @@ dispatch(logout())
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
-            marginTop: 30,
+            marginTop: 10,
             backgroundColor: Constants.white,
             marginBottom: 70,
           }}>
@@ -521,7 +521,7 @@ const styles = StyleSheet.create({
   toppart: {
     backgroundColor: Constants.custom_blue,
     padding: 20,
-    minHeight: '25%',
+    // minHeight: '20%',
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
   },
@@ -543,7 +543,7 @@ const styles = StyleSheet.create({
     color: Constants.white,
     fontFamily: FONTS.SemiBold,
     textAlign: 'center',
-    marginBottom: 15,
+    marginBottom: 10,
   },
   headtxt4: {
     fontSize: 14,

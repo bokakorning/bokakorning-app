@@ -8,6 +8,8 @@ import {
   ScrollView,
   Animated,
   Modal,
+  Platform,
+  KeyboardAvoidingView,
 } from 'react-native';
 import React, {
   createRef,
@@ -97,6 +99,10 @@ const SignUp = () => {
       locations={[0, 0.3, 0.7, 1]}
       style={styles.container}
     >
+      <KeyboardAvoidingView 
+              behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+              style={{flex:1}}
+            >
       <ScrollView showsVerticalScrollIndicator={false}>
         <Formik
           initialValues={registerModel}
@@ -268,6 +274,7 @@ const SignUp = () => {
           </Text>
         </Text>
       </ScrollView>
+      </KeyboardAvoidingView>
       <CameraGalleryPeacker
         refs={cameraRef}
         getImageValue={getImageValue}

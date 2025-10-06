@@ -99,6 +99,7 @@ useEffect(() => {
         });
     };
   const months = [
+    { label: '0 Month', value: 0 },
     { label: '1 Month', value: 1 },
     { label: '2 Months', value: 2 },
     { label: '3 Months', value: 3 },
@@ -319,11 +320,11 @@ useEffect(() => {
       </View>
       <View style={{ flexDirection: 'row', }}>
         <View style={{width:'52%'}}>
-{submitted &&userDetail.experience_year === ''&& (
+{submitted &&(userDetail?.experience_year === ''||!userDetail?.experience_year)&& (
           <Text style={styles.require}>Year is required</Text>
         )}
         </View>
-        {submitted &&userDetail.experience_month === '' && (
+        {submitted &&(userDetail?.experience_month === ''||!userDetail?.experience_month) && (
           <Text style={styles.require}>Month is required</Text>
         )}
       </View>

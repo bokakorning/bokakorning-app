@@ -3,6 +3,7 @@ import {
   Easing,
   Linking,
   Modal,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -14,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import Constants, { FONTS, Googlekey } from '../../Assets/Helpers/constant';
 import MapViewDirections from 'react-native-maps-directions';
-import { CallIcon, LocationIcon } from '../../../Theme';
+import { BackIcon, CallIcon, LocationIcon } from '../../../Theme';
 import moment from 'moment';
 import { finishSession } from '../../../redux/booking/bookingAction';
 import { goBack } from '../../../utils/navigationRef';
@@ -58,7 +59,7 @@ const BookingDetail = props => {
       };
   return (
     <View style={styles.container}>
-      <View style={{ height: '65%' }}>
+      <View style={{ height: '60%' }}>
         {userLocation?.long && (
           <MapView
             ref={mapRef}
@@ -150,7 +151,13 @@ const BookingDetail = props => {
               )}
           </MapView>
         )}
+        <TouchableOpacity
+          style={styles.backbtn}
+          onPress={() => goBack()}>
+          <BackIcon height={25} width={25}/>
+        </TouchableOpacity>
       </View>
+      <ScrollView showsVerticalScrollIndicator={false}>
       <Text style={[styles.txtcov, { marginTop: 30 }]}>
         <Text style={styles.drivnametxt}>Date: </Text>
         <Text style={styles.boxtxt}>
@@ -200,6 +207,7 @@ const BookingDetail = props => {
       >
         <Text style={styles.shdbtntxt}>Schedule session for later</Text>
       </TouchableOpacity>
+      </ScrollView>
       <Modal
         animationType="none"
         transparent={true}
@@ -279,7 +287,7 @@ const styles = StyleSheet.create({
   },
   othrttxt2: {
     color: Constants.custom_blue,
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: FONTS.SemiBold,
   },
   contactopt: {
@@ -293,11 +301,11 @@ const styles = StyleSheet.create({
     // flex:1,
     alignItems: 'center',
     alignSelf: 'center',
-    gap: 10,
+    gap: 5,
   },
   butcov: {
     flexDirection: 'row',
-    gap: 15,
+    gap: 10,
     justifyContent: 'space-evenly',
     marginTop: 30,
     marginHorizontal: 20,
@@ -311,6 +319,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '90%',
     alignSelf: 'center',
+    marginBottom:10
   },
   shdbtntxt: {
     fontSize: 16,
@@ -402,4 +411,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginLeft: 10,
   },
+  backbtn:{
+            position: 'absolute',
+            top: 20,
+            left: 20,
+            borderRadius: 30,
+            padding:4,
+            boxShadow: '0px 2px 5px 0.08px grey',
+          },
 });
