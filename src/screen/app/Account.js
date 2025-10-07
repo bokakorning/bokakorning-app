@@ -213,7 +213,7 @@ dispatch(logout())
           <View style={styles.modalView}>
             <View style={{backgroundColor: 'white', alignItems: 'center'}}>
               <View style={[styles.covline,{width:'100%'}]}>
-                <View></View>
+                <View style={{width:35}}></View>
                 <Text style={styles.textStyle5}>Sign Out </Text>
                 <TouchableOpacity style={styles.croscov} onPress={()=>setModalVisible(false)}>
                   <CrossIcon color={Constants.black}/>

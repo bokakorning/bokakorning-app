@@ -15,7 +15,7 @@ import Constants from '../../Assets/Helpers/constant';
 import * as Yup from 'yup';
 import { Formik, useFormik } from 'formik';
 import { OneSignal } from 'react-native-onesignal';
-import { hp } from '../../../utils/responsiveScreen';
+import { hp, wp } from '../../../utils/responsiveScreen';
 import LinearGradient from 'react-native-linear-gradient';
 import { useDispatch } from 'react-redux';
 import { login } from '../../../redux/auth/authAction';

@@ -15,7 +15,7 @@
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		7848126D1692442F8F73983B /* FuturaCyrillicBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5F7C69209B4941CFBE85FEE2 /* FuturaCyrillicBold.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		F9F939BA92DA4B058DC4C3EF /* FuturaCyrillicDemi.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AC40EE88615C40C69873FE9F /* FuturaCyrillicDemi.ttf */; };
+		9D7BEBC26AEA4AB7BF1B157B /* FuturaCyrillicSDemi.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DA4552446BA24A65B2DAC22C /* FuturaCyrillicSDemi.ttf */; };
 		FC24FDF40DF1431A87F7694D /* FuturaCyrillicMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9D01214BA9364BF794313D6B /* FuturaCyrillicMedium.ttf */; };
 /* End PBXBuildFile section */
 
@@ -33,7 +33,7 @@
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = BokaKorning/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = BokaKorning/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9D01214BA9364BF794313D6B /* FuturaCyrillicMedium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FuturaCyrillicMedium.ttf; path = ../src/Assets/fonts/FuturaCyrillicMedium.ttf; sourceTree = "<group>"; };
-		AC40EE88615C40C69873FE9F /* FuturaCyrillicDemi.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FuturaCyrillicDemi.ttf; path = ../src/Assets/fonts/FuturaCyrillicDemi.ttf; sourceTree = "<group>"; };
+		DA4552446BA24A65B2DAC22C /* FuturaCyrillicSDemi.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = FuturaCyrillicSDemi.ttf; path = ../src/Assets/fonts/FuturaCyrillicSDemi.ttf; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -105,9 +105,9 @@
 			children = (
 				5F7C69209B4941CFBE85FEE2 /* FuturaCyrillicBold.ttf */,
 				55D6CBBF10924DD2BE28772A /* FuturaCyrillicBook.ttf */,
-				AC40EE88615C40C69873FE9F /* FuturaCyrillicDemi.ttf */,
 				31EE60AC6F1B4CBFB1D7E94A /* FuturaCyrillicHeavy.ttf */,
 				9D01214BA9364BF794313D6B /* FuturaCyrillicMedium.ttf */,
+				DA4552446BA24A65B2DAC22C /* FuturaCyrillicSDemi.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -186,9 +186,9 @@
 				6911E2B769B633BB5E233050 /* PrivacyInfo.xcprivacy in Resources */,
 				7848126D1692442F8F73983B /* FuturaCyrillicBold.ttf in Resources */,
 				5FD50495E50548478A029EA2 /* FuturaCyrillicBook.ttf in Resources */,
-				F9F939BA92DA4B058DC4C3EF /* FuturaCyrillicDemi.ttf in Resources */,
 				66865DC5EE054A78BC89A852 /* FuturaCyrillicHeavy.ttf in Resources */,
 				FC24FDF40DF1431A87F7694D /* FuturaCyrillicMedium.ttf in Resources */,
+				9D7BEBC26AEA4AB7BF1B157B /* FuturaCyrillicSDemi.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

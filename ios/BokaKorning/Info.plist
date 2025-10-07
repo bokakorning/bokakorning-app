@@ -47,9 +47,9 @@
 	<array>
 		<string>FuturaCyrillicBold.ttf</string>
 		<string>FuturaCyrillicBook.ttf</string>
-		<string>FuturaCyrillicDemi.ttf</string>
 		<string>FuturaCyrillicHeavy.ttf</string>
 		<string>FuturaCyrillicMedium.ttf</string>
+		<string>FuturaCyrillicSDemi.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

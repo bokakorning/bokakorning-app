@@ -132,11 +132,12 @@ useEffect(() => {
     { label: '13+ Years', value: '13+' },
   ];
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+    <View style={styles.container}>
       <KeyboardAvoidingView 
                     behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                     style={{flex:1}}
                   >
+    <ScrollView showsVerticalScrollIndicator={false}>
       {image?.uri?<Image
               source={image?.uri
                     ? {
@@ -359,8 +360,9 @@ useEffect(() => {
         base64={false}
         cancel={()=>{}}
       />
-      </KeyboardAvoidingView>
     </ScrollView>
+      </KeyboardAvoidingView>
+      </View>
   );
 };
 

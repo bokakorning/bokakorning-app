@@ -52,7 +52,7 @@ const IsFocused = useIsFocused();
                           onPress={()=>navigate('BookingDetail',item)}
                         >
                           <Text style={styles.viwdetxt}>Details</Text>
-                          <RightArrowIcon height={18} width={18} />
+                          <RightArrowIcon height={18} width={18} color={Constants.black}/>
                         </TouchableOpacity>
       </View>
       }

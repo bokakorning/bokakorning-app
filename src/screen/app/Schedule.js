@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import React, { createRef, useEffect, useState } from 'react';
 import Constants, { FONTS } from '../../Assets/Helpers/constant';
-import { CalenderIcon, CarIcon, ClockIcon, Cross2Icon, CrossIcon, LocationIcon, PinIcon, SearchIcon } from '../../../Theme';
+import { BackIcon, CalenderIcon, CarIcon, ClockIcon, Cross2Icon, CrossIcon, LocationIcon, PinIcon, SearchIcon } from '../../../Theme';
 import { hp, wp } from '../../../utils/responsiveScreen';
 import MapView, {
   Marker,
@@ -21,7 +21,7 @@ import MapView, {
 import { mapStyle } from '../../../Theme/MapStyle';
 import RequestCurrentLocation from '../../Assets/Component/RequestCurrentLocation';
 import { useDispatch, useSelector } from 'react-redux';
-import { navigate } from '../../../utils/navigationRef';
+import { goBack, navigate } from '../../../utils/navigationRef';
 import LocationDropdown from '../../Assets/Component/LocationDropdown'
 import moment from 'moment';
 import DateTimePicker from '@react-native-community/datetimepicker'
@@ -118,6 +118,9 @@ const submit = async () => {
   };
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.backcov} onPress={() => goBack()}>
+          <BackIcon  color={Constants.black}/>
+      </TouchableOpacity>
       <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
         
         <Text style={styles.headtxt}>Schedule session for later </Text>
@@ -289,9 +292,9 @@ const submit = async () => {
           </Text>
         </TouchableOpacity>
       </ActionSheet>
-      <TouchableOpacity style={styles.shdbtn} onPress={()=>submit()}>
+      {(!dateModel||Platform.OS==='android')&&<TouchableOpacity style={styles.shdbtn} onPress={()=>submit()}>
         <Text style={styles.shdbtntxt}>Confirm</Text>
-      </TouchableOpacity>
+      </TouchableOpacity>}
     </View>
   );
 };
@@ -502,7 +505,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingHorizontal: 25,
     paddingVertical: 8,
-    gap:5
+    gap:5,
+    minWidth:wp(35)
     // marginRight: 10,
   },
   actionText: {
@@ -538,5 +542,13 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     marginBottom: 10,
     paddingVertical: 20,
+  },
+  backcov: {
+    height: 35,
+    width: 35,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Constants.customgrey4,
   },
 });

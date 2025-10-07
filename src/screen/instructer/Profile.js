@@ -1,5 +1,7 @@
 import {
   Image,
+  KeyboardAvoidingView,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -127,7 +129,12 @@ goBack()
     { label: '13+ Years', value: '13+' },
   ];
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+    <View style={styles.container}>
+      <KeyboardAvoidingView 
+                          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                          style={{flex:1}}
+                        >
+    <ScrollView showsVerticalScrollIndicator={false}>
       <TouchableOpacity style={styles.backcov} onPress={() => goBack()}>
           <BackIcon color={Constants.black}/>
         </TouchableOpacity>
@@ -366,6 +373,8 @@ goBack()
         cancel={()=>{}}
       />
     </ScrollView>
+    </KeyboardAvoidingView>
+    </View>
   );
 };
 

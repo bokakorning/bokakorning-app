@@ -79,7 +79,7 @@ export const  InstruterTabNav=()=>{
         width: 48,
         backgroundColor: Constants.custom_blue,
         position: 'absolute',
-        top:11,
+        top:Platform.OS==='android'? 11:0,
         borderRadius: 30,
         transform: [
           { translateX: tabOffsetValue }
@@ -114,7 +114,7 @@ export const  InstruterTabNav=()=>{
         tabBarStyle: {
           position: 'absolute',
           width: '100%',
-          height: 70,
+          height: Platform.OS==='ios'?90: 70,
           backgroundColor: Constants.white,
           // boxShadow: '0px 0px 3px 0.2px grey',
           borderTopLeftRadius:15,
@@ -152,6 +152,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop:Platform.OS==='ios'?10:0
   },
   tabBtn: {
     height: 40,
