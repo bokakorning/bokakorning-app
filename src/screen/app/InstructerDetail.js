@@ -54,6 +54,7 @@ const InstructerDetail = props => {
    const submit = async () => {
     const body={
     instructer: data?._id,
+    date: new Date(),
     total: data?.rate_per_hour,
     selectedTime: selectedTime,
     payment_mode:"online",

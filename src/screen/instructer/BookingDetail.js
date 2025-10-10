@@ -19,6 +19,7 @@ import { BackIcon, CallIcon, LocationIcon } from '../../../Theme';
 import moment from 'moment';
 import { finishSession } from '../../../redux/booking/bookingAction';
 import { goBack } from '../../../utils/navigationRef';
+import { getProfile } from '../../../redux/auth/authAction';
 
 const BookingDetail = props => {
   const data = props?.route?.params;
@@ -50,7 +51,8 @@ const BookingDetail = props => {
       console.log('body', body);
         dispatch(finishSession(body))
           .unwrap()
-          .then(data => {
+          .then(() => {
+            dispatch(getProfile())
             goBack()
           })
           .catch(error => {
@@ -205,7 +207,7 @@ const BookingDetail = props => {
         style={styles.shdbtn}
         onPress={() => setmodelvsible(true)}
       >
-        <Text style={styles.shdbtntxt}>Schedule session for later</Text>
+        <Text style={styles.shdbtntxt}>Finish Session</Text>
       </TouchableOpacity>
       </ScrollView>
       <Modal

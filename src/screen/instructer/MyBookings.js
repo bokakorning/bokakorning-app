@@ -25,6 +25,7 @@ const IsFocused = useIsFocused();
         .then(data => {
           console.log('data', data);
           setreqList(data);
+          setRefreshing(false)
         })
         .catch(error => {
           console.error('Instructer req failed:', error);
@@ -44,7 +45,7 @@ const IsFocused = useIsFocused();
       showsVerticalScrollIndicator={false}
       renderItem={({item,index})=><View style={[styles.card,{marginTop:index+1===1?15:0}]}>
         <Text style={styles.boxtxt}>Session Request From {item?.user?.name}</Text>
-        <Text style={styles.boxtxt}>{moment(item?.date).format('dddd, DD MMMM')}</Text>
+        <Text style={styles.boxtxt}>{moment(item?.sheduleDate?item?.sheduleDate:item?.date).format('dddd, DD MMMM')}</Text>
         <Text style={styles.boxtxt}>At {item?.selectedTime}</Text>
         <Text style={styles.boxtxt}>{item?.pickup_address}</Text>
         <TouchableOpacity
