@@ -35,11 +35,11 @@ const Constants = {
 
 };
 export const FONTS = {
-  Regular: 'FuturaCyrillicBook',
-  Bold: 'FuturaCyrillicBold',
-  Medium: 'FuturaCyrillicMedium',
-  SemiBold: 'FuturaCyrillicDemi',
-  Heavy: 'FuturaCyrillicHeavy',
+  Regular: 'Jost-Regular',
+  Bold: 'Jost-Bold',
+  Medium: 'Jost-Medium',
+  SemiBold: 'Jost-SemiBold',
+  Heavy: 'Jost-ExtraBold',
 };
 
 

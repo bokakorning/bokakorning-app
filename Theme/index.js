@@ -38,3 +38,5 @@ export {default as ToprightIcon} from '../src/Assets/Icon/topright.svg';
 export {default as DownleftIcon} from '../src/Assets/Icon/downleft.svg';
 export {default as WalletIcon} from '../src/Assets/Icon/wallet.svg';
 export {default as TransactionIcon} from '../src/Assets/Icon/transaction.svg';
+export { default as Thik2Icon } from '../src/Assets/Icon/thik2.svg';
+export { default as LanguageIcon } from '../src/Assets/Icon/language.svg';

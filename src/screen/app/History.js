@@ -8,8 +8,10 @@ import moment from 'moment'
 import { RightArrowIcon } from '../../../Theme'
 import { navigate } from '../../../utils/navigationRef'
 import { useIsFocused } from '@react-navigation/native'
+import { useTranslation } from 'react-i18next'
 
 const History = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [bookinglist, setbookingList] = useState([]);
   const [selOpt, setselOpt] = useState("upcomming");
@@ -63,7 +65,7 @@ const History = () => {
   ];
   return (
     <View style={styles.container}>
-      <UserHeader item={"Lesson History"} showback={false}/>
+      <UserHeader item={t("Lesson History")} showback={false}/>
       <View style={styles.optcov}>
         {options.map(opt => (
           <TouchableOpacity
@@ -106,18 +108,18 @@ const History = () => {
             style={{marginBottom:70}}
             showsVerticalScrollIndicator={false}
             renderItem={({item,index})=><View style={[styles.card,{marginTop:index+1===1?15:0}]}>
-              <Text style={styles.boxtxt}>Session Request From {item?.user?.name}</Text>
+              <Text style={styles.boxtxt}>{t("Session Request From")} {item?.user?.name}</Text>
               <Text style={styles.boxtxt}>{moment(item?.sheduleDate?item?.sheduleDate:item?.date).format('dddd, DD MMMM')}</Text>
-              <Text style={styles.boxtxt}>At {item?.selectedTime}</Text>
+              <Text style={styles.boxtxt}>{t("At")} {item?.selectedTime}</Text>
               <View style={styles.frow}>
               <TouchableOpacity
                   style={{ flexDirection: 'row', alignItems: 'center' }}
                   onPress={()=>navigate('AssignedInstructor',{...item?.instructer,type:item?.status!='cancel'?"show_invoice":null,booking_id:item?._id})}
                 >
-                  <Text style={styles.viwdetxt}>Details</Text>
+                  <Text style={styles.viwdetxt}>{t("Details")}</Text>
                   <RightArrowIcon height={15} width={15} />
                 </TouchableOpacity>
-                 {item?.status==='cancel'&& <Text style={styles.booktxt} onPress={()=>navigate('ReBookInstructer',item)}>Book another instructer</Text>}
+                 {item?.status==='cancel'&& <Text style={styles.booktxt} onPress={()=>navigate('ReBookInstructer',item)}>{t("Book another instructer")}</Text>}
                   </View>
             </View>
             }
@@ -134,7 +136,7 @@ const History = () => {
                 fontSize: 18,
                 fontFamily: FONTS.Medium,
               }}>
-              No Booking Available
+              {t("No Booking Available")}
             </Text>
           </View>
         )}

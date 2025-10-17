@@ -19,13 +19,15 @@ import { hp, wp } from '../../../utils/responsiveScreen';
 import LinearGradient from 'react-native-linear-gradient';
 import { useDispatch } from 'react-redux';
 import { login } from '../../../redux/auth/authAction';
+import { useTranslation } from 'react-i18next';
 
 const SignIn = () => {
+  const { t } = useTranslation();
   const [showPass, setShowPass] = useState(true);
 const dispatch = useDispatch();
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email('Invalid email').required('Email is required'),
-    password: Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
+    email: Yup.string().email(t('Invalid email')).required(t('Email is required')),
+    password: Yup.string().min(8, t('Password must be at least 8 characters')).required(t('Password is required')),
   });
 
   const formik = useFormik({
@@ -67,11 +69,11 @@ const dispatch = useDispatch();
       {/* <View > */}
       <View style={styles.buttompart} >
         <Image source={require('../../Assets/Images/pro-img.png')} style={styles.proimg}/>
-        <Text style={styles.headtxt} onPress={()=>navigate("App")}>Login</Text>
+        <Text style={styles.headtxt} onPress={()=>navigate("App")}>{t("Login")}</Text>
         <View style={styles.inpcov}>
           <TextInput
             style={styles.inputfield}
-            placeholder="Enter Email"
+            placeholder={t("Enter Email")}
             textAlign='left'
             placeholderTextColor={Constants.customgrey2}
             value={formik.values.email}
@@ -85,7 +87,7 @@ const dispatch = useDispatch();
         <View style={styles.inpcov}>
           <TextInput
             style={styles.inputfield}
-            placeholder="Enter Password"
+            placeholder={t("Enter Password")}
             secureTextEntry={showPass}
             placeholderTextColor={Constants.customgrey2}
             value={formik.values.password}
@@ -114,15 +116,15 @@ const dispatch = useDispatch();
         }
 
             <TouchableOpacity style={styles.btncov} onPress={formik.handleSubmit}>
-              <Text style={styles.btntxt}>Login</Text>
+              <Text style={styles.btntxt}>{t("Login")}</Text>
             </TouchableOpacity>
         <Text style={styles.forgtxt} onPress={() => navigate('ForgotPassword')}>
-          Forgot Password ?
+          {t("Forgot Password ?")}
         </Text>
             </View>
             <Text style={styles.textcov} onPress={()=>navigate('SignUp')}>
-              <Text style={[styles.lasttxt,{color:Constants.white}]}>Don’t have an account ? </Text>
-              <Text style={[styles.lasttxt,{color:Constants.black,textDecorationLine:'underline'}]}>Sign Up</Text>
+              <Text style={[styles.lasttxt,{color:Constants.white}]}>{t("Don’t have an account ?")} </Text>
+              <Text style={[styles.lasttxt,{color:Constants.black,textDecorationLine:'underline'}]}>{t("Sign Up")}</Text>
             </Text>
       {/* </View> */}
       </LinearGradient>

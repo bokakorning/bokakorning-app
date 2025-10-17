@@ -29,8 +29,10 @@ import { CrossIcon, DeleteIcon, DropdownIcon, ViewIcon } from '../../../Theme';
 import CameraGalleryPeacker from '../../Assets/Component/CameraGalleryPeacker';
 import { signup } from '../../../redux/auth/authAction';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 const SignUp = () => {
+  const { t } = useTranslation();
   const [showPass, setShowPass] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
   const [document, setDocument] = useState();
@@ -123,7 +125,7 @@ const SignUp = () => {
                 style={[styles.proimg, { marginTop: hp(6) }]}
               />
               <Text style={[styles.headtxt, { marginVertical: 0 }]}>
-                Sign Up
+                {t("Sign Up")}
               </Text>
               <View style={styles.btnCov}>
                 {/* Animated sliding background */}
@@ -237,7 +239,7 @@ const SignUp = () => {
                   onPress={() => cameraRef?.current?.show()}
                 >
                   <Text style={styles.upltxt}>Attach Your Driving Permit</Text>
-                  <DropdownIcon />
+                  <DropdownIcon color={Constants.black}/>
                 </TouchableOpacity>
               )}
               {tabopt === 0 && document?.uri && (
@@ -260,7 +262,7 @@ const SignUp = () => {
             </View>
           )}
         </Formik>
-        <Text style={styles.textcov2} onPress={() => navigate('SignIn')}>
+        <Text style={[styles.textcov2,{marginBottom:Platform.OS==='ios'&&30}]} onPress={() => navigate('SignIn')}>
           <Text style={[styles.lasttxt, { color: Constants.white }]}>
             Have an account ?{' '}
           </Text>

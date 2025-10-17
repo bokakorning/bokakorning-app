@@ -6,6 +6,7 @@ import {
 
 const initialState = {
   isLoading: false,
+  langCode: false,
   userAddress: null,
   userLocation: null,
   userEnteredAddress: null,
@@ -31,6 +32,9 @@ const locationSlice = createSlice({
     },
     setInvoiceLoading: (state, action) => {
       state.isLoading = action.payload;
+    },
+    setLanguage: (state, action) => {
+      state.langCode = action.payload;
     },
   },
   extraReducers: builder => {
@@ -66,5 +70,6 @@ export const {
   setEnteredAddress,
   setEnteredLocation,
   setInvoiceLoading,
+  setLanguage,
 } = locationSlice.actions;
 export default locationSlice.reducer;

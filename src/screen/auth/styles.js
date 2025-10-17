@@ -241,6 +241,26 @@ inactiveText: {
     backgroundColor: Constants.customgrey4,
     boxShadow:'0px 2px 5px 0.08px grey'
   },
+
+  langView: {
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingVertical: 7,
+    paddingHorizontal: 10,
+    borderColor: Constants.white,
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap:5,
+    zIndex:10
+  },
+  lang: {
+    color: Constants.white,
+    fontSize: 16,
+    fontFamily:FONTS.Medium,
+  },
 })
 
 export default styles;

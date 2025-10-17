@@ -45,11 +45,11 @@
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>FuturaCyrillicBold.ttf</string>
-		<string>FuturaCyrillicBook.ttf</string>
-		<string>FuturaCyrillicHeavy.ttf</string>
-		<string>FuturaCyrillicMedium.ttf</string>
-		<string>FuturaCyrillicDemi.ttf</string>
+		<string>Jost-Bold.ttf</string>
+		<string>Jost-ExtraBold.ttf</string>
+		<string>Jost-Medium.ttf</string>
+		<string>Jost-Regular.ttf</string>
+		<string>Jost-SemiBold.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

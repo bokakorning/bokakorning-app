@@ -8,11 +8,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useState} from 'react';
+import React, { createRef, useEffect, useState} from 'react';
 import Constants, { FONTS} from '../../Assets/Helpers/constant';
 import {
   CrossIcon,
   DeleteIcon,
+  LanguageIcon,
   LogoutIcon,
   PrivacyIcon,
   ProfileIcon,
@@ -24,12 +25,31 @@ import InAppBrowser from 'react-native-inappbrowser-reborn';
 import { useDispatch, useSelector } from 'react-redux';
 import { navigate } from '../../../utils/navigationRef';
 import { logout } from '../../../redux/auth/authAction';
+import LanguageChange from '../../Assets/Component/LanguageChange';
+import { useTranslation } from 'react-i18next';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { setLanguage } from '../../../redux/location/locationSlice';
 
 const Account = () => {
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisible2, setModalVisible2] = useState(false);
   const user = useSelector(state => state.auth.user);
+
+  const [selectLanguage, setSelectLanguage] = useState('English');
+      const { t } = useTranslation();
+      const langRef = createRef()
+    useEffect(() => {
+    checkLng();
+  }, []);
+  const checkLng = async () => {
+    const x = await AsyncStorage.getItem('LANG');
+    if (x != null) {
+      let lng = x == x == 'sv' ? 'Swedish':'English';
+      setSelectLanguage(lng);
+      dispatch(setLanguage(lng))
+    }
+  };
   
   const InAppBrowserFunc=async(props)=>{
     try {
@@ -57,7 +77,7 @@ dispatch(logout())
   }
   return (
     <View style={styles.container}>
-      <Text style={styles.headtxt}>Profile Settings</Text>
+      <Text style={styles.headtxt}>{t("Profile Settings")}</Text>
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <TouchableOpacity
@@ -86,7 +106,7 @@ dispatch(logout())
             backgroundColor: Constants.white,
             marginBottom: 70,
           }}>
-          <Text style={styles.partheadtxt}>Profile</Text>
+          <Text style={styles.partheadtxt}>{t("Profile")}</Text>
           <TouchableOpacity
             style={[styles.box]}
             onPress={() => navigate('Profile')}>
@@ -94,7 +114,7 @@ dispatch(logout())
               <View style={styles.iconcov}>
                 <ProfileIcon height={20} width={20} color={Constants.black}/>
               </View>
-              <Text style={styles.protxt}>Personal Data</Text>
+              <Text style={styles.protxt}>{t("Personal Data")}</Text>
             </View>
             <RightArrowIcon
               color={Constants.black}
@@ -103,14 +123,14 @@ dispatch(logout())
               style={styles.aliself}
             />
           </TouchableOpacity>
-          {/* <TouchableOpacity
+          <TouchableOpacity
             style={[styles.box]}
             onPress={()=>langRef.current.show()}>
             <View style={styles.btmboxfirpart}>
               <View style={styles.iconcov}>
                 <LanguageIcon height={20} width={20} color={Constants.black} />
               </View>
-              <Text style={styles.protxt}>Language</Text>
+              <Text style={styles.protxt}>{t("Language")}</Text>
             </View>
             <View style={styles.btmboxfirpart}>
               <Text style={styles.protxt3}>{selectLanguage}</Text>
@@ -121,7 +141,7 @@ dispatch(logout())
                 style={styles.aliself}
               />
             </View>
-          </TouchableOpacity> */}
+          </TouchableOpacity>
           <TouchableOpacity
             style={[styles.box]}
             onPress={() => InAppBrowserFunc('https://main.d2i61b55rlnfpm.amplifyapp.com/PrivacyPolicy')}
@@ -130,7 +150,7 @@ dispatch(logout())
               <View style={styles.iconcov}>
                 <PrivacyIcon height={20} width={20} color={Constants.black}/>
               </View>
-              <Text style={styles.protxt}>Privacy Policy</Text>
+              <Text style={styles.protxt}>{t("Privacy Policy")}</Text>
             </View>
             <RightArrowIcon
               color={Constants.black}
@@ -147,7 +167,7 @@ dispatch(logout())
               <View style={styles.iconcov}>
                 <TermIcon height={20} width={20} color={Constants.black}/>
               </View>
-              <Text style={styles.protxt}>Terms and Conditions</Text>
+              <Text style={styles.protxt}>{t("Terms and Conditions")}</Text>
             </View>
             <RightArrowIcon
               color={Constants.black}
@@ -156,7 +176,7 @@ dispatch(logout())
               style={styles.aliself}
             />
           </TouchableOpacity>
-          <Text style={styles.partheadtxt}>Support</Text>
+          <Text style={styles.partheadtxt}>{t("Support")}</Text>
           <TouchableOpacity
             style={[styles.box]}
             onPress={() => InAppBrowserFunc('https://tawk.to/chat/68e0fa0c4db84c19518e60e8/1j6nd1gbd')}
@@ -165,7 +185,7 @@ dispatch(logout())
               <View style={styles.iconcov}>
                 <SupportIcon height={20} width={20} color={Constants.black}/>
               </View>
-              <Text style={styles.protxt}>Help Center</Text>
+              <Text style={styles.protxt}>{t("Help Center")}</Text>
             </View>
             <RightArrowIcon
               color={Constants.black}
@@ -181,7 +201,7 @@ dispatch(logout())
               <View style={styles.iconcov}>
                 <DeleteIcon height={20} width={20} color={Constants.black} />
               </View>
-              <Text style={[styles.protxt,{width:'70%'}]}>Request Account Deletion</Text>
+              <Text style={[styles.protxt,{width:'70%'}]}>{t("Request Account Deletion")}</Text>
             </View>
             <RightArrowIcon
               color={Constants.black}
@@ -196,11 +216,11 @@ dispatch(logout())
               setModalVisible(true);
             }}>
             <LogoutIcon color={Constants.red}/>
-            <Text style={styles.btntxt}> Log Out</Text>
+            <Text style={styles.btntxt}>{t("Log Out")}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
-
+<LanguageChange refs={langRef} selLang={(item)=>{setSelectLanguage(item)}}/>
       <Modal
         animationType="none"
         transparent={true}
@@ -214,18 +234,18 @@ dispatch(logout())
             <View style={{backgroundColor: 'white', alignItems: 'center'}}>
               <View style={[styles.covline,{width:'100%'}]}>
                 <View style={{width:35}}></View>
-                <Text style={styles.textStyle5}>Sign Out </Text>
+                <Text style={styles.textStyle5}>{t("Sign Out")} </Text>
                 <TouchableOpacity style={styles.croscov} onPress={()=>setModalVisible(false)}>
                   <CrossIcon color={Constants.black}/>
                 </TouchableOpacity>
               </View>
-              <Text style={styles.textStyle4}>Where do you want to go after logging out?</Text>
+              <Text style={styles.textStyle4}>{t("Are you sure you want to log out?")}</Text>
               <View style={styles.cancelAndLogoutButtonWrapStyle}>
                 <TouchableOpacity
                   activeOpacity={0.9}
                   onPress={() => setModalVisible(!modalVisible)}
                   style={styles.cancelButtonStyle2}>
-                  <Text style={[styles.modalText,{color:Constants.black}]}>Cancel</Text>
+                  <Text style={[styles.modalText,{color:Constants.black}]}>{t("Cancel")}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   activeOpacity={0.9}
@@ -234,7 +254,7 @@ dispatch(logout())
                     logOut();
                   }}
                   style={styles.logOutButtonStyle2}>
-                  <Text style={styles.modalText}>Log Out</Text>
+                  <Text style={styles.modalText}>{t("Log Out")}</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -253,26 +273,26 @@ dispatch(logout())
           <View style={styles.modalView}>
             <View style={{backgroundColor: 'white', alignItems: 'center'}}>
               <Text style={[styles.textStyle2, {color: Constants.red}]}>
-                WARNING: You are about to delete your account. This action is permanent and cannot be undone.
+                {t("WARNING: You are about to delete your account. This action is permanent and cannot be undone.")}
               </Text>
               <Text style={styles.textStyle3}>
-                • All your data, including personal information, and settings, will be permanently erased.
+                {t("• All your data, including personal information, and settings, will be permanently erased.")}
               </Text>
               <Text style={styles.textStyle3}>
-                • You will lose access to all services and benefits associated with your account.
+                {t("• You will lose access to all services and benefits associated with your account.")}
               </Text>
               <Text style={styles.textStyle3}>
-                • You will no longer receive updates, support, or communications from us.
+                {t("• You will no longer receive updates, support, or communications from us.")}
               </Text>
               <Text style={styles.textStyle}>
-                Are you sure you want to delete your account?
+                {t("Are you sure you want to delete your account?")}
               </Text>
               <View style={styles.cancelAndLogoutButtonWrapStyle}>
                 <TouchableOpacity
                   activeOpacity={0.9}
                   onPress={() => setModalVisible2(!modalVisible2)}
                   style={styles.cancelButtonStyle}>
-                  <Text style={styles.modalText}>Cancel</Text>
+                  <Text style={styles.modalText}>{t("Cancel")}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   activeOpacity={0.9}
@@ -281,7 +301,7 @@ dispatch(logout())
                     logOut();
                   }}
                   style={styles.logOutButtonStyle}>
-                  <Text style={styles.modalText}>Delete Account</Text>
+                  <Text style={styles.modalText}>{t("Delete Account")}</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -501,5 +521,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 20,
     marginBottom: 15,
+  },
+  protxt3: {
+    color: Constants.black,
+    fontSize: 12,
+    fontFamily: FONTS.Medium,
   },
 });
