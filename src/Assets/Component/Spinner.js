@@ -3,14 +3,17 @@ import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
 import Constants, { FONTS } from '../Helpers/constant';
 import { wp } from '../../../utils/responsiveScreen';
 import {useDispatch,useSelector} from 'react-redux'
+import { useTranslation } from 'react-i18next';
 
 const Spinner = () => {
+  const { t } = useTranslation();
   const isLoading = useSelector(
     state =>
       state.auth.isLoading 
     ||state.location.isLoading ||
       state.booking.isLoading||
-      state.notification.isLoading
+      state.notification.isLoading||
+      state.progress.isLoading
   );
   if (!isLoading) {
     return <></>;
@@ -24,7 +27,7 @@ const Spinner = () => {
           animating={true}
           color={Constants.white}
         />
-        <Text style={styles.title}>Loading...</Text>
+        <Text style={styles.title}>{t("Loading...")}</Text>
       </View>
     </View>
   );

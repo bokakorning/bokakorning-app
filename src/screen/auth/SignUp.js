@@ -44,12 +44,12 @@ const SignUp = () => {
   });
   const dispatch = useDispatch();
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email('Invalid email').required('Email is required'),
+    email: Yup.string().email(t('Invalid email')).required(t('Email is required')),
     password: Yup.string()
-      .min(8, 'Password must be at least 8 characters')
-      .required('Password is required'),
-    name: Yup.string().required('Name is required'),
-    phone: Yup.string().required('Phone is required'),
+      .min(8, t('Password must be at least 8 characters'))
+      .required(t('Password is required')),
+    name: Yup.string().required(t('Name is required')),
+    phone: Yup.string().required(t('Phone is required')),
   });
 
   const submit = async (value, { resetForm }) => {
@@ -144,7 +144,7 @@ const SignUp = () => {
                       tabopt === 0 ? styles.activeText : styles.inactiveText,
                     ]}
                   >
-                    Student
+                    {t("Student")}
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -158,14 +158,14 @@ const SignUp = () => {
                       tabopt === 1 ? styles.activeText : styles.inactiveText,
                     ]}
                   >
-                    Instructor
+                    {t("Instructor")}
                   </Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.inpcov}>
                 <TextInput
                   style={styles.inputfield}
-                  placeholder="Full Name"
+                  placeholder={t("Full Name")}
                   placeholderTextColor={Constants.customgrey2}
                   value={values.name}
                   onChangeText={handleChange('name')}
@@ -178,7 +178,7 @@ const SignUp = () => {
               <View style={styles.inpcov}>
                 <TextInput
                   style={styles.inputfield}
-                  placeholder="Phone Number"
+                  placeholder={t("Phone Number")}
                   keyboardType="number-pad"
                   placeholderTextColor={Constants.customgrey2}
                   value={values.phone}
@@ -192,7 +192,7 @@ const SignUp = () => {
               <View style={styles.inpcov}>
                 <TextInput
                   style={styles.inputfield}
-                  placeholder="Enter Email"
+                  placeholder={t("Enter Email")}
                   placeholderTextColor={Constants.customgrey2}
                   value={values.email}
                   onChangeText={handleChange('email')}
@@ -205,7 +205,7 @@ const SignUp = () => {
               <View style={styles.inpcov}>
                 <TextInput
                   style={styles.inputfield}
-                  placeholder="Enter Password"
+                  placeholder={t("Enter Password")}
                   secureTextEntry={showPass}
                   placeholderTextColor={Constants.customgrey2}
                   value={values.password}
@@ -238,13 +238,13 @@ const SignUp = () => {
                   style={styles.uploadcov}
                   onPress={() => cameraRef?.current?.show()}
                 >
-                  <Text style={styles.upltxt}>Attach Your Driving Permit</Text>
+                  <Text style={styles.upltxt}>{t("Attach Your Driving Permit")}</Text>
                   <DropdownIcon color={Constants.black}/>
                 </TouchableOpacity>
               )}
               {tabopt === 0 && document?.uri && (
                 <TouchableOpacity style={styles.uploadcov}>
-                  <Text style={styles.upltxt}>1 Document Attached</Text>
+                  <Text style={styles.upltxt}>{t("1 Document Attached")}</Text>
                   <View style={{ flexDirection: 'row', gap: 10 }}>
                     <ViewIcon onPress={() => setModalVisible(true)} />
                     <DeleteIcon onPress={() => setDocument('')} color={Constants.red}/>
@@ -254,7 +254,7 @@ const SignUp = () => {
 
               {/* <TouchableOpacity style={styles.btncov} onPress={handleSubmit}> */}
               <TouchableOpacity style={styles.btncov} onPress={handleSubmit}>
-                <Text style={styles.btntxt}>Sign Up</Text>
+                <Text style={styles.btntxt}>{t("Sign Up")}</Text>
               </TouchableOpacity>
               {touched.email && errors.email && (
                 <Text style={styles.require}>{errors.email}</Text>
@@ -264,7 +264,7 @@ const SignUp = () => {
         </Formik>
         <Text style={[styles.textcov2,{marginBottom:Platform.OS==='ios'&&30}]} onPress={() => navigate('SignIn')}>
           <Text style={[styles.lasttxt, { color: Constants.white }]}>
-            Have an account ?{' '}
+            {t("Have an account ?")}{' '}
           </Text>
           <Text
             style={[
@@ -272,7 +272,7 @@ const SignUp = () => {
               { color: Constants.black, textDecorationLine: 'underline' },
             ]}
           >
-            Sign In
+            {t("Sign In")}
           </Text>
         </Text>
       </ScrollView>

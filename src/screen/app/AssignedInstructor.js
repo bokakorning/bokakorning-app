@@ -15,9 +15,11 @@ import RNBlobUtil from 'react-native-blob-util';
 import { showToaster } from '../../../utils/toaster';
 import { useDispatch } from 'react-redux';
 import { setInvoiceLoading } from '../../../redux/location/locationSlice';
+import { useTranslation } from 'react-i18next';
 
 const AssignedInstructor = props => {
   const data = props?.route?.params;
+  const { t } = useTranslation();
   // console.log('data', data);
   const dispatch = useDispatch();
   const getinvoice = async () => {
@@ -63,11 +65,11 @@ const AssignedInstructor = props => {
         <View style={styles.frow2}>
           <Text style={styles.instytxt}>
             {data?.transmission === 'Automatic'
-              ? 'Auto-Car'
+              ? t('Auto-Car')
               : data?.transmission === 'Both'
-              ? 'Auto & Manual'
-              : 'Manual'}{' '}
-            Instructor
+              ? t('Auto & Manual')
+              : t('Manual')}{' '}
+            {t("Instructor")}
           </Text>
         </View>
         <Image
@@ -82,14 +84,14 @@ const AssignedInstructor = props => {
         />
         <Text style={styles.drivnametxt}>{data?.name}</Text>
         <Text style={styles.biotxt}>{data?.bio}</Text>
-        <Text style={[styles.bactxt, { fontSize: 16 }]}>Vehicle:</Text>
+        <Text style={[styles.bactxt, { fontSize: 16 }]}>{t("Vehicle")}</Text>
         <Text style={{ marginTop: 7 }}>
-          <Text style={styles.drivnametxt}>Vehicle: </Text>
+          <Text style={styles.drivnametxt}>{t("Vehicle")} </Text>
           <Text style={styles.vehinam}>{data?.vehicle_model}</Text>
         </Text>
         <Text style={{ marginTop: 7 }}>
-          <Text style={styles.drivnametxt}>Category: </Text>
-          <Text style={styles.vehinam}>Car</Text>
+          <Text style={styles.drivnametxt}>{t("Category")} </Text>
+          <Text style={styles.vehinam}>{t("Car")}</Text>
         </Text>
         {data?.type==='show_invoice'&&<TouchableOpacity
               style={styles.contactopt}
@@ -98,7 +100,7 @@ const AssignedInstructor = props => {
               }>
               <InvoiceIcon color={Constants.custom_blue} height={20} width={20} />
               <Text style={styles.othrttxt2}>
-                Download Invoice
+                {t("Download Invoice")}
               </Text>
             </TouchableOpacity>}
       </ScrollView>

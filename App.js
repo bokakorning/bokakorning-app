@@ -9,7 +9,11 @@ import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import { checkLogin } from './redux/auth/authAction';
 import Spinner from './src/Assets/Component/Spinner';
+import NetError from './src/Assets/Component/Spinner';
 import Splash from 'react-native-splash-screen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import i18n from './i18n';
+import { setLanguage } from './redux/location/locationSlice';
 
 const App = () => {
   const APP_ID = 'df0d1c60-c14f-4226-8ba1-927c55e75f3a';
@@ -19,13 +23,8 @@ const App = () => {
     OneSignal.Notifications.requestPermission(true);
   }, [OneSignal]);
 
-  // const checkLng = async () => {
-  //     const x = await AsyncStorage.getItem('LANG');
-  //     if (x != null) {
-  //       i18n.changeLanguage(x);
-  //     }
-  //   };
   useEffect(()=>{
+    checkLng()
     store.dispatch(checkLogin()).unwrap()
       .finally(() => {
         setTimeout(() => {
@@ -33,6 +32,16 @@ const App = () => {
         }, 500);
       });
   },[])
+
+  const checkLng = async () => {
+      const x = await AsyncStorage.getItem('LANG');
+      if (x != null) {
+        i18n.changeLanguage(x);
+        let lng = x == x == 'sv' ? 'Swedish':'English';
+        store.dispatch(setLanguage(lng))
+      }
+    };
+
   return (
     <Provider store={store}>
       <SafeAreaView
@@ -44,6 +53,7 @@ const App = () => {
         style={styles.container}
       >
         <StatusBar barStyle="dark-content" backgroundColor={Constants.white} />
+        {/* <NetError /> */}
         <Spinner />
         <Navigation />
         <Toast />

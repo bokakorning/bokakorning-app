@@ -22,26 +22,28 @@ import {
 } from '../../../redux/auth/authAction';
 import { goBack } from '../../../utils/navigationRef';
 import { BackIcon } from '../../../Theme';
+import { useTranslation } from 'react-i18next';
 
 const ForgotPassword = () => {
+  const { t } = useTranslation();
   const [showPass, setShowPass] = useState(true);
   const [showConfPass, setShowConfPass] = useState(true);
   const [token, setToken] = useState('');
   const [step, setStep] = useState(0);
   const dispatch = useDispatch();
   const validationEmailSchema = Yup.object().shape({
-    email: Yup.string().email('Invalid email').required('Email is required'),
+    email: Yup.string().email(t('Invalid email')).required(t('Email is required')),
   });
   const validationOtpSchema = Yup.object().shape({
-    otp: Yup.number().required('Otp is required'),
+    otp: Yup.number().required(t('Otp is required')),
   });
   const validationPasswordSchema = Yup.object().shape({
     password: Yup.string()
-      .min(8, 'Password must be at least 8 characters')
-      .required('Password is required'),
+      .min(8, t('Password must be at least 8 characters'))
+      .required(t('Password is required')),
     conformpassword: Yup.string()
-      .oneOf([Yup.ref('password')], 'Passwords must match')
-      .required('Confirm Password is required'),
+      .oneOf([Yup.ref('password')], t('Passwords must match'))
+      .required(t('Confirm Password is required')),
   });
 
   const formikEmail = useFormik({
@@ -145,24 +147,24 @@ const ForgotPassword = () => {
           />
           <Text style={styles.headtxt}>
             {step === 0
-              ? 'Forgot Password?'
+              ? t('Forgot Password?')
               : step === 1
-              ? 'Verify Your Number'
-              : 'Change Password'}
+              ? t('Verify Your Number')
+              : t('Change Password')}
           </Text>
           <Text style={styles.forgtxt}>
             {step === 0
-              ? 'Enter your registered e-mail ID to receive the OTP to change your password.'
+              ? t('Enter your registered e-mail ID to receive the OTP to change your password.')
               : step === 1
-              ? 'Enter the one-time password received on your number'
-              : 'Your password must be at least 8 characters long and include one uppercase letter and one number.'}
+              ? t('Enter the one-time password received on your number')
+              : t('Your password must be at least 8 characters long and include one uppercase letter and one number.')}
           </Text>
           {step === 0 && (
             <View>
               <View style={styles.inpcov}>
                 <TextInput
                   style={styles.inputfield}
-                  placeholder="Enter Email"
+                  placeholder={t("Enter Email")}
                   textAlign="left"
                   placeholderTextColor={Constants.customgrey2}
                   value={formikEmail.values.email}
@@ -180,7 +182,7 @@ const ForgotPassword = () => {
               <View style={styles.inpcov}>
                 <TextInput
                   style={styles.inputfield}
-                  placeholder="Enter OTP"
+                  placeholder={t("Enter OTP")}
                   placeholderTextColor={Constants.customgrey2}
                   value={formikOtp.values.otp}
                   onChangeText={formikOtp.handleChange('otp')}
@@ -197,7 +199,7 @@ const ForgotPassword = () => {
               <View style={styles.inpcov}>
                 <TextInput
                   style={styles.inputfield}
-                  placeholder="Enter Password"
+                  placeholder={t("Enter Password")}
                   secureTextEntry={showPass}
                   placeholderTextColor={Constants.customgrey2}
                   value={formikPassword.values.password}
@@ -231,7 +233,7 @@ const ForgotPassword = () => {
               <View style={styles.inpcov}>
                 <TextInput
                   style={styles.inputfield}
-                  placeholder="Enter Confirm Password"
+                  placeholder={t("Enter Confirm Password")}
                   secureTextEntry={showConfPass}
                   placeholderTextColor={Constants.customgrey2}
                   value={formikPassword.values.conformpassword}
@@ -269,7 +271,7 @@ const ForgotPassword = () => {
               style={styles.btncov}
               onPress={formikEmail.handleSubmit}
             >
-              <Text style={styles.btntxt}>Send OTP</Text>
+              <Text style={styles.btntxt}>{t("Send OTP")}</Text>
             </TouchableOpacity>
           )}
           {step === 1 && (
@@ -277,7 +279,7 @@ const ForgotPassword = () => {
               style={styles.btncov}
               onPress={formikOtp.handleSubmit}
             >
-              <Text style={styles.btntxt}>Verify OTP</Text>
+              <Text style={styles.btntxt}>{t("Verify OTP")}</Text>
             </TouchableOpacity>
           )}
           {step === 2 && (
@@ -285,7 +287,7 @@ const ForgotPassword = () => {
               style={styles.btncov}
               onPress={formikPassword.handleSubmit}
             >
-              <Text style={styles.btntxt}>Submit</Text>
+              <Text style={styles.btntxt}>{t("Submit")}</Text>
             </TouchableOpacity>
           )}
         </View>

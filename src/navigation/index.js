@@ -12,6 +12,7 @@ import Form from '../screen/instructer/Form';
 import InstProfile from '../screen/instructer/Profile';
 import BookingDetail from '../screen/instructer/BookingDetail';
 import InstructerTransactionHistory from '../screen/instructer/TransactionHistory';
+import ProgressChecklist from '../screen/instructer/ProgressChecklist';
 import InstructerDetail from '../screen/app/InstructerDetail';
 import BookingConfirm from '../screen/app/BookingConfirm';
 import AssignedInstructor from '../screen/app/AssignedInstructor';
@@ -61,6 +62,7 @@ export default function Navigation(props) {
         <Stack.Screen name="ReBookInstructer" component={ReBookInstructer} />
         <Stack.Screen name="BookingDetail" component={BookingDetail} />
         <Stack.Screen name="InstructerTransactionHistory" component={InstructerTransactionHistory} />
+        <Stack.Screen name="ProgressChecklist" component={ProgressChecklist} />
 
       </Stack.Navigator>
 

@@ -33,9 +33,11 @@ import { mapStyle } from '../../../Theme/MapStyle';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { goBack, navigate, reset } from '../../../utils/navigationRef';
 import { createBooking } from '../../../redux/booking/bookingAction';
+import { useTranslation } from 'react-i18next';
 
 const InstructerDetail = props => {
   const data = props?.route?.params;
+  const { t } = useTranslation();
   console.log('data', data);
   const timeRef = createRef();
   const dispatch = useDispatch();
@@ -62,7 +64,7 @@ const InstructerDetail = props => {
         type: 'Point',
         coordinates: [data?.selloc?.long?data?.selloc?.long:userLocation?.long, data?.selloc?.lat?data?.selloc?.lat:userLocation?.lat],
       },
-    pickup_address: data?.selloc?.long?userEnteredAddress:userAddress
+    pickup_address: userEnteredAddress?userEnteredAddress:userAddress
     }
       dispatch(createBooking(body))
         .unwrap()
@@ -143,20 +145,20 @@ const InstructerDetail = props => {
         </View>
         <TouchableOpacity style={styles.frow} onPress={()=>goBack()}>
           <LeftarrowIcon height={20} width={20} />
-          <Text style={styles.bactxt}>Back to Instructors List</Text>
+          <Text style={styles.bactxt}>{t("Back to Instructors List")}</Text>
         </TouchableOpacity>
         <View style={styles.frow2}>
           <Text style={styles.instytxt}>
             {data?.transmission === 'Automatic'
-              ? 'Auto-Car'
+              ? t('Auto-Car')
               : data?.transmission === 'Both'
-              ? 'Auto & Manual'
-              : 'Manual'}{' '}
-            Instructor
+              ? t('Auto & Manual')
+              : t('Manual')}{' '}
+            {t("Instructor")}
           </Text>
           <Text style={styles.awatxt}>
             {data?.distance > 0 ? (data?.distance / 1609.34).toFixed(0) : 0}{' '}
-            Miles Away
+            {t("Miles Away")}
           </Text>
         </View>
         <Image
@@ -172,17 +174,17 @@ const InstructerDetail = props => {
         <Text style={styles.drivnametxt}>{data?.name}</Text>
         <Text style={styles.biotxt}>{data?.bio}</Text>
         <Text style={styles.ratetxt}>
-          <Text style={styles.drivnametxt}>Rate: </Text>
-          <Text style={styles.vehinam}>{Currency} {data?.rate_per_hour}/Hour</Text>
+          <Text style={styles.drivnametxt}>{t("Rate")} </Text>
+          <Text style={styles.vehinam}>{Currency} {data?.rate_per_hour}/{t("Hour")}</Text>
         </Text>
-        <Text style={[styles.bactxt, { fontSize: 16 }]}>Vehicle:</Text>
+        <Text style={[styles.bactxt, { fontSize: 16 }]}>{t("Vehicle")}</Text>
         <Text style={{ marginTop: 7 }}>
-          <Text style={styles.drivnametxt}>Vehicle: </Text>
+          <Text style={styles.drivnametxt}>{t("Vehicle")} </Text>
           <Text style={styles.vehinam}>{data?.vehicle_model}</Text>
         </Text>
         <Text style={{ marginTop: 7 }}>
-          <Text style={styles.drivnametxt}>Category: </Text>
-          <Text style={styles.vehinam}>Car</Text>
+          <Text style={styles.drivnametxt}>{t("Category")} </Text>
+          <Text style={styles.vehinam}>{t("Car")}</Text>
         </Text>
         {/* <TouchableOpacity
               style={styles.contactopt}
@@ -200,7 +202,7 @@ const InstructerDetail = props => {
           style={styles.shdbtn}
           onPress={() => timeRef.current.show()}
         >
-          <Text style={styles.shdbtntxt}>Book a Session</Text>
+          <Text style={styles.shdbtntxt}>{t("Book a Session")}</Text>
         </TouchableOpacity>
       </View>
       <ActionSheet
@@ -218,7 +220,7 @@ const InstructerDetail = props => {
           }}
         >
           <Text style={styles.sheetheadtxt}>
-            Pickup {timeconf ? 'Location' : 'Time'}:
+            {t("Pickup")} {timeconf ? t('Location') : t('Time')}
           </Text>
           <CrossIcon
             style={styles.popupcross}
@@ -228,7 +230,7 @@ const InstructerDetail = props => {
           />
         </View>
         {!timeconf && <View style={styles.horline}></View>}
-        {timeconf&&<Text style={styles.mapinstxt}>Your instructor will some pick you up at location below:</Text>}
+        {timeconf&&<Text style={styles.mapinstxt}>{t("Your instructor will some pick you up at location below")}</Text>}
         {timeconf ? (
           <View style={styles.mapThumbnail}>
             {userLocation?.long && (
@@ -300,11 +302,11 @@ const InstructerDetail = props => {
 
         {!timeconf && <View style={styles.horline}></View>}
         {timeconf&&<View>
-        <Text style={styles.sheetheadtxt2}>At:</Text>
+        <Text style={styles.sheetheadtxt2}>{t("At")}</Text>
         <View style={styles.ndpart}>
           <Text style={styles.seltimtxt}>{selectedTime}</Text>
           <TouchableOpacity style={styles.editcov} onPress={() => settimeconf(false)}>
-            <Text style={styles.seltimtxt}>Edit</Text>
+            <Text style={styles.seltimtxt}>{t("Edit")}</Text>
             <EditIcon color={Constants.black}/>
           </TouchableOpacity>
         </View>
@@ -322,7 +324,7 @@ const InstructerDetail = props => {
           }}
         >
           <Text style={styles.shdbtntxt}>
-            {timeconf ? 'Proceed to Pay' : 'Confirm Time'}
+            {timeconf ? t('Proceed to Pay') : t('Confirm Time')}
           </Text>
         </TouchableOpacity>
       </ActionSheet>

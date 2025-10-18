@@ -14,8 +14,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getTransaction } from '../../../redux/transaction/transactionAction';
 import { goBack } from '../../../utils/navigationRef';
 import { getProfile } from '../../../redux/auth/authAction';
+import { useTranslation } from 'react-i18next';
 
 const InstructerTransactionHistory = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [curentData, setCurrentData] = useState([]);
@@ -54,11 +56,11 @@ const InstructerTransactionHistory = () => {
         <TouchableOpacity style={styles.backcov} onPress={() => goBack()}>
           <BackIcon color={Constants.black}/>
         </TouchableOpacity>
-        <Text style={styles.headtxt1}>Transaction History</Text>
+        <Text style={styles.headtxt1}>{t("Transaction History")}</Text>
         <View></View>
       </View>
       <View style={styles.amtline}>
-        <Text style={styles.amttxt}>Available balance</Text>
+        <Text style={styles.amttxt}>{t("Available balance")}</Text>
         <Text style={styles.amttxt2}>{Currency}{user?.wallet?user?.wallet:0}</Text>
       </View>
       <FlatList
@@ -78,7 +80,7 @@ const InstructerTransactionHistory = () => {
                 fontSize: 18,
                 fontFamily: FONTS.Medium,
               }}>
-              No Transaction Available
+              {t("No Transaction Available")}
             </Text>
           </View>
         )}
@@ -89,8 +91,8 @@ const InstructerTransactionHistory = () => {
                 {item?.type==='WITHDRAWAL'&&item?.status==='Pending'?<GlassIcon height={25} width={25} color={Constants.black}/>:<WalletIcon height={25} width={25} color={Constants.black}/>}
               </View>
               <View>
-                <Text style={styles.crdtxt1}>{item?.type==='WITHDRAWAL'?'Withdrawal Amount':'Earned Amount'}</Text>
-                {item?.type==='WITHDRAWAL'&&item?.status==='Pending'&&<Text style={styles.crdtxt2}>Payment processing</Text>}
+                <Text style={styles.crdtxt1}>{item?.type==='WITHDRAWAL'?t('Withdrawal Amount'):t('Earned Amount')}</Text>
+                {item?.type==='WITHDRAWAL'&&item?.status==='Pending'&&<Text style={styles.crdtxt2}>{t("Payment processing")}</Text>}
                 <Text style={styles.crdtxt3}>{moment(item?.createdAt).format('DD-MM-YYYY hh:mm A')}</Text>
               </View>
             </View>

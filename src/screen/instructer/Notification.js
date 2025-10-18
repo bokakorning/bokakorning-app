@@ -14,8 +14,10 @@ import { useDispatch } from 'react-redux';
 import { getNotification, } from '../../../redux/notification/notificationAction'
 import Constants, { FONTS } from '../../Assets/Helpers/constant';
 import InstructerHeader from '../../Assets/Component/InstructerHeader';
+import { useTranslation } from 'react-i18next';
 
 const Notification = props => {
+  const { t } = useTranslation();
   const [notification, setnotification] = useState([]);
   const [page, setPage] = useState(1);
   const [curentData, setCurrentData] = useState([]);
@@ -55,7 +57,7 @@ const Notification = props => {
         <Text style={styles.headtxt}>Notification</Text>
         <View></View>
       </View> */}
-      <InstructerHeader item={"Notification"} showback={false}/>
+      <InstructerHeader item={t("Notification")} showback={false}/>
       <View style={{flex: 1, paddingHorizontal: 20,paddingBottom:70}}>
         <FlatList
           data={notification}
@@ -72,7 +74,7 @@ const Notification = props => {
                   fontSize: 18,
                   fontFamily: FONTS.Medium,
                 }}>
-                No Notification
+                {t("No Notification")}
               </Text>
             </View>
           )}

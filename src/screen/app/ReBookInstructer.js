@@ -25,9 +25,11 @@ import ActionSheet from 'react-native-actions-sheet';
 import { Picker } from 'react-native-wheel-pick';
 import { reBookings } from '../../../redux/booking/bookingAction';
 import UserHeader from '../../Assets/Component/UserHeader';
+import { useTranslation } from 'react-i18next';
 
 const ReBookInstructer = (props) => {
   const data = props?.route?.params;
+  const { t } = useTranslation();
   const timeRef = createRef();
   const [driverlist, setDriverList] = useState([]);
   const [selDriver, setselDriver] = useState([]);
@@ -132,9 +134,9 @@ const ReBookInstructer = (props) => {
           <LocationDropdown
           />
           </View> */}
-        <Text style={styles.headtxt}>Book another instructer</Text>
+        <Text style={styles.headtxt}>{t("Book another instructer")}</Text>
         <Text style={[styles.seltxt, { marginVertical: 10 }]}>
-          Instructors Available Near your address:
+          {t("Instructors Available Near your address")}
         </Text>
         <View style={styles.mapThumbnail}>
           {data?.user_location?.coordinates?.length>0&&<MapView
@@ -182,7 +184,7 @@ const ReBookInstructer = (props) => {
               ))}
           </MapView>}
         </View>
-        <Text style={styles.headtxt2}>Available Instructors</Text>
+        <Text style={styles.headtxt2}>{t("Available Instructors")}</Text>
         {driverlist && driverlist?.length > 0 ? (
           driverlist.map((item, index) => (
             <TouchableOpacity
@@ -209,31 +211,31 @@ const ReBookInstructer = (props) => {
                     {item?.distance > 0
                       ? (item?.distance / 1609.34).toFixed(0)
                       : 0}{' '}
-                    Miles Away
+                    {t("Miles Away")}
                   </Text>
                 </View>
                 <View>
                   <Text style={styles.drivtxt}>{item?.name}</Text>
-                  <Text style={styles.drivinftxt}>Experience/Lesson Type</Text>
+                  <Text style={styles.drivinftxt}>{t("Experience/Lesson Type")}</Text>
                   <Text style={styles.drivtxt}>{Currency} {item?.rate_per_hour}/h</Text>
                 </View>
               </View>
               <View>
                 <TouchableOpacity style={styles.bookbtn} onPress={()=>{setselDriver(item),timeRef.current?.show()}}>
-                  <Text style={styles.booktxt}>Book</Text>
+                  <Text style={styles.booktxt}>{t("Book")}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={{ flexDirection: 'row', alignItems: 'center' }}
                   onPress={()=>navigate('AssignedInstructor',item)}
                 >
-                  <Text style={styles.viwdetxt}>View Details</Text>
+                  <Text style={styles.viwdetxt}>{t("View Details")}</Text>
                   <RightArrowIcon height={15} width={15} />
                 </TouchableOpacity>
               </View>
             </TouchableOpacity>
           ))
         ) : (
-          <Text style={styles.noinsttxt}>No Instructor Available</Text>
+          <Text style={styles.noinsttxt}>{t("No Instructor Available")}</Text>
         )}
       </ScrollView>
       <ActionSheet
@@ -251,7 +253,7 @@ const ReBookInstructer = (props) => {
           }}
         >
           <Text style={styles.sheetheadtxt}>
-            Pickup {timeconf ? 'Location' : 'Time'}:
+            {t("Pickup")} {timeconf ? t('Location') : t('Time')}:
           </Text>
           <CrossIcon
             style={styles.popupcross}
@@ -261,7 +263,7 @@ const ReBookInstructer = (props) => {
           />
         </View>
         {!timeconf && <View style={styles.horline}></View>}
-        {timeconf&&<Text style={styles.mapinstxt}>Your instructor will some pick you up at location below:</Text>}
+        {timeconf&&<Text style={styles.mapinstxt}>{t("Your instructor will some pick you up at location below")}</Text>}
         {timeconf ? (
           <View style={styles.mapThumbnail}>
             {data?.user_location?.coordinates?.length>0 && (
@@ -333,11 +335,11 @@ const ReBookInstructer = (props) => {
 
         {!timeconf && <View style={styles.horline}></View>}
         {timeconf&&<View>
-        <Text style={styles.sheetheadtxt2}>At:</Text>
+        <Text style={styles.sheetheadtxt2}>{t("At")}</Text>
         <View style={styles.ndpart}>
           <Text style={styles.seltimtxt}>{selectedTime}</Text>
           <TouchableOpacity style={styles.editcov} onPress={() => settimeconf(false)}>
-            <Text style={styles.seltimtxt}>Edit</Text>
+            <Text style={styles.seltimtxt}>{t("Edit")}</Text>
             <EditIcon color={Constants.black}/>
           </TouchableOpacity>
         </View>
@@ -355,7 +357,7 @@ const ReBookInstructer = (props) => {
           }}
         >
           <Text style={styles.shdbtntxt}>
-            {timeconf ? 'Confirm Booking' : 'Confirm Time'}
+            {timeconf ? t('Confirm Booking') : t('Confirm Time')}
           </Text>
         </TouchableOpacity>
       </ActionSheet>

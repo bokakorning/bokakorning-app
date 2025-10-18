@@ -15,14 +15,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import Constants, { FONTS, Googlekey } from '../../Assets/Helpers/constant';
 import MapViewDirections from 'react-native-maps-directions';
-import { BackIcon, CallIcon, LocationIcon } from '../../../Theme';
+import { BackIcon, CallIcon, CheckIcon, LocationIcon } from '../../../Theme';
 import moment from 'moment';
 import { finishSession } from '../../../redux/booking/bookingAction';
-import { goBack } from '../../../utils/navigationRef';
+import { goBack, navigate } from '../../../utils/navigationRef';
 import { getProfile } from '../../../redux/auth/authAction';
+import { useTranslation } from 'react-i18next';
 
 const BookingDetail = props => {
   const data = props?.route?.params;
+  const { t } = useTranslation();
   //   console.log('data',data)
   const dispatch = useDispatch();
   const [modelvsible, setmodelvsible] = useState(false);
@@ -61,7 +63,7 @@ const BookingDetail = props => {
       };
   return (
     <View style={styles.container}>
-      <View style={{ height: '60%' }}>
+      <View style={{ height: '55%' }}>
         {userLocation?.long && (
           <MapView
             ref={mapRef}
@@ -161,26 +163,30 @@ const BookingDetail = props => {
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
       <Text style={[styles.txtcov, { marginTop: 30 }]}>
-        <Text style={styles.drivnametxt}>Date: </Text>
+        <Text style={styles.drivnametxt}>{t("Date")} </Text>
         <Text style={styles.boxtxt}>
           {moment(data?.date).format('dddd, DD MMMM')}
         </Text>
       </Text>
       <Text style={styles.txtcov}>
-        <Text style={styles.drivnametxt}>Time: </Text>
-        <Text style={styles.boxtxt}>At {data?.selectedTime}</Text>
+        <Text style={styles.drivnametxt}>{t("Time")} </Text>
+        <Text style={styles.boxtxt}>{t("At")} {data?.selectedTime}</Text>
       </Text>
       <Text style={styles.txtcov}>
-        <Text style={styles.drivnametxt}>Pickup Address: </Text>
+        <Text style={styles.drivnametxt}>{t("Pickup Address")} </Text>
         <Text style={styles.boxtxt}>{data?.pickup_address}</Text>
       </Text>
+      <TouchableOpacity style={styles.frow} onPress={()=>navigate('ProgressChecklist',data?.user?._id)}>
+        <CheckIcon color={Constants.custom_blue} height={20} width={20}/>
+        <Text style={styles.prochtxt}>{t("Progress Checklist")}</Text>
+      </TouchableOpacity>
       <View style={styles.butcov}>
         <TouchableOpacity
           style={styles.contactopt}
           onPress={() => Linking.openURL(`tel:${data?.user?.phone}`)}
         >
           <CallIcon color={Constants.custom_blue} height={20} width={20} />
-          <Text style={styles.othrttxt2}>Contact {data?.user?.name}</Text>
+          <Text style={styles.othrttxt2} numberOfLines={1}>{t("Contact")} {data?.user?.name}</Text>
         </TouchableOpacity>
 
         {userLocation?.long && data?.user_location?.coordinates?.length > 0 && (
@@ -199,7 +205,7 @@ const BookingDetail = props => {
               height={20}
               width={20}
             />
-            <Text style={styles.othrttxt2}>Go to google map</Text>
+            <Text style={styles.othrttxt2}>{t("Go to google map")}</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -207,7 +213,7 @@ const BookingDetail = props => {
         style={styles.shdbtn}
         onPress={() => setmodelvsible(true)}
       >
-        <Text style={styles.shdbtntxt}>Finish Session</Text>
+        <Text style={styles.shdbtntxt}>{t("Finish Session")}</Text>
       </TouchableOpacity>
       </ScrollView>
       <Modal
@@ -219,7 +225,7 @@ const BookingDetail = props => {
         }}>
         <View style={styles.centeredView2}>
           <View style={styles.modalView2}>
-            <Text style={styles.alrt}>Alert !</Text>
+            <Text style={styles.alrt}>{t("Alert !")}</Text>
             <View
               style={{
                 backgroundColor: 'white',
@@ -227,7 +233,7 @@ const BookingDetail = props => {
                 paddingHorizontal: 30,
               }}>
               <Text style={styles.textStyle}>
-                Are you sure you want to finish this session !
+                {t("Are you sure you want to finish this session !")}
               </Text>
               <View style={styles.cancelAndLogoutButtonWrapStyle}>
                 <TouchableOpacity
@@ -241,7 +247,7 @@ const BookingDetail = props => {
                       styles.modalText,
                       {color: Constants.custom_yellow},
                     ]}>
-                    No
+                    {t("No")}
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -250,7 +256,7 @@ const BookingDetail = props => {
                   onPress={() => {
                     finishsession(), setmodelvsible(false);
                   }}>
-                  <Text style={styles.modalText}>Yes</Text>
+                  <Text style={styles.modalText}>{t("Yes")}</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -291,6 +297,7 @@ const styles = StyleSheet.create({
     color: Constants.custom_blue,
     fontSize: 14,
     fontFamily: FONTS.SemiBold,
+    width:'80%'
   },
   contactopt: {
     borderWidth: 1.5,
@@ -309,7 +316,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
     justifyContent: 'space-evenly',
-    marginTop: 30,
+    marginTop: 20,
     marginHorizontal: 20,
     marginBottom: 30,
   },
@@ -332,6 +339,21 @@ const styles = StyleSheet.create({
     color: Constants.black,
     fontFamily: FONTS.SemiBold,
     fontSize: 16,
+  },
+  prochtxt: {
+    fontSize: 14,
+    color: Constants.custom_blue,
+    fontFamily: FONTS.SemiBold,
+    textDecorationLine:'underline'
+  },
+  frow:{
+    flexDirection:'row',
+    gap:10,
+    marginLeft:20,
+    marginTop:10,
+    // borderBottomWidth:1,
+    // borderColor:Constants.custom_blue,
+    // width:'37%'
   },
   boxtxt: {
     fontSize: 14,

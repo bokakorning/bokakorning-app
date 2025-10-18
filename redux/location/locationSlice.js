@@ -6,7 +6,7 @@ import {
 
 const initialState = {
   isLoading: false,
-  langCode: false,
+  langCode: 'English',
   userAddress: null,
   userLocation: null,
   userEnteredAddress: null,

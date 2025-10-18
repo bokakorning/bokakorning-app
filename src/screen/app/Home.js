@@ -27,8 +27,10 @@ import { getNearbyocation } from '../../../redux/location/locationAction';
 import { navigate } from '../../../utils/navigationRef';
 import LocationDropdown from '../../Assets/Component/LocationDropdown'
 import { useIsFocused } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 const Home = () => {
+  const { t } = useTranslation();
   const [vehicleType, setvehicleType] = useState('Automatic');
   const [driverlist, setDriverList] = useState([]);
   const [showinput, setshowinput] = useState(false);
@@ -134,8 +136,8 @@ console.log("userEnteredlocation",userEnteredLocation)
           <LocationDropdown
           />
           </View>}
-        <Text style={styles.headtxt}>Book a session now </Text>
-        <Text style={styles.seltxt}>Select your preferred vehicle:</Text>
+        <Text style={styles.headtxt}>{t("Book a session now")} </Text>
+        <Text style={styles.seltxt}>{t("Select your preferred vehicle")}</Text>
         <View style={styles.caroptcov}>
           <View
             style={[
@@ -159,7 +161,7 @@ console.log("userEnteredlocation",userEnteredLocation)
               }}
             >
               <Image source={require('../../Assets/Images/smart-car.png')} />
-              <Text style={styles.seltxt}>Automatic Car</Text>
+              <Text style={styles.seltxt}>{t("Automatic Car")}</Text>
             </TouchableOpacity>
           </View>
           <View
@@ -184,12 +186,12 @@ console.log("userEnteredlocation",userEnteredLocation)
               }}
             >
               <Image source={require('../../Assets/Images/smart-car.png')} />
-              <Text style={styles.seltxt}>Manual Car</Text>
+              <Text style={styles.seltxt}>{t("Manual Car")}</Text>
             </TouchableOpacity>
           </View>
         </View>
         <Text style={[styles.seltxt, { marginVertical: 10 }]}>
-          Instructors Available Near you:
+          {t("Instructors Available Near you")}
         </Text>
         <View style={styles.mapThumbnail}>
           {userLocation?.long?<MapView
@@ -241,7 +243,7 @@ console.log("userEnteredlocation",userEnteredLocation)
               ))}
           </MapView>:<Scheliton height={hp(29)} width={'95%'} borderRadius={10}/>}
         </View>
-        <Text style={styles.headtxt2}>Available Instructors</Text>
+        <Text style={styles.headtxt2}>{t("Available Instructors")}</Text>
         {driverlist && driverlist?.length > 0 ? (
           driverlist.map((item, index) => (
            item?.rate_per_hour&& <TouchableOpacity
@@ -268,18 +270,18 @@ console.log("userEnteredlocation",userEnteredLocation)
                     {item?.distance > 0
                       ? (item?.distance / 1609.34).toFixed(0)
                       : 0}{' '}
-                    Miles Away
+                    {t("Miles Away")}
                   </Text>
                 </View>
                 <View>
                   <Text style={styles.drivtxt}>{item?.name}</Text>
-                  <Text style={styles.drivinftxt}>Experience/Lesson Type</Text>
+                  <Text style={styles.drivinftxt}>{t("Experience/Lesson Type")}</Text>
                   <Text style={styles.drivtxt}>{Currency} {item?.rate_per_hour}/h</Text>
                 </View>
               </View>
               <View>
                 <TouchableOpacity style={styles.bookbtn} onPress={()=>navigate('InstructerDetail',{...item,vehicleType:vehicleType,selloc:{long:(showinput&&userEnteredLocation?.long)?userEnteredLocation.long:userLocation?.long, lat:(showinput&&userEnteredLocation?.lat)?userEnteredLocation.lat:userLocation?.lat}})}>
-                  <Text style={styles.booktxt}>Details</Text>
+                  <Text style={styles.booktxt}>{t("Details")}</Text>
                 </TouchableOpacity>
                 {/* <TouchableOpacity
                   style={{ flexDirection: 'row', alignItems: 'center' }}
@@ -292,11 +294,11 @@ console.log("userEnteredlocation",userEnteredLocation)
             </TouchableOpacity>
           ))
         ) : (
-          <Text style={styles.noinsttxt}>No Instructor Available</Text>
+          <Text style={styles.noinsttxt}>{t("No Instructor Available")}</Text>
         )}
       </ScrollView>
       {!keyboardVisible &&<TouchableOpacity style={styles.shdbtn} onPress={()=>navigate("Schedule")}>
-        <Text style={styles.shdbtntxt}>Schedule session for later</Text>
+        <Text style={styles.shdbtntxt}>{t("Schedule session for later")}</Text>
       </TouchableOpacity>}
     </View>
   );

@@ -21,7 +21,7 @@ const Onboard = () => {
   const checkLng = async () => {
     const x = await AsyncStorage.getItem('LANG');
     if (x != null) {
-      let lng = x == x == 'sv' ? 'Swedish':'English';
+      let lng = x == 'sv' ? 'Swedish':'English';
       setSelectLanguage(lng);
       dispatch(setLanguage(lng))
     }

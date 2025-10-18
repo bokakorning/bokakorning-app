@@ -8,8 +8,10 @@ import moment from 'moment'
 import { useIsFocused } from '@react-navigation/native'
 import { RightArrowIcon } from '../../../Theme'
 import { navigate } from '../../../utils/navigationRef'
+import { useTranslation } from 'react-i18next'
 
 const MyBookings = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [reqlist, setreqList] = useState([]);
 const IsFocused = useIsFocused();
@@ -44,15 +46,15 @@ const IsFocused = useIsFocused();
       style={{marginBottom:70}}
       showsVerticalScrollIndicator={false}
       renderItem={({item,index})=><View style={[styles.card,{marginTop:index+1===1?15:0}]}>
-        <Text style={styles.boxtxt}>Session Request From {item?.user?.name}</Text>
+        <Text style={styles.boxtxt}>{t("Session Request From")} {item?.user?.name}</Text>
         <Text style={styles.boxtxt}>{moment(item?.sheduleDate?item?.sheduleDate:item?.date).format('dddd, DD MMMM')}</Text>
-        <Text style={styles.boxtxt}>At {item?.selectedTime}</Text>
+        <Text style={styles.boxtxt}>{t("At")} {item?.selectedTime}</Text>
         <Text style={styles.boxtxt}>{item?.pickup_address}</Text>
         <TouchableOpacity
                           style={{ flexDirection: 'row', alignItems: 'center' }}
                           onPress={()=>navigate('BookingDetail',item)}
                         >
-                          <Text style={styles.viwdetxt}>Details</Text>
+                          <Text style={styles.viwdetxt}>{t("Details")}</Text>
                           <RightArrowIcon height={18} width={18} color={Constants.black}/>
                         </TouchableOpacity>
       </View>
@@ -70,7 +72,7 @@ const IsFocused = useIsFocused();
                 fontSize: 18,
                 fontFamily: FONTS.Medium,
               }}>
-              No Request Available
+              {t("No Request Available")}
             </Text>
           </View>
         )}

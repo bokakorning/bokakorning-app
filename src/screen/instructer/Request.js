@@ -21,8 +21,10 @@ import {
 } from '../../../redux/booking/bookingAction';
 import moment from 'moment';
 import { useIsFocused } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 const Request = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const loginuser = useSelector(state => state.auth.loginuser);
   const [startupdateloc, setStartupdateloc] = useState(false);
@@ -112,7 +114,7 @@ const Request = () => {
   }, []);
   return (
     <View style={styles.container}>
-      <InstructerHeader item={'Lesson Request'} showback={false} />
+      <InstructerHeader item={t('Lesson Request')} showback={false} />
       <FlatList
         data={reqlist}
         style={{ marginBottom: 70 }}
@@ -120,25 +122,25 @@ const Request = () => {
         renderItem={({ item, index }) => (
           <View style={[styles.card, { marginTop: index + 1 === 1 ? 15 : 0 }]}>
             <Text style={styles.boxtxt}>
-              Session Request From {item?.user?.name}
+              {t("Session Request From")} {item?.user?.name}
             </Text>
             <Text style={styles.boxtxt}>
               {moment(item?.sheduleDate?item?.sheduleDate:item?.date).format('dddd, DD MMMM')}
             </Text>
-            <Text style={styles.boxtxt}>At {item?.selectedTime}</Text>
+            <Text style={styles.boxtxt}>{t("At")} {item?.selectedTime}</Text>
             <Text style={styles.boxtxt}>{item?.pickup_address}</Text>
             <View style={styles.btncov}>
               <TouchableOpacity
                 style={[styles.btn, { backgroundColor: '#B5FC7F' }]}
                 onPress={() => {setreqtype('accepted'),setreqid(item?._id),setmodelvsible(true)}}
               >
-                <Text style={styles.boxtxt2}>Accept</Text>
+                <Text style={styles.boxtxt2}>{t("Accept")}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.btn, { backgroundColor: '#FFA6A6' }]}
                 onPress={() => {setreqtype('cancel'),setreqid(item?._id),setmodelvsible(true)}}
               >
-                <Text style={styles.boxtxt2}>Decline</Text>
+                <Text style={styles.boxtxt2}>{t("Decline")}</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -158,7 +160,7 @@ const Request = () => {
                 fontFamily: FONTS.Medium,
               }}
             >
-              No Request Available
+              {t("No Request Available")}
             </Text>
           </View>
         )}
@@ -175,7 +177,7 @@ const Request = () => {
         }}>
         <View style={styles.centeredView2}>
           <View style={styles.modalView2}>
-            <Text style={styles.alrt}>Alert !</Text>
+            <Text style={styles.alrt}>{t("Alert !")}</Text>
             <View
               style={{
                 backgroundColor: 'white',
@@ -183,7 +185,7 @@ const Request = () => {
                 paddingHorizontal: 30,
               }}>
               <Text style={styles.textStyle}>
-                Are you sure you want to finish this session !
+                {t("Are you sure you want to finish this session !")}
               </Text>
               <View style={styles.cancelAndLogoutButtonWrapStyle}>
                 <TouchableOpacity
@@ -197,7 +199,7 @@ const Request = () => {
                       styles.modalText,
                       {color: Constants.custom_yellow},
                     ]}>
-                    No
+                    {t("No")}
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -211,7 +213,7 @@ const Request = () => {
                     }
                     setmodelvsible(false);
                   }}>
-                  <Text style={styles.modalText}>Yes</Text>
+                  <Text style={styles.modalText}>{t("Yes")}</Text>
                 </TouchableOpacity>
               </View>
             </View>

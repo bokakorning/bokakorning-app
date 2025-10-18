@@ -17,8 +17,10 @@ import CameraGalleryPeacker from '../../Assets/Component/CameraGalleryPeacker';
 import { getProfile, updateProfile } from '../../../redux/auth/authAction';
 import { goBack, reset } from '../../../utils/navigationRef';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 const InstProfile = () => {
+  const { t } = useTranslation();
   const [submitted, setSubmitted] = useState(false);
   const [aumaticopt, setaumaticopt] = useState(false);
   const [manuopt, setmanuopt] = useState(false);
@@ -155,17 +157,17 @@ goBack()
         style={styles.img}
       />}
       {edit&&<TouchableOpacity style={styles.frow} onPress={()=>cameraRef?.current?.show()}>
-        <Text style={styles.chgtxt}>Change your Profile Picture</Text>
+        <Text style={styles.chgtxt}>{t("Change your Profile Picture")}</Text>
         <PencilIcon color={Constants.black} />
       </TouchableOpacity>}
       {submitted && !image?.uri&& (
-        <Text style={styles.require}>Image is required</Text>
+        <Text style={styles.require}>{t("Image is required")}</Text>
       )}
-      <Text style={styles.tittxt}>Name</Text>
+      <Text style={styles.tittxt}>{t("Name")}</Text>
       <View style={styles.inpcov}>
         <TextInput
           style={styles.inputfield}
-          placeholder="Enter Name"
+          placeholder={t("Enter Name")}
           editable={edit}
           placeholderTextColor={Constants.customgrey2}
           value={userDetail?.name}
@@ -173,7 +175,7 @@ goBack()
         />
       </View>
       {submitted && (userDetail.name === '' || !userDetail.name) && (
-        <Text style={styles.require}>Name is required</Text>
+        <Text style={styles.require}>{t("Name is required")}</Text>
       )}
       {/* <Text style={styles.partheadtxt}>Rate:</Text>
       <View style={[styles.frow2,{marginTop:5}]}>
@@ -196,14 +198,14 @@ goBack()
        {submitted && (userDetail.rate_per_hour === '' || !userDetail.rate_per_hour) && (
         <Text style={styles.require}>Rate is required</Text>
       )} */}
-      <Text style={styles.partheadtxt}>Vehicle Details:</Text>
+      <Text style={styles.partheadtxt}>{t("Vehicle Details")}</Text>
       <View style={styles.frow2}>
-        <Text style={styles.tittxt}>Model Name</Text>
+        <Text style={styles.tittxt}>{t("Model Name")}</Text>
         <View style={[styles.inpcov, { flex: 1 }]}>
           <TextInput
             style={styles.inputfield}
             editable={edit}
-            placeholder="Enter Model"
+            placeholder={t("Enter Model")}
             placeholderTextColor={Constants.customgrey2}
             value={userDetail?.vehicle_model}
             onChangeText={vehicle_model =>
@@ -214,10 +216,10 @@ goBack()
       </View>
       {submitted &&
         (userDetail.vehicle_model === '' || !userDetail.vehicle_model) && (
-          <Text style={styles.require}>Model Name is required</Text>
+          <Text style={styles.require}>{t("Model Name is required")}</Text>
         )}
       <View style={styles.frow2}>
-        <Text style={styles.tittxt}>Transmission</Text>
+        <Text style={styles.tittxt}>{t("Transmission")}</Text>
         <TouchableOpacity
         disabled={!edit}
           style={[
@@ -229,7 +231,7 @@ goBack()
           ]}
           onPress={() => setaumaticopt(!aumaticopt)}
         >
-          <Text style={styles.opttxt}>Automatic</Text>
+          <Text style={styles.opttxt}>{t("Automatic")}</Text>
         </TouchableOpacity>
         <TouchableOpacity
         disabled={!edit}
@@ -242,19 +244,19 @@ goBack()
           ]}
           onPress={() => setmanuopt(!manuopt)}
         >
-          <Text style={styles.opttxt}>Manual</Text>
+          <Text style={styles.opttxt}>{t("Manual")}</Text>
         </TouchableOpacity>
       </View>
       {submitted && (!aumaticopt && !manuopt) && (
-        <Text style={styles.require}>Transmission is required</Text>
+        <Text style={styles.require}>{t("Transmission is required")}</Text>
       )}
       <View style={styles.frow2}>
-        <Text style={styles.tittxt}>Model Year</Text>
+        <Text style={styles.tittxt}>{t("Model Year")}</Text>
         <View style={[styles.inpcov, { flex: 1 }]}>
           <TextInput
             style={styles.inputfield}
             editable={edit}
-            placeholder="Enter Model Year"
+            placeholder={t("Enter Model Year")}
             placeholderTextColor={Constants.customgrey2}
             value={userDetail?.model_year}
             onChangeText={model_year =>
@@ -265,9 +267,9 @@ goBack()
       </View>
       {submitted &&
         (userDetail.model_year === '' || !userDetail.model_year) && (
-          <Text style={styles.require}>Model Year is required</Text>
+          <Text style={styles.require}>{t("Model Year is required")}</Text>
         )}
-      <Text style={[styles.partheadtxt,{marginBottom:10,marginTop:15}]}>Experience:</Text>
+      <Text style={[styles.partheadtxt,{marginBottom:10,marginTop:15}]}>{t("Experience")}</Text>
 
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <Dropdown
@@ -276,7 +278,7 @@ goBack()
           data={years}
           labelField="label"
           valueField="label"
-          placeholder="Select Years"
+          placeholder={t("Select Years")}
           value={userDetail?.experience_year}
           onChange={item => {}}
           renderItem={dditem => (
@@ -307,7 +309,7 @@ goBack()
           data={months}
           labelField="label"
           valueField="label"
-          placeholder="Select Months"
+          placeholder={t("Select Months")}
           value={userDetail.experience_month}
           onChange={item => {}}
           renderItem={dditem => (
@@ -336,19 +338,19 @@ goBack()
       <View style={{ flexDirection: 'row', }}>
         <View style={{width:'52%'}}>
 {submitted &&userDetail.experience_year === ''&& (
-          <Text style={styles.require}>Year is required</Text>
+          <Text style={styles.require}>{t("Year is required")}</Text>
         )}
         </View>
         {submitted &&userDetail.experience_month === '' && (
-          <Text style={styles.require}>Month is required</Text>
+          <Text style={styles.require}>{t("Month is required")}</Text>
         )}
       </View>
-      <Text style={styles.partheadtxt}>Bio:</Text>
+      <Text style={styles.partheadtxt}>{t("Bio")}</Text>
       <View style={[styles.inpucov,{marginTop:10}]}>
         <TextInput
         editable={edit}
           style={[styles.inputfield, { textAlignVertical: 'top' }]}
-          placeholder="Add a short description about yourself..."
+          placeholder={t("Add a short description about yourself...")}
           placeholderTextColor={Constants.customgrey2}
           numberOfLines={5}
           multiline={true}
@@ -358,13 +360,13 @@ goBack()
       </View>
       {submitted &&
         (userDetail.bio === '' || !userDetail.bio) && (
-          <Text style={styles.require}>Bio is required</Text>
+          <Text style={styles.require}>{t("Bio is required")}</Text>
         )}
       {edit?<TouchableOpacity style={styles.btncov} onPress={()=>submit()}>
-              <Text style={styles.btntxt}>Submit</Text>
+              <Text style={styles.btntxt}>{t("Submit")}</Text>
             </TouchableOpacity>:
       <TouchableOpacity style={styles.btncov} onPress={()=>setEdit(true)}>
-              <Text style={styles.btntxt}>Edit</Text>
+              <Text style={styles.btntxt}>{t("Edit")}</Text>
             </TouchableOpacity>}
             <CameraGalleryPeacker
         refs={cameraRef}

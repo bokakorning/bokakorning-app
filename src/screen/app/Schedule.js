@@ -29,8 +29,10 @@ import { Picker } from 'react-native-wheel-pick';
 import ActionSheet from 'react-native-actions-sheet';
 import { createBooking } from '../../../redux/booking/bookingAction';
 import { showToaster } from '../../../utils/toaster';
+import { useTranslation } from 'react-i18next';
 
 const Schedule = () => {
+  const { t } = useTranslation();
   const [vehicleType, setvehicleType] = useState('automatic');
   const [sheduleDate, setSheduleDate] = useState();
   const [dateModel, setDateModel] = useState(false);
@@ -123,8 +125,8 @@ const submit = async () => {
       </TouchableOpacity>
       <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
         
-        <Text style={styles.headtxt}>Schedule session for later </Text>
-        <Text style={styles.seltxt}>Select your preferred vehicle:</Text>
+        <Text style={styles.headtxt}>{t("Schedule session for later")} </Text>
+        <Text style={styles.seltxt}>{t("Select your preferred vehicle")}</Text>
         <View style={styles.caroptcov}>
           <View
             style={[
@@ -148,7 +150,7 @@ const submit = async () => {
               }}
             >
               <Image source={require('../../Assets/Images/smart-car.png')} />
-              <Text style={styles.seltxt}>Automatic Car</Text>
+              <Text style={styles.seltxt}>{t("Automatic Car")}</Text>
             </TouchableOpacity>
           </View>
           <View
@@ -173,19 +175,19 @@ const submit = async () => {
               }}
             >
               <Image source={require('../../Assets/Images/smart-car.png')} />
-              <Text style={styles.seltxt}>Manual Car</Text>
+              <Text style={styles.seltxt}>{t("Manual Car")}</Text>
             </TouchableOpacity>
           </View>
         </View>
         <Text style={[styles.seltxt, { marginVertical: 10 }]}>
-          Select your pickup location:
+          {t("Select your pickup location")}
         </Text>
         <View style={styles.textInput}>
           <LocationDropdown
           />
           </View>
         <Text style={[styles.seltxt2, { marginVertical: 10 }]}>
-          Or find it on map
+          {t("Or find it on map")}
         </Text>
         <View style={styles.mapThumbnail}>
           {userLocation?.long&&<MapView
@@ -217,11 +219,11 @@ const submit = async () => {
         <View style={{flexDirection:'row',justifyContent:'space-evenly',marginTop:30}}>
          <TouchableOpacity style={styles.actionButton} onPress={() => setDateModel(true)}>
             <CalenderIcon color={Constants.white}/>
-            <Text style={styles.actionText}>{sheduleDate ? moment(sheduleDate).format('DD MMM') : "Schedule Date"}</Text>
+            <Text style={styles.actionText}>{sheduleDate ? moment(sheduleDate).format('DD MMM') : t("Schedule Date")}</Text>
           </TouchableOpacity>
          <TouchableOpacity style={styles.actionButton} onPress={() => timeRef?.current.show()}>
             <ClockIcon color={Constants.white} height={17} width={17}/>
-            <Text style={styles.actionText}>{selectedTime?selectedTime : "Schedule Time"}</Text>
+            <Text style={styles.actionText}>{selectedTime?selectedTime : t("Schedule Time")}</Text>
           </TouchableOpacity>
           </View>
       </ScrollView>
@@ -247,7 +249,7 @@ const submit = async () => {
           }}
         >
           <Text style={styles.sheetheadtxt}>
-            Pickup Time :
+            {t("Pickup Time ")}
           </Text>
           <CrossIcon
             style={styles.popupcross}
@@ -288,12 +290,12 @@ const submit = async () => {
           }}
         >
           <Text style={styles.shdbtntxt}>
-            Confirm Time
+            {t("Confirm Time")}
           </Text>
         </TouchableOpacity>
       </ActionSheet>
       {(!dateModel||Platform.OS==='android')&&<TouchableOpacity style={styles.shdbtn} onPress={()=>submit()}>
-        <Text style={styles.shdbtntxt}>Confirm</Text>
+        <Text style={styles.shdbtntxt}>{t("Confirm")}</Text>
       </TouchableOpacity>}
     </View>
   );

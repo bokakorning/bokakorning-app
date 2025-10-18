@@ -8,6 +8,7 @@ import locationSlice from './location/locationSlice';
 import bookingSlice from './booking/bookingSlice';
 import notificationSlice from './notification/notificationSlice';
 import transactionSlice from './transaction/transactionSlice';
+import progressSlice from './progress/progressSlice';
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     booking: bookingSlice,
     transaction: transactionSlice,
     notification: notificationSlice,
+    progress: progressSlice,
   },
 });
 

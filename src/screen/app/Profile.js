@@ -18,8 +18,10 @@ import { getProfile, updateProfile } from '../../../redux/auth/authAction';
 import { useDispatch } from 'react-redux';
 import { hp, wp } from '../../../utils/responsiveScreen';
 import { showToaster } from '../../../utils/toaster';
+import { useTranslation } from 'react-i18next';
 
 const Profile = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [submitted, setSubmitted] = useState(false);
   const [edit, setEdit] = useState(false);
@@ -103,7 +105,7 @@ const Profile = () => {
        <TouchableOpacity style={styles.backcov} onPress={() => goBack()}>
                <BackIcon  />
                  </TouchableOpacity>
-        <Text style={styles.headtxt}>Personal Data</Text>
+        <Text style={styles.headtxt}>{t("Personal Data")}</Text>
         <View></View>
       </View>
 
@@ -137,46 +139,46 @@ const Profile = () => {
         />}
       </View>
 
-        <Text style={[styles.jobtitle]}>Name</Text>
+        <Text style={[styles.jobtitle]}>{t("Name")}</Text>
         <TextInput
           style={[styles.input]}
           editable={edit}
-          placeholder="Enter Name"
+          placeholder={t("Enter Name")}
           value={userDetail?.name}
           onChangeText={name => setUserDetail({...userDetail, name})}
           placeholderTextColor={Constants.customgrey2}
         />
       {submitted && (userDetail.name === '' || !userDetail.name) && (
-        <Text style={styles.require}>Name is required</Text>
+        <Text style={styles.require}>{t("Name is required")}</Text>
       )}
-      <Text style={[styles.jobtitle]}>Email</Text>
+      <Text style={[styles.jobtitle]}>{t("Email")}</Text>
         <TextInput
           style={[styles.input]}
           editable={edit}
-          placeholder="Enter Email"
+          placeholder={t("Enter Email")}
           value={userDetail?.email}
           onChangeText={email => setUserDetail({...userDetail, email})}
           placeholderTextColor={Constants.customgrey2}
         />
         {submitted && (userDetail.email === '' || !userDetail.email) && (
-        <Text style={styles.require}>Email is required</Text>
+        <Text style={styles.require}>{t("Email is required")}</Text>
       )}
 
-        <Text style={[styles.jobtitle]}>Phone</Text>
+        <Text style={[styles.jobtitle]}>{t("Phone")}</Text>
         <TextInput
           style={[styles.input]}
           editable={edit}
-          placeholder="Enter Number"
+          placeholder={t("Enter Number")}
           value={userDetail?.phone}
           onChangeText={phone => setUserDetail({...userDetail, phone})}
           placeholderTextColor={Constants.customgrey2}
         />
       {submitted && (userDetail.phone === '' || !userDetail.phone) && (
-        <Text style={styles.require}>Number is required</Text>
+        <Text style={styles.require}>{t("Number is required")}</Text>
       )}
 
 <TouchableOpacity style={styles.doccov} disabled={!edit} onPress={() => cameraRef2.current.show()}>
-  <Text style={styles.doctxt}>Document</Text>
+  <Text style={styles.doctxt}>{t("Document")}</Text>
  {(document?.uri||document)&& <Image
               source={{ uri: document?.uri?document?.uri:document }}
               style={{
@@ -188,10 +190,10 @@ const Profile = () => {
 </TouchableOpacity>
 
       {edit?<TouchableOpacity style={styles.signInbtn} onPress={() => submit()}>
-        <Text style={styles.buttontxt}>Save</Text>
+        <Text style={styles.buttontxt}>{t("Save")}</Text>
       </TouchableOpacity>:
       <TouchableOpacity style={styles.signInbtn} onPress={() => setEdit(true)}>
-        <Text style={styles.buttontxt}>Edit</Text>
+        <Text style={styles.buttontxt}>{t("Edit")}</Text>
       </TouchableOpacity>}
 
       <CameraGalleryPeacker

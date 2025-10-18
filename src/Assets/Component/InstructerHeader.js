@@ -4,8 +4,10 @@ import { goBack } from '../../../utils/navigationRef';
 import { BackIcon } from '../../../Theme';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateProfile } from '../../../redux/auth/authAction';
+import { useTranslation } from 'react-i18next';
 
 const InstructerHeader = props => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.user);
   const UpdateAvailability = stat => {
@@ -37,7 +39,7 @@ const InstructerHeader = props => {
           <Text style={styles.backtxt}>{props?.item}</Text>
         </View>
         <View style={styles.rowga}>
-          <Text style={styles.avltxt}>Availability</Text>
+          <Text style={styles.avltxt}>{t("Availability")}</Text>
           {user?.available ? (
             <TouchableOpacity onPress={() => UpdateAvailability(false)}>
               <Image

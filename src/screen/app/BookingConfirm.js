@@ -6,9 +6,11 @@ import { TikIcon } from '../../../Theme';
 import { hp, wp } from '../../../utils/responsiveScreen';
 import moment from 'moment';
 import { reset } from '../../../utils/navigationRef';
+import { useTranslation } from 'react-i18next';
 
 const BookingConfirm = props => {
   const data = props?.route?.params;
+  const { t } = useTranslation();
   console.log('data', data);
   return (
     <LinearGradient
@@ -20,15 +22,15 @@ const BookingConfirm = props => {
     >
       <View style={styles.buttompart}>
         <TikIcon height={120} width={120} style={{ marginTop: hp(13) }} />
-        <Text style={styles.boktxt}>Booking Confirmed</Text>
+        <Text style={styles.boktxt}>{t("Booking Confirmed")}</Text>
         <View style={styles.box}>
             <View style={styles.frow}>
                 <Text style={styles.boxtoptxt}>{moment(new Date).format('ddddd')},{data?.selectedTime}</Text>
-                <Text style={styles.boxtoptxt}>Session Duration: 60 Mins</Text>
+                <Text style={styles.boxtoptxt}>{t("Session Duration: 60 Mins")}</Text>
             </View>
             <View style={styles.horline}></View>
             <View style={[styles.frow,{marginVertical:15}]}>
-                <Text style={styles.boxbuttxt}>Driving session with {data?.name}</Text>
+                <Text style={styles.boxbuttxt}>{t("Driving session with")} {data?.name}</Text>
                 <Image source={{uri:data?.image}} style={{height:50,width:50,borderRadius:25}} />
             </View>
         </View>
@@ -37,7 +39,7 @@ const BookingConfirm = props => {
                   onPress={() =>reset("App")}
                 >
                   <Text style={styles.shdbtntxt}>
-                    Back to Home
+                    {t("Back to Home")}
                   </Text>
                 </TouchableOpacity>
       </View>

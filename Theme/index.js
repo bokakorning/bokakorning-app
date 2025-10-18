@@ -40,3 +40,6 @@ export {default as WalletIcon} from '../src/Assets/Icon/wallet.svg';
 export {default as TransactionIcon} from '../src/Assets/Icon/transaction.svg';
 export { default as Thik2Icon } from '../src/Assets/Icon/thik2.svg';
 export { default as LanguageIcon } from '../src/Assets/Icon/language.svg';
+export { default as CheckIcon } from '../src/Assets/Icon/check.svg';
+export { default as UncheckIcon } from '../src/Assets/Icon/uncheck.svg';
+export { default as WifiX } from '../src/Assets/Icon/wifiX.svg';
