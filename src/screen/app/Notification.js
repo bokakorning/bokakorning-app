@@ -89,8 +89,8 @@ const Notification = props => {
                 </View>
               </View>
               <View style={styles.notitxt}>
-                <Text style={styles.toptxt1}>{item.title}</Text>
-                <Text style={[styles.txtm2]}>{item.description}</Text>
+                <Text style={styles.toptxt1}>{t(item.title)}</Text>
+                <Text style={[styles.txtm2]}>{t(item.description)}</Text>
                 <Text style={styles.toptxt2}>
                   {moment(item.createdAt).format('DD MMM, hh:mm A')}
                 </Text>

@@ -23,6 +23,7 @@ import {
 import { goBack } from '../../../utils/navigationRef';
 import { BackIcon } from '../../../Theme';
 import { useTranslation } from 'react-i18next';
+import { wp } from '../../../utils/responsiveScreen';
 
 const ForgotPassword = () => {
   const { t } = useTranslation();

@@ -1,5 +1,5 @@
 const prodUrl = 'http://192.168.0.187:3000/';
-//  const prodUrl = 'http://192.168.25.1:3000/api/';
+//  const prodUrl = 'http://10.217.61.96:3000/';
 // const prodUrl = 'https://api.bokakorning.online/';
 // const prodUrl = 'http://10.80.19.103:3000/';
 

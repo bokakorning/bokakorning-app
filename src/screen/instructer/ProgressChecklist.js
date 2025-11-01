@@ -177,7 +177,7 @@ const handleSubItemPress = (moduleIndex, itemIndex) => {
     )}
               </View>
             </TouchableOpacity>
-            <View style={{ marginLeft: 30 }}>
+            <View style={{ marginLeft: 15 }}>
               {item.data.map((subItem, itemIndex) => (
                 <TouchableOpacity
                   key={subItem.key}
@@ -249,14 +249,14 @@ const styles = StyleSheet.create({
     marginLeft: -30,
   },
   moduleTitle: {
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: FONTS.Medium,
     color: Constants.black,
     textTransform: 'capitalize',
     // marginLeft:10
   },
   label: {
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: FONTS.Medium,
     color: Constants.black,
   },
@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
   card: {
     marginTop: 10,
     backgroundColor: Constants.white,
-    padding: 10,
+    paddingVertical: 10,
   },
   itcov: {
     backgroundColor: '#F5F5FF',
@@ -289,14 +289,14 @@ const styles = StyleSheet.create({
   },
   boxwitxt: {
     color: Constants.black,
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: FONTS.SemiBold,
     // lineHeight:12
   },
   boxmaincov: {
     flexDirection: 'row',
     gap: 5,
-    marginLeft: 10,
+    // marginLeft: 5,
   },
   subItemcov: {
     flexDirection: 'row',

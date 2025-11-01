@@ -34,6 +34,7 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { goBack, navigate, reset } from '../../../utils/navigationRef';
 import { createBooking } from '../../../redux/booking/bookingAction';
 import { useTranslation } from 'react-i18next';
+import moment from 'moment';
 
 const InstructerDetail = props => {
   const data = props?.route?.params;
@@ -173,16 +174,20 @@ const InstructerDetail = props => {
         />
         <Text style={styles.drivnametxt}>{data?.name}</Text>
         <Text style={styles.biotxt}>{data?.bio}</Text>
-        <Text style={styles.ratetxt}>
+        <Text style={{marginTop:7}}>
           <Text style={styles.drivnametxt}>{t("Rate")} </Text>
           <Text style={styles.vehinam}>{Currency} {data?.rate_per_hour}/{t("Hour")}</Text>
         </Text>
+        <Text style={styles.ratetxt}>
+          <Text style={styles.drivnametxt}>{t("Session Duration")} </Text>
+          <Text style={styles.vehinam}>{t("60 Mins")}</Text>
+          </Text>
         <Text style={[styles.bactxt, { fontSize: 16 }]}>{t("Vehicle")}</Text>
         <Text style={{ marginTop: 7 }}>
           <Text style={styles.drivnametxt}>{t("Vehicle")} </Text>
           <Text style={styles.vehinam}>{data?.vehicle_model}</Text>
         </Text>
-        <Text style={{ marginTop: 7 }}>
+        <Text style={{ marginTop: 7,marginBottom:100 }}>
           <Text style={styles.drivnametxt}>{t("Category")} </Text>
           <Text style={styles.vehinam}>{t("Car")}</Text>
         </Text>

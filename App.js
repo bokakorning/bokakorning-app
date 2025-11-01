@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import { checkLogin } from './redux/auth/authAction';
 import Spinner from './src/Assets/Component/Spinner';
-import NetError from './src/Assets/Component/Spinner';
+// import NetError from './src/Assets/Component/Spinner';
 import Splash from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import i18n from './i18n';

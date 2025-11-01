@@ -185,7 +185,9 @@ const Request = () => {
                 paddingHorizontal: 30,
               }}>
               <Text style={styles.textStyle}>
-                {t("Are you sure you want to finish this session !")}
+                {t('confirmSessionAction', {
+                  action: reqtype==='accepted' ? t('Accept') : t('Decline'),
+                })}
               </Text>
               <View style={styles.cancelAndLogoutButtonWrapStyle}>
                 <TouchableOpacity

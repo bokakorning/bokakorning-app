@@ -2,6 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 import {
   createBooking,
   getInstructerReqs,
+  getAccepInstructerReqs,
   updateInstructerReqs,
   finishSession,
   getUserBookings,
@@ -40,6 +41,18 @@ const bookingSlice = createSlice({
       state.error = null;
     });
     builder.addCase(getInstructerReqs.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+    //getAccepInstructerReqs reducer
+    builder.addCase(getAccepInstructerReqs.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getAccepInstructerReqs.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.error = null;
+    });
+    builder.addCase(getAccepInstructerReqs.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     });
