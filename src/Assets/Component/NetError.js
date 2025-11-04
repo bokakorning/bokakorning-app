@@ -2,7 +2,8 @@ import React, { memo, useEffect, useState} from 'react';
 import {Modal, StyleSheet, Text, View} from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 import Constants, { FONTS } from '../Helpers/constant';
-import { wp } from '../../../utils/responsiveScreen';
+import { hp, wp } from '../../../utils/responsiveScreen';
+import { WifiX } from '../../../Theme';
 
 const NetError = () => {
   const [isConnected, setIsConnected] = useState(true);
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: wp(4),
     fontFamily: FONTS.Heavy,
-    color: COLORS.white,
+    color: Constants.white,
     textAlign: 'center',
     marginTop:hp(1.5),
     marginBottom:hp(0.5)
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
   title2: {
     fontSize: wp(3.8),
     fontFamily: FONTS.SemiBold,
-    color: COLORS.white,
+    color: Constants.white,
     textAlign: 'center',
   },
 });
