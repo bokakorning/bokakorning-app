@@ -159,7 +159,7 @@ dispatch(logout())
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.box]}
-            onPress={() => InAppBrowserFunc('https://main.d2i61b55rlnfpm.amplifyapp.com/PrivacyPolicy')}
+            onPress={() => InAppBrowserFunc('https://www.admin.bokakorning.online/privacypolicy')}
             >
             <View style={styles.btmboxfirpart}>
               <View style={styles.iconcov}>
@@ -176,7 +176,7 @@ dispatch(logout())
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.box]}
-            onPress={() => InAppBrowserFunc('https://main.d2i61b55rlnfpm.amplifyapp.com/TermsandConditions')}
+            onPress={() => InAppBrowserFunc('https://www.admin.bokakorning.online/termsandconditions')}
             >
             <View style={styles.btmboxfirpart}>
               <View style={styles.iconcov}>

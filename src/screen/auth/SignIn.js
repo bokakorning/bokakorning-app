@@ -48,6 +48,7 @@ const dispatch = useDispatch();
 
       value.player_id= player_id
       value.device_token =device_token,
+
     dispatch(login(value))
       .unwrap()
       .then(data => {

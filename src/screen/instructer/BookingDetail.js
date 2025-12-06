@@ -165,7 +165,7 @@ const BookingDetail = props => {
       <Text style={[styles.txtcov, { marginTop: 30 }]}>
         <Text style={styles.drivnametxt}>{t("Date")} </Text>
         <Text style={styles.boxtxt}>
-          {moment(data?.date).format('dddd, DD MMMM')}
+          {moment(data?.sheduleDate?data?.sheduleDate:data?.date).format('dddd, DD MMMM')}
         </Text>
       </Text>
       <Text style={styles.txtcov}>

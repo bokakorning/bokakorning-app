@@ -51,6 +51,11 @@ const Schedule = () => {
     }, []);
 
 const onDateChange=(event,selectDate)=>{
+  if (event.type === "dismissed") {
+    // User cancelled → do not update date
+    setDateModel(false);
+    return;
+  }
 setSheduleDate(selectDate)
 setDateModel(false)
 }
@@ -85,7 +90,7 @@ const submit = async () => {
         });
     };
 
- function generateTimeSlots(start = '00:00', end = '23:50', gapMinutes = 30) {
+ function generateTimeSlots(start = '06:00', end = '23:50', gapMinutes = 30) {
     const now = new Date();
     const [startHour, startMin] = start.split(':').map(Number);
     const [endHour, endMin] = end.split(':').map(Number);
@@ -101,11 +106,11 @@ const submit = async () => {
 
     while (current <= endTime) {
       // Only push slots that are in the future (>= now)
-      if (current >= now) {
+      // if (current >= now) {
       slots.push(
         current.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       );
-      }
+      // }
       current = new Date(current.getTime() + gapMinutes * 60000); // add 30 min
     }
 
@@ -216,7 +221,7 @@ const submit = async () => {
             )}
           </MapView>}
         </View>
-        <View style={{flexDirection:'row',justifyContent:'space-evenly',marginTop:30}}>
+        <View style={{flexDirection:'row',justifyContent:'space-evenly',marginTop:30,marginBottom:100}}>
          <TouchableOpacity style={styles.actionButton} onPress={() => setDateModel(true)}>
             <CalenderIcon color={Constants.white}/>
             <Text style={styles.actionText}>{sheduleDate ? moment(sheduleDate).format('DD MMM') : t("Schedule Date")}</Text>
@@ -230,6 +235,7 @@ const submit = async () => {
       {dateModel&&<DateTimePicker
         mode='date'
         textColor='black'
+        minimumDate={new Date()}
         value={sheduleDate?sheduleDate:new Date()}
         display={Platform.OS === 'ios' ? 'spinner' : 'default'}
         onChange={onDateChange}
@@ -505,7 +511,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: Constants.custom_blue,
     borderRadius: 20,
-    paddingHorizontal: 25,
+    paddingHorizontal: 15,
     paddingVertical: 8,
     gap:5,
     minWidth:wp(35)
