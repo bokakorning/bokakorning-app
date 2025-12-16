@@ -60,7 +60,7 @@ const AssignedInstructor = props => {
 };
   return (
     <View style={styles.container}>
-        <UserHeader item={"Instructor Detail"} showback={true}/>
+        <UserHeader item={t("Instructor Detail")} showback={true}/>
       <ScrollView showsVerticalScrollIndicator={false} style={{padding:20}}>
         <View style={styles.frow2}>
           <Text style={styles.instytxt}>
@@ -93,7 +93,7 @@ const AssignedInstructor = props => {
           <Text style={styles.drivnametxt}>{t("Category")} </Text>
           <Text style={styles.vehinam}>{t("Car")}</Text>
         </Text>
-        {data?.type==='show_invoice'&&<TouchableOpacity
+        {/* {data?.type==='show_invoice'&&<TouchableOpacity
               style={styles.contactopt}
               onPress={() =>
                 getinvoice()
@@ -102,7 +102,7 @@ const AssignedInstructor = props => {
               <Text style={styles.othrttxt2}>
                 {t("Download Invoice")}
               </Text>
-            </TouchableOpacity>}
+            </TouchableOpacity>} */}
       </ScrollView>
     </View>
   );

@@ -154,7 +154,7 @@ const submit = async () => {
                 setvehicleType('automatic')
               }}
             >
-              <Image source={require('../../Assets/Images/smart-car.png')} />
+              <Image source={require('../../Assets/Images/smart-car.png')} style={{height:'60%',width:'75%'}}/>
               <Text style={styles.seltxt}>{t("Automatic Car")}</Text>
             </TouchableOpacity>
           </View>
@@ -179,7 +179,7 @@ const submit = async () => {
                 setvehicleType('manual')
               }}
             >
-              <Image source={require('../../Assets/Images/smart-car.png')} />
+              <Image source={require('../../Assets/Images/smart-car.png')} style={{height:'60%',width:'75%'}}/>
               <Text style={styles.seltxt}>{t("Manual Car")}</Text>
             </TouchableOpacity>
           </View>

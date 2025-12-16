@@ -366,7 +366,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     // width: '80%',
     // alignSelf: 'center',
-    marginBottom: 20,
+    marginBottom: 30,
     marginTop: 10,
   },
   proimg: {

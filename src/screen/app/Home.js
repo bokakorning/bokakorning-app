@@ -160,7 +160,7 @@ console.log("userEnteredlocation",userEnteredLocation)
                 setvehicleType('Automatic'), getNearbyInstructer('Automatic',true);
               }}
             >
-              <Image source={require('../../Assets/Images/smart-car.png')} />
+              <Image source={require('../../Assets/Images/smart-car.png')} style={{height:'60%',width:'75%'}}/>
               <Text style={styles.seltxt}>{t("Automatic Car")}</Text>
             </TouchableOpacity>
           </View>
@@ -185,7 +185,7 @@ console.log("userEnteredlocation",userEnteredLocation)
                 setvehicleType('Manual'), getNearbyInstructer('Manual',true);
               }}
             >
-              <Image source={require('../../Assets/Images/smart-car.png')} />
+              <Image source={require('../../Assets/Images/smart-car.png')} style={{height:'60%',width:'75%'}}/>
               <Text style={styles.seltxt}>{t("Manual Car")}</Text>
             </TouchableOpacity>
           </View>

@@ -56,7 +56,7 @@ const Notification = props => {
         <Text style={styles.headtxt}>{t("Notification")}</Text>
         <View></View>
       </View>
-      <View style={{flex: 1, paddingHorizontal: 20,paddingBottom:70}}>
+      <View style={{flex: 1, paddingHorizontal: 20}}>
         <FlatList
           data={notification}
           ListEmptyComponent={() => (
@@ -77,8 +77,8 @@ const Notification = props => {
             </View>
           )}
           showsVerticalScrollIndicator={false}
-          renderItem={({item}) => (
-            <View style={[styles.box]}>
+          renderItem={({item,index}) => (
+            <View style={[styles.box,{marginBottom:notification?.length-1===index?110:0}]}>
               <View style={{justifyContent: 'center', alignItems: 'center'}}>
                 <View style={styles.iconcov}>
                   <Notification2Icon

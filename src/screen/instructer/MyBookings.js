@@ -40,7 +40,7 @@ const IsFocused = useIsFocused();
       }, []);
   return (
     <View style={styles.container}>
-      <InstructerHeader item={"Accepted Request"} showback={false}/>
+      <InstructerHeader item={t("Accepted Request")} showback={false}/>
       <FlatList 
       data={reqlist}
       style={{marginBottom:70}}

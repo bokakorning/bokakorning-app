@@ -117,10 +117,10 @@ const Request = () => {
       <InstructerHeader item={t('Lesson Request')} showback={false} />
       <FlatList
         data={reqlist}
-        style={{ marginBottom: 70 }}
+        // style={{ marginBottom: 70 }}
         showsVerticalScrollIndicator={false}
         renderItem={({ item, index }) => (
-          <View style={[styles.card, { marginTop: index + 1 === 1 ? 15 : 0 }]}>
+          <View style={[styles.card, { marginTop: index + 1 === 1 ? 15 : 0,marginBottom:reqlist?.length-1===index?110:15 }]}>
             <Text style={styles.boxtxt}>
               {t("Session Request From")} {item?.user?.name}
             </Text>

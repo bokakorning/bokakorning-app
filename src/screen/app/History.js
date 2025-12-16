@@ -105,9 +105,9 @@ const History = () => {
       </View>
       <FlatList 
             data={bookinglist}
-            style={{marginBottom:70}}
+            // style={{marginBottom:70}}
             showsVerticalScrollIndicator={false}
-            renderItem={({item,index})=><View style={[styles.card,{marginTop:index+1===1?15:0}]}>
+            renderItem={({item,index})=><View style={[styles.card,{marginTop:index+1===1?15:0,marginBottom:bookinglist?.length-1===index?110:15}]}>
               <Text style={styles.boxtxt}>{t("Session Request From")} {item?.user?.name}</Text>
               <Text style={styles.boxtxt}>{moment(item?.sheduleDate?item?.sheduleDate:item?.date).format('dddd, DD MMMM')}</Text>
               <Text style={styles.boxtxt}>{t("At")} {item?.selectedTime}</Text>
