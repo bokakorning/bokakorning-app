@@ -1,9 +1,9 @@
-import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ImageBackground, Text, TouchableOpacity, View } from 'react-native';
 import React, { createRef, useEffect, useState } from 'react';
 import styles from './styles';
 import Constants from '../../Assets/Helpers/constant';
 import { navigate } from '../../../utils/navigationRef';
-import { DropdownIcon } from '../../../Theme';
+import { DropdownIcon, LogoIcon } from '../../../Theme';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -29,18 +29,12 @@ const Onboard = () => {
   };
   return (
     <View style={{flex:1}}>
-    {/* <ImageBackground
+    <ImageBackground
+      key="onboard-background"
       source={require('../../Assets/Images/onboard_bg.png')}
       style={{height:hp(100),width:wp(100)}}
       resizeMode="cover"
-    > */}
-    <View style={StyleSheet.absoluteFillObject}>
-     <Image
-      source={require('../../Assets/Images/onboard_bg.png')}
-      style={{height:hp(100),width:wp(100)}}
-      resizeMode="cover"
-    />
-    </View>
+    >
       <TouchableOpacity
           style={[styles.langView, ]}
           onPress={() => langRef.current.show()}>
@@ -49,10 +43,12 @@ const Onboard = () => {
         </TouchableOpacity>
       <View style={styles.itemscov}>
         <Text style={styles.weltxt}>{t("Welcome To")}</Text>
-        <Image
-          source={require('../../Assets/Images/app_logo_main.png')}
+        {/* <Image
+          key="app-logo"
+          source={require('../../Assets/Images/app_logo_main.jpeg')}
           style={styles.proimg2}
-        />
+        /> */}
+        <LogoIcon height={ hp(18)}  width={ wp(40)} style={{marginTop:hp(3)}}/>
         <Text style={styles.logo1}>Boka</Text>
         <Text style={styles.logo2}>Korning.se</Text>
         <Text style={styles.infotxt}>{t("Your driving school for your needs.")}</Text>
@@ -62,7 +58,7 @@ const Onboard = () => {
         </View>
       </View>
       <LanguageChange refs={langRef} selLang={(item)=>{setSelectLanguage(item)}}/>
-    {/* </ImageBackground> */}
+    </ImageBackground>
     </View>
   );
 };

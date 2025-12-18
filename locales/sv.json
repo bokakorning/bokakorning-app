@@ -228,5 +228,9 @@
   "finalEducationControl": "Utbildningskontroll",
   "finalAssessment": "Utbildningsplan",
   "Accepted Request": "Accepterad förfrågan",
-  "Instructor Detail": "Instruktörsdetaljer"
+  "Instructor Detail": "Instruktörsdetaljer",
+  "Upcoming": "Kommande",
+  "Completed": "Slutförd",
+  "Cancelled": "Avbruten",
+  "Select Address": "Välj adress"
 }

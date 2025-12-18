@@ -133,7 +133,7 @@ console.log("userEnteredlocation",userEnteredLocation)
           </TouchableOpacity>
         </View>
         {showinput&&<View style={styles.textInput}>
-          <LocationDropdown
+          <LocationDropdown placeholder={t("Select Address")}
           />
           </View>}
         <Text style={styles.headtxt}>{t("Book a session now")} </Text>

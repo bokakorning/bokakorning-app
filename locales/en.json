@@ -228,6 +228,10 @@
   "finalEducationControl": "Final Education Control",
   "finalAssessment": "Final Assessment",
   "Accepted Request":"Accepted Request",
-  "Instructor Detail":"Instructor Detail"
+  "Instructor Detail":"Instructor Detail",
+  "Upcoming":"Upcoming",
+  "Completed":"Completed",
+  "Cancelled":"Cancelled",
+  "Select Address":"Select Address"
   
 }

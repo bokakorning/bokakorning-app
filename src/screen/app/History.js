@@ -85,7 +85,7 @@ const History = () => {
                 }
               ]}
             >
-              {opt.label}
+              {t(opt.label)}
             </Text>
           </TouchableOpacity>
         ))}
