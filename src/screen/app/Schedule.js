@@ -8,18 +8,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { createRef, useEffect, useState } from 'react';
+import React, { createRef, useEffect, useRef, useState } from 'react';
 import Constants, { FONTS } from '../../Assets/Helpers/constant';
-import { BackIcon, CalenderIcon, CarIcon, ClockIcon, Cross2Icon, CrossIcon, LocationIcon, PinIcon, SearchIcon } from '../../../Theme';
+import { BackIcon, CalenderIcon, ClockIcon, CrossIcon, PinIcon, } from '../../../Theme';
 import { hp, wp } from '../../../utils/responsiveScreen';
 import MapView, {
   Marker,
-  Polygon,
-  Polyline,
   PROVIDER_GOOGLE,
 } from 'react-native-maps';
 import { mapStyle } from '../../../Theme/MapStyle';
-import RequestCurrentLocation from '../../Assets/Component/RequestCurrentLocation';
 import { useDispatch, useSelector } from 'react-redux';
 import { goBack, navigate } from '../../../utils/navigationRef';
 import LocationDropdown from '../../Assets/Component/LocationDropdown'
@@ -37,10 +34,13 @@ const Schedule = () => {
   const [sheduleDate, setSheduleDate] = useState();
   const [dateModel, setDateModel] = useState(false);
   const dispatch = useDispatch();
+  const user = useSelector(state => state.auth.user);
   const userAddress = useSelector(state => state.location.userAddress);
   const userLocation = useSelector(state => state.location.userLocation);
   const userEnteredLocation = useSelector(state => state.location.userEnteredLocation);
   const userEnteredAddress = useSelector(state => state.location.userEnteredAddress);
+  const rateData = useSelector(state => state.transaction.rateData);
+  console.log('rateData',rateData)
   const timeRef = createRef();
   const [selectedTime, setSelectedTime] = useState();
     const [times, setTimes] = useState();
@@ -89,8 +89,218 @@ const submit = async () => {
           console.error('Booking failed:', error);
         });
     };
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
+      const [timeLeft, setTimeLeft] = useState(300); // 5 minutes = 300 sec
+      const countdownRef = useRef(null);
+      const paymentActiveRef = useRef(false);
+    
+    const pollInterval = useRef(null);
+      const startSwishPayment = async () => {
+        if (paymentActiveRef.current) return; // prevent restart
+    
+      paymentActiveRef.current = true;
+        try {
+      console.log("Initiating Swish payment...");
+    
+      const body={
+        instructer: data?._id,
+        date: new Date(),
+        total: data?.rate_per_hour,
+        selectedTime: selectedTime,
+        payment_mode:"online",
+        user_location: {
+            type: 'Point',
+            coordinates: [data?.selloc?.long?data?.selloc?.long:userLocation?.long, data?.selloc?.lat?data?.selloc?.lat:userLocation?.lat],
+          },
+        pickup_address: userEnteredAddress?userEnteredAddress:userAddress,
+        amount: "1",
+        message: 'Order payment',
+        user:user?._id
+        }
 
- function generateTimeSlots(start = '06:00', end = '23:50', gapMinutes = 30) {
+    //     const body={
+    // selectedTime: selectedTime,
+    // sheduleDate: sheduleDate,
+    // sheduleSeesion:true,
+    // payment_mode:"online",
+    // user_location: {
+    //     type: 'Point',
+    //     coordinates: [userEnteredLocation?.long?userEnteredLocation.long:userLocation?.long, userEnteredLocation?.lat?userEnteredLocation.lat:userLocation?.lat],
+    //   },
+    // pickup_address: userEnteredAddress?userEnteredAddress:userAddress,
+    // amount: "1",
+    // message: 'Order payment',
+    // }
+      
+      const res = await fetch('https://api.bokakorning.online/payment/createPaymentRequest', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+     console.log('Payment request response status:', res);
+      const res2 = await res.json();
+      console.log('Payment request created:', res2);
+    
+      const paymentToken = res2?.data?.token; // your instructionUUID
+      const paymentId = res2?.data?.id; // your instructionUUID
+    
+      const callbackUrl = encodeURIComponent(
+        `BokaKorning://payment-result?ref=${paymentId}`
+      );
+    
+      startCountdown();
+      // Start polling
+      pollPaymentStatus(paymentId);
+      
+      // Token IS the payment request ID — no getAuthToken() needed
+      // const swishUrl = `swish://paymentrequest?token=${paymentId}`;
+    
+      // const callbackUrl = `https://myfrontend.com/receipt?ref=${paymentRequest.id}`;
+    const swishUrl = `swish://paymentrequest?token=${paymentToken}&callbackurl=${callbackUrl}`;
+    
+      console.log("swishUrl", swishUrl);
+    
+    try {
+      await Linking.openURL(swishUrl);
+    } catch (err) {
+      Alert.alert(
+        "Swish not installed",
+        "Download Swish to complete payment?",
+        [
+          { text: "Cancel", style: "cancel" },
+          {
+            text: "Download",
+            onPress: () => {
+              const storeUrl =
+                Platform.OS === 'ios'
+                  ? 'https://apps.apple.com/se/app/swish-payments/id563204724'
+                  : 'https://play.google.com/store/apps/details?id=se.bankgirot.swish';
+    
+              Linking.openURL(storeUrl);
+            }
+          }
+        ]
+      );
+    }
+    
+    } catch (err) {
+        console.log('Error in startSwishPayment:', err.message); // add this
+      }
+    };
+    
+    const pollPaymentStatus = (paymentId) => {
+      console.log('Polling payment status for:', paymentId);
+    
+      // Clear any existing interval first
+      if (pollInterval.current) {
+        clearInterval(pollInterval.current);
+      }
+    
+      let attempts = 0;
+      const MAX_ATTEMPTS = 100; // stop after 300 seconds (30 * 2000ms)
+    
+      pollInterval.current = setInterval(async () => {
+        try {
+          attempts++;
+    
+          // Use same base URL where payment was created
+          const res = await fetch(
+            `https://api.bokakorning.online/payment/paymentStatus/${paymentId}`
+          );
+    
+          const contentType = res.headers.get('content-type');
+          if (!contentType || !contentType.includes('application/json')) {
+            const text = await res.text();
+            console.log('Non-JSON response from status API:', text);
+            return;
+          }
+    
+          const resdata = await res.json();
+          console.log('Payment status:', resdata);
+    
+          if (resdata?.data?.status === 'PAID') {
+            clearInterval(pollInterval.current);
+            clearInterval(countdownRef.current);
+            setShowPaymentModal(false);
+            reset("BookingConfirm",{name:data?.name,image:data?.image,selectedTime})
+            Alert.alert("Success", "Payment completed!");
+          }
+    
+        if (resdata?.data?.status === 'DECLINED' || resdata?.data?.status === 'ERROR') {
+        clearInterval(pollInterval.current);
+        clearInterval(countdownRef.current);
+        paymentActiveRef.current = false;
+        setShowPaymentModal(false);
+    
+       Alert.alert("Failed", "Payment failed.");
+     }
+    
+    
+          // Stop polling after max attempts
+          if (attempts >= MAX_ATTEMPTS) {
+            clearInterval(pollInterval.current);
+            Alert.alert("Timeout", "Payment status unknown. Please check your Swish app.");
+          }
+    
+        } catch (err) {
+          console.log('Polling error:', err.message);
+        }
+      }, 3000);
+    };
+    
+    // Clean up interval when component unmounts
+    useEffect(() => {
+      return () => {
+        if (pollInterval.current) {
+          clearInterval(pollInterval.current);
+        }
+      };
+    }, []);
+    
+    useEffect(() => {
+      return () => {
+        if (pollInterval.current) {
+          clearInterval(pollInterval.current);
+        }
+        if (countdownRef.current) {
+          clearInterval(countdownRef.current);
+        }
+      };
+    }, []);
+    
+    useEffect(() => {
+      const sub = Linking.addEventListener('url', ({ url }) => {
+        console.log("Returned from Swish:", url);
+        // User came back from Swish app - polling will handle the status
+      });
+      return () => sub.remove();
+    }, []);
+    
+    const startCountdown = () => {
+      if (countdownRef.current) return;
+      setShowPaymentModal(true);
+    
+      if (countdownRef.current) {
+        clearInterval(countdownRef.current);
+      }
+    
+      countdownRef.current = setInterval(() => {
+        setTimeLeft(prev => {
+          if (prev <= 1) {
+            clearInterval(countdownRef.current);
+            clearInterval(pollInterval.current);
+    
+            setShowPaymentModal(false);
+    
+            Alert.alert("Timeout", "Payment time expired. Please try again.");
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    };
+
+ function generateTimeSlots(start = '07:00', end = '22:00', gapMinutes = 30) {
     const now = new Date();
     const [startHour, startMin] = start.split(':').map(Number);
     const [endHour, endMin] = end.split(':').map(Number);
@@ -154,7 +364,7 @@ const submit = async () => {
                 setvehicleType('automatic')
               }}
             >
-              <Image source={require('../../Assets/Images/smart-car.png')} style={{height:'60%',width:'75%'}}/>
+              <Image source={require('../../Assets/Images/smart-car.png')} style={{height:'50%',width:'65%'}}/>
               <Text style={styles.seltxt}>{t("Automatic Car")}</Text>
             </TouchableOpacity>
           </View>
@@ -179,7 +389,7 @@ const submit = async () => {
                 setvehicleType('manual')
               }}
             >
-              <Image source={require('../../Assets/Images/smart-car.png')} style={{height:'60%',width:'75%'}}/>
+              <Image source={require('../../Assets/Images/smart-car.png')} style={{height:'50%',width:'65%'}}/>
               <Text style={styles.seltxt}>{t("Manual Car")}</Text>
             </TouchableOpacity>
           </View>
@@ -373,7 +583,7 @@ const styles = StyleSheet.create({
   seltxt: {
     color: Constants.black,
     fontFamily: FONTS.SemiBold,
-    fontSize: 16,
+    fontSize: 18,
   },
   seltxt2: {
     color: Constants.black,

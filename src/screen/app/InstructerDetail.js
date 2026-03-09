@@ -1,6 +1,8 @@
 import {
+  Alert,
   Image,
   Linking,
+  Modal,
   ScrollView,
   StyleSheet,
   Text,
@@ -35,11 +37,12 @@ import { goBack, navigate, reset } from '../../../utils/navigationRef';
 import { createBooking } from '../../../redux/booking/bookingAction';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
+import { getAuthToken } from '../../../utils/storage';
 
 const InstructerDetail = props => {
   const data = props?.route?.params;
   const { t } = useTranslation();
-  console.log('data', data);
+  // console.log('data', data);
   const timeRef = createRef();
   const dispatch = useDispatch();
   const userAddress = useSelector(state => state.location.userAddress);
@@ -118,6 +121,210 @@ const InstructerDetail = props => {
       </TouchableOpacity>
     );
   };
+
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(300); // 5 minutes = 300 sec
+  const countdownRef = useRef(null);
+  const expiryRef = useRef(null);
+
+const pollInterval = useRef(null);
+  const startSwishPayment = async () => {
+    try {
+  console.log("Initiating Swish payment...");
+
+  const body={
+    instructer: data?._id,
+    date: new Date(),
+    total: data?.rate_per_hour,
+    selectedTime: selectedTime,
+    payment_mode:"online",
+    user_location: {
+        type: 'Point',
+        coordinates: [data?.selloc?.long?data?.selloc?.long:userLocation?.long, data?.selloc?.lat?data?.selloc?.lat:userLocation?.lat],
+      },
+    pickup_address: userEnteredAddress?userEnteredAddress:userAddress,
+    amount: data?.rate_per_hour,
+    message: 'Order payment',
+    user:user?._id
+    }
+  
+  const res = await fetch('https://api.bokakorning.online/payment/createPaymentRequest', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+ console.log('Payment request response status:', res);
+  const res2 = await res.json();
+  console.log('Payment request created:', res2);
+
+  const paymentToken = res2?.data?.token; // your instructionUUID
+  const paymentId = res2?.data?.id; // your instructionUUID
+
+  const callbackUrl = encodeURIComponent(
+    `BokaKorning://payment-result?ref=${paymentId}`
+  );
+
+  startCountdown();
+  // Start polling
+  pollPaymentStatus(paymentId);
+  
+  // Token IS the payment request ID — no getAuthToken() needed
+  // const swishUrl = `swish://paymentrequest?token=${paymentId}`;
+
+  // const callbackUrl = `https://myfrontend.com/receipt?ref=${paymentRequest.id}`;
+const swishUrl = `swish://paymentrequest?token=${paymentToken}&callbackurl=${callbackUrl}`;
+
+  console.log("swishUrl", swishUrl);
+
+try {
+  setTimeout(() => {
+    Linking.openURL(swishUrl);
+  }, 1000); // slight delay to ensure modal is shown before switching apps
+} catch (err) {
+  Alert.alert(
+    "Swish not installed",
+    "Download Swish to complete payment?",
+    [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Download",
+        onPress: () => {
+          const storeUrl =
+            Platform.OS === 'ios'
+              ? 'https://apps.apple.com/se/app/swish-payments/id563204724'
+              : 'https://play.google.com/store/apps/details?id=se.bankgirot.swish';
+
+          Linking.openURL(storeUrl);
+        }
+      }
+    ]
+  );
+}
+
+} catch (err) {
+    console.log('Error in startSwishPayment:', err.message); // add this
+  }
+};
+
+const pollPaymentStatus = (paymentId) => {
+  console.log('Polling payment status for:', paymentId);
+
+  // Clear any existing interval first
+  if (pollInterval.current) {
+    clearInterval(pollInterval.current);
+  }
+
+  let attempts = 0;
+  const MAX_ATTEMPTS = 100; // stop after 300 seconds (30 * 2000ms)
+
+  pollInterval.current = setInterval(async () => {
+    try {
+      attempts++;
+
+      // Use same base URL where payment was created
+      const res = await fetch(
+        `https://api.bokakorning.online/payment/paymentStatus/${paymentId}`
+      );
+
+      const contentType = res.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await res.text();
+        console.log('Non-JSON response from status API:', text);
+        return;
+      }
+
+      const resdata = await res.json();
+      console.log('Payment status:', resdata);
+
+      if (resdata?.data?.status === 'PAID') {
+        clearInterval(pollInterval.current);
+        clearInterval(countdownRef.current);
+        setShowPaymentModal(false);
+        reset("BookingConfirm",{name:data?.name,image:data?.image,selectedTime})
+        Alert.alert("Success", "Payment completed!");
+      }
+
+      if (resdata?.data?.status === 'DECLINED' || resdata?.data?.status === 'ERROR') {
+  clearInterval(pollInterval.current);
+  clearInterval(countdownRef.current);
+
+  setShowPaymentModal(false);
+
+  Alert.alert("Failed", "Payment failed.");
+}
+
+
+      // Stop polling after max attempts
+      if (attempts >= MAX_ATTEMPTS) {
+        clearInterval(pollInterval.current);
+        Alert.alert("Timeout", "Payment status unknown. Please check your Swish app.");
+      }
+
+    } catch (err) {
+      console.log('Polling error:', err.message);
+    }
+  }, 3000);
+};
+
+// Clean up interval when component unmounts
+useEffect(() => {
+  return () => {
+    if (pollInterval.current) {
+      clearInterval(pollInterval.current);
+    }
+  };
+}, []);
+
+useEffect(() => {
+  return () => {
+    if (pollInterval.current) {
+      clearInterval(pollInterval.current);
+    }
+    if (countdownRef.current) {
+      clearInterval(countdownRef.current);
+    }
+  };
+}, []);
+
+useEffect(() => {
+  const sub = Linking.addEventListener('url', ({ url }) => {
+    console.log("Returned from Swish:", url);
+    // User came back from Swish app - polling will handle the status
+  });
+  return () => sub.remove();
+}, []);
+
+const startCountdown = () => {
+  const expiryTime = Date.now() + 300 * 1000; // 5 minutes from now
+  expiryRef.current = expiryTime;
+
+  setShowPaymentModal(true);
+  updateRemainingTime(); // immediately calculate
+
+  if (countdownRef.current) {
+    clearInterval(countdownRef.current);
+  }
+
+  countdownRef.current = setInterval(updateRemainingTime, 1000);
+};
+
+const updateRemainingTime = () => {
+  const now = Date.now();
+  const remaining = Math.max(
+    Math.floor((expiryRef.current - now) / 1000),
+    0
+  );
+
+  setTimeLeft(remaining);
+
+  if (remaining <= 0) {
+    clearInterval(countdownRef.current);
+    clearInterval(pollInterval.current);
+    setShowPaymentModal(false);
+    Alert.alert("Timeout", "Payment time expired. Please try again.");
+  }
+};
+
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -322,7 +529,8 @@ const InstructerDetail = props => {
           onPress={() => {
             if (timeconf) {
               timeRef.current.hide();
-              submit()
+              // submit()
+              startSwishPayment()
             } else {
               settimeconf(true);
             }
@@ -333,6 +541,59 @@ const InstructerDetail = props => {
           </Text>
         </TouchableOpacity>
       </ActionSheet>
+
+      <Modal
+  visible={showPaymentModal}
+  transparent
+  animationType="fade"
+>
+  <View style={{
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    justifyContent: 'center',
+    alignItems: 'center'
+  }}>
+    <View style={{
+      backgroundColor: 'white',
+      width: '85%',
+      borderRadius: 20,
+      padding: 25,
+      alignItems: 'center'
+    }}>
+      <Text style={{
+        fontSize: 16,
+        fontFamily: FONTS.Bold,
+        marginBottom: 15
+      }}>
+        Complete Your Payment
+      </Text>
+
+      <Text style={{ fontSize: 16, marginBottom: 10,fontFamily: FONTS.Regular }}>
+        Please complete payment in Swish app.
+      </Text>
+
+      <Text style={{
+        fontSize: 18,
+        fontFamily: FONTS.Bold,
+        color: Constants.red
+      }}>
+        {Math.floor(timeLeft / 60)}:
+        {(timeLeft % 60).toString().padStart(2, '0')}
+      </Text>
+
+      <Text style={{
+        marginTop: 10,
+        fontSize: 14,
+        color: Constants.customgrey3,
+        textAlign: 'center',
+        fontFamily: FONTS.Regular,
+      }}>
+        Do not leave this page until payment is completed.
+      </Text>
+    </View>
+  </View>
+</Modal>
+
     </View>
   );
 };

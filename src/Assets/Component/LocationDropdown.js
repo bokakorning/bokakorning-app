@@ -21,9 +21,11 @@ import {
 import { debounce } from 'lodash'
 import { useDispatch } from 'react-redux';
 import { setEnteredAddress, setEnteredLocation } from '../../../redux/location/locationSlice';
+import { useTranslation } from 'react-i18next';
 
 
 const LocationDropdown = (props) => {
+  const { t } = useTranslation();
   const [showList, setShowList] = useState(false);
   const [userSelected, setUserSelected] = useState(false);
   const [prediction, setPredictions] = useState([]);
@@ -168,9 +170,9 @@ const LocationDropdown = (props) => {
             <TextInput
               value={address}
               ref={refInput}
-              placeholder={props?.placeholder || 'Select Address'}
+              placeholder={props?.placeholder || t('Select Address')}
               placeholderTextColor={ Constants.customgrey}
-              numberOfLines={5}
+              // numberOfLines={5}
               style={[styles.amountTime, styles.editjobinput]}
               onBlur={() => {
                 if( props.setIsFocus){

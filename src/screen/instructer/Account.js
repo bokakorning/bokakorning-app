@@ -159,7 +159,7 @@ dispatch(logout())
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.box]}
-            onPress={() => InAppBrowserFunc('https://www.admin.bokakorning.online/privacypolicy')}
+            onPress={() => {const lng=selectLanguage===''?'en':'sv';InAppBrowserFunc(`https://www.admin.bokakorning.online/privacypolicy?type=${lng}`)}}
             >
             <View style={styles.btmboxfirpart}>
               <View style={styles.iconcov}>
@@ -176,7 +176,7 @@ dispatch(logout())
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.box]}
-            onPress={() => InAppBrowserFunc('https://www.admin.bokakorning.online/termsandconditions')}
+            onPress={() => {const lng=selectLanguage===''?'en':'sv';InAppBrowserFunc(`https://www.admin.bokakorning.online/termsandconditions?type=${lng}`)}}
             >
             <View style={styles.btmboxfirpart}>
               <View style={styles.iconcov}>

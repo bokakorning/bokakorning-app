@@ -28,6 +28,7 @@ import { navigate } from '../../../utils/navigationRef';
 import LocationDropdown from '../../Assets/Component/LocationDropdown'
 import { useIsFocused } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
+import { getRatePerHour } from '../../../redux/transaction/transactionAction';
 
 const Home = () => {
   const { t } = useTranslation();
@@ -47,6 +48,9 @@ console.log("userEnteredlocation",userEnteredLocation)
       loginuser && RequestCurrentLocation(dispatch, loginuser);
     }
   }, [loginuser]);
+  useEffect(() => {
+   dispatch(getRatePerHour())
+  }, []);
   useEffect(() => {
     {
       userLocation &&IsFocused&& getNearbyInstructer('Automatic',true);setvehicleType('Automatic')

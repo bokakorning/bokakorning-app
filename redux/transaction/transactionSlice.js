@@ -1,10 +1,12 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {
+  getRatePerHour,
   getTransaction,
 } from './transactionAction';
 
 const initialState = {
   isLoading: false,
+  rateData: null,
   error: null,
 };
 
@@ -23,6 +25,20 @@ const tranactionSlice = createSlice({
       state.error = null;
     });
     builder.addCase(getTransaction.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+
+    //getRatePerHour reducer
+    builder.addCase(getRatePerHour.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getRatePerHour.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.rateData=action?.payload
+      state.error = null;
+    });
+    builder.addCase(getRatePerHour.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     });
