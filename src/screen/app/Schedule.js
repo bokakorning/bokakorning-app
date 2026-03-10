@@ -1,6 +1,9 @@
 import {
+  Alert,
   FlatList,
   Image,
+  Linking,
+  Modal,
   Platform,
   ScrollView,
   StyleSheet,
@@ -40,7 +43,9 @@ const Schedule = () => {
   const userEnteredLocation = useSelector(state => state.location.userEnteredLocation);
   const userEnteredAddress = useSelector(state => state.location.userEnteredAddress);
   const rateData = useSelector(state => state.transaction.rateData);
-  console.log('rateData',rateData)
+  const rate_per_hour = user?.firstbook
+  ? rateData?.per_hour_hour
+  : Math.round(rateData?.per_hour_hour * (1 - 0.386));
   const timeRef = createRef();
   const [selectedTime, setSelectedTime] = useState();
     const [times, setTimes] = useState();
@@ -59,8 +64,78 @@ const onDateChange=(event,selectDate)=>{
 setSheduleDate(selectDate)
 setDateModel(false)
 }
-const submit = async () => {
-  if (!selectedTime) {
+function generateTimeSlots(start = '07:00', end = '22:00', gapMinutes = 30) {
+   const now = new Date();
+   const [startHour, startMin] = start.split(':').map(Number);
+   const [endHour, endMin] = end.split(':').map(Number);
+
+   const startTime = new Date();
+   startTime.setHours(startHour, startMin, 0, 0);
+
+   const endTime = new Date();
+   endTime.setHours(endHour, endMin, 0, 0);
+
+   const slots = [];
+   let current = new Date(startTime);
+
+   while (current <= endTime) {
+     // Only push slots that are in the future (>= now)
+     // if (current >= now) {
+     slots.push(
+       current.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+     );
+     // }
+     current = new Date(current.getTime() + gapMinutes * 60000); // add 30 min
+   }
+
+   return slots;
+ }
+ const PackageIcon = () => {
+   return (
+     <TouchableOpacity style={{ height: 60, width: 60, position: 'relative' }}>
+         <PinIcon height={50} width={50}  />
+     </TouchableOpacity>
+   );
+ };
+// const submit = async () => {
+//   if (!selectedTime) {
+//     showToaster('error',"Please select the time");
+//     return
+//   }
+//   if (!sheduleDate) {
+//     showToaster('error',"Please select the date");
+//     return
+//   }
+//     const body={
+//     selectedTime: selectedTime,
+//     sheduleDate: sheduleDate,
+//     sheduleSeesion:true,
+//     payment_mode:"online",
+//     user_location: {
+//         type: 'Point',
+//         coordinates: [userEnteredLocation?.long?userEnteredLocation.long:userLocation?.long, userEnteredLocation?.lat?userEnteredLocation.lat:userLocation?.lat],
+//       },
+//     pickup_address: userEnteredAddress?userEnteredAddress:userAddress
+//     }
+//       dispatch(createBooking(body))
+//         .unwrap()
+//         .then(res => {
+//           console.log('res', res);
+//           navigate("App",{screen:"History"})
+//         })
+//         .catch(error => {
+//           console.error('Booking failed:', error);
+//         });
+//     };
+
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
+      const [timeLeft, setTimeLeft] = useState(300); // 5 minutes = 300 sec
+      const countdownRef = useRef(null);
+      const expiryRef = useRef(null);
+    
+    const pollInterval = useRef(null);
+      const startSwishPayment = async () => {
+        if (!selectedTime) {
     showToaster('error',"Please select the time");
     return
   }
@@ -68,69 +143,23 @@ const submit = async () => {
     showToaster('error',"Please select the date");
     return
   }
-    const body={
-    selectedTime: selectedTime,
-    sheduleDate: sheduleDate,
-    sheduleSeesion:true,
-    payment_mode:"online",
-    user_location: {
-        type: 'Point',
-        coordinates: [userEnteredLocation?.long?userEnteredLocation.long:userLocation?.long, userEnteredLocation?.lat?userEnteredLocation.lat:userLocation?.lat],
-      },
-    pickup_address: userEnteredAddress?userEnteredAddress:userAddress
-    }
-      dispatch(createBooking(body))
-        .unwrap()
-        .then(res => {
-          console.log('res', res);
-          navigate("App",{screen:"History"})
-        })
-        .catch(error => {
-          console.error('Booking failed:', error);
-        });
-    };
-    const [showPaymentModal, setShowPaymentModal] = useState(false);
-      const [timeLeft, setTimeLeft] = useState(300); // 5 minutes = 300 sec
-      const countdownRef = useRef(null);
-      const paymentActiveRef = useRef(false);
-    
-    const pollInterval = useRef(null);
-      const startSwishPayment = async () => {
-        if (paymentActiveRef.current) return; // prevent restart
-    
-      paymentActiveRef.current = true;
         try {
       console.log("Initiating Swish payment...");
     
       const body={
-        instructer: data?._id,
-        date: new Date(),
-        total: data?.rate_per_hour,
         selectedTime: selectedTime,
+    sheduleDate: sheduleDate,
+    sheduleSeesion:true,
         payment_mode:"online",
-        user_location: {
-            type: 'Point',
-            coordinates: [data?.selloc?.long?data?.selloc?.long:userLocation?.long, data?.selloc?.lat?data?.selloc?.lat:userLocation?.lat],
-          },
-        pickup_address: userEnteredAddress?userEnteredAddress:userAddress,
-        amount: "1",
+             user_location: {
+        type: 'Point',
+        coordinates: [userEnteredLocation?.long?userEnteredLocation.long:userLocation?.long, userEnteredLocation?.lat?userEnteredLocation.lat:userLocation?.lat],
+      },
+    pickup_address: userEnteredAddress?userEnteredAddress:userAddress,
+        amount: rate_per_hour,
         message: 'Order payment',
         user:user?._id
         }
-
-    //     const body={
-    // selectedTime: selectedTime,
-    // sheduleDate: sheduleDate,
-    // sheduleSeesion:true,
-    // payment_mode:"online",
-    // user_location: {
-    //     type: 'Point',
-    //     coordinates: [userEnteredLocation?.long?userEnteredLocation.long:userLocation?.long, userEnteredLocation?.lat?userEnteredLocation.lat:userLocation?.lat],
-    //   },
-    // pickup_address: userEnteredAddress?userEnteredAddress:userAddress,
-    // amount: "1",
-    // message: 'Order payment',
-    // }
       
       const res = await fetch('https://api.bokakorning.online/payment/createPaymentRequest', {
         method: 'POST',
@@ -161,7 +190,9 @@ const submit = async () => {
       console.log("swishUrl", swishUrl);
     
     try {
-      await Linking.openURL(swishUrl);
+      setTimeout(() => {
+        Linking.openURL(swishUrl);
+      }, 1000); // slight delay to ensure modal is shown before switching apps
     } catch (err) {
       Alert.alert(
         "Swish not installed",
@@ -226,14 +257,14 @@ const submit = async () => {
             Alert.alert("Success", "Payment completed!");
           }
     
-        if (resdata?.data?.status === 'DECLINED' || resdata?.data?.status === 'ERROR') {
-        clearInterval(pollInterval.current);
-        clearInterval(countdownRef.current);
-        paymentActiveRef.current = false;
-        setShowPaymentModal(false);
+          if (resdata?.data?.status === 'DECLINED' || resdata?.data?.status === 'ERROR') {
+      clearInterval(pollInterval.current);
+      clearInterval(countdownRef.current);
     
-       Alert.alert("Failed", "Payment failed.");
-     }
+      setShowPaymentModal(false);
+    
+      Alert.alert("Failed", "Payment failed.");
+    }
     
     
           // Stop polling after max attempts
@@ -277,62 +308,36 @@ const submit = async () => {
     }, []);
     
     const startCountdown = () => {
-      if (countdownRef.current) return;
+      const expiryTime = Date.now() + 300 * 1000; // 5 minutes from now
+      expiryRef.current = expiryTime;
+    
       setShowPaymentModal(true);
+      updateRemainingTime(); // immediately calculate
     
       if (countdownRef.current) {
         clearInterval(countdownRef.current);
       }
     
-      countdownRef.current = setInterval(() => {
-        setTimeLeft(prev => {
-          if (prev <= 1) {
-            clearInterval(countdownRef.current);
-            clearInterval(pollInterval.current);
+      countdownRef.current = setInterval(updateRemainingTime, 1000);
+    };
     
-            setShowPaymentModal(false);
+    const updateRemainingTime = () => {
+      const now = Date.now();
+      const remaining = Math.max(
+        Math.floor((expiryRef.current - now) / 1000),
+        0
+      );
     
-            Alert.alert("Timeout", "Payment time expired. Please try again.");
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
+      setTimeLeft(remaining);
+    
+      if (remaining <= 0) {
+        clearInterval(countdownRef.current);
+        clearInterval(pollInterval.current);
+        setShowPaymentModal(false);
+        Alert.alert("Timeout", "Payment time expired. Please try again.");
+      }
     };
 
- function generateTimeSlots(start = '07:00', end = '22:00', gapMinutes = 30) {
-    const now = new Date();
-    const [startHour, startMin] = start.split(':').map(Number);
-    const [endHour, endMin] = end.split(':').map(Number);
-
-    const startTime = new Date();
-    startTime.setHours(startHour, startMin, 0, 0);
-
-    const endTime = new Date();
-    endTime.setHours(endHour, endMin, 0, 0);
-
-    const slots = [];
-    let current = new Date(startTime);
-
-    while (current <= endTime) {
-      // Only push slots that are in the future (>= now)
-      // if (current >= now) {
-      slots.push(
-        current.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      );
-      // }
-      current = new Date(current.getTime() + gapMinutes * 60000); // add 30 min
-    }
-
-    return slots;
-  }
-  const PackageIcon = () => {
-    return (
-      <TouchableOpacity style={{ height: 60, width: 60, position: 'relative' }}>
-          <PinIcon height={50} width={50}  />
-      </TouchableOpacity>
-    );
-  };
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.backcov} onPress={() => goBack()}>
@@ -510,9 +515,61 @@ const submit = async () => {
           </Text>
         </TouchableOpacity>
       </ActionSheet>
-      {(!dateModel||Platform.OS==='android')&&<TouchableOpacity style={styles.shdbtn} onPress={()=>submit()}>
+      {(!dateModel||Platform.OS==='android')&&<TouchableOpacity style={styles.shdbtn} onPress={()=>startSwishPayment()}>
         <Text style={styles.shdbtntxt}>{t("Confirm")}</Text>
       </TouchableOpacity>}
+
+      <Modal
+  visible={showPaymentModal}
+  transparent
+  animationType="fade"
+>
+  <View style={{
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    justifyContent: 'center',
+    alignItems: 'center'
+  }}>
+    <View style={{
+      backgroundColor: 'white',
+      width: '85%',
+      borderRadius: 20,
+      padding: 25,
+      alignItems: 'center'
+    }}>
+      <Text style={{
+        fontSize: 16,
+        fontFamily: FONTS.Bold,
+        marginBottom: 15
+      }}>
+        {t("Complete Your Payment")}
+      </Text>
+
+      <Text style={{ fontSize: 16, marginBottom: 10,fontFamily: FONTS.Regular }}>
+        {t("Please complete payment in Swish app.")}
+      </Text>
+
+      <Text style={{
+        fontSize: 18,
+        fontFamily: FONTS.Bold,
+        color: Constants.red
+      }}>
+        {Math.floor(timeLeft / 60)}:
+        {(timeLeft % 60).toString().padStart(2, '0')}
+      </Text>
+
+      <Text style={{
+        marginTop: 10,
+        fontSize: 14,
+        color: Constants.customgrey3,
+        textAlign: 'center',
+        fontFamily: FONTS.Regular,
+      }}>
+        {t("Do not leave this page until payment is completed.")}
+      </Text>
+    </View>
+  </View>
+</Modal>
     </View>
   );
 };

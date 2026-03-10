@@ -232,6 +232,15 @@
   "Upcoming":"Upcoming",
   "Completed":"Completed",
   "Cancelled":"Cancelled",
-  "Select Address":"Select Address"
+  "Select Address":"Select Address",
+  "Payment Status":"Payment Status",
+  "PENDING":"Pending",
+  "Pending":"Pending",
+  "PAID":"Paid",
+  "ERROR":"Error",
+  "CANCELLED":"Cancelled",
+  "Complete Your Payment":"Complete Your Payment",
+  "Please complete payment in Swish app.":"Please complete payment in Swish app.",
+  "Do not leave this page until payment is completed.":"Do not leave this page until payment is completed."
   
 }

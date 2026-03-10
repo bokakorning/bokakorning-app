@@ -232,5 +232,14 @@
   "Upcoming": "Kommande",
   "Completed": "Slutförd",
   "Cancelled": "Avbruten",
-  "Select Address": "Välj adress"
+  "Select Address": "Välj adress",
+  "Payment Status": "Betalningsstatus",
+  "PENDING": "Väntar",
+  "Pending": "Väntar",
+  "PAID": "Betald",
+  "ERROR": "Fel",
+  "CANCELLED": "Avbruten",
+  "Complete Your Payment": "Slutför din betalning",
+  "Please complete payment in Swish app.": "Vänligen slutför betalningen i Swish-appen.",
+  "Do not leave this page until payment is completed.": "Lämna inte denna sida förrän betalningen är slutförd."
 }

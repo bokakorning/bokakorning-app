@@ -13,7 +13,8 @@ const Spinner = () => {
     ||state.location.isLoading ||
       state.booking.isLoading||
       state.notification.isLoading||
-      state.progress.isLoading||state.tranaction.isLoading
+      state.progress.isLoading
+      // ||state.tranaction.isLoading
   );
   if (!isLoading) {
     return <></>;

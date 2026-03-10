@@ -42,6 +42,10 @@ const Home = () => {
   const userEnteredLocation = useSelector(state => state.location.userEnteredLocation);
   const user = useSelector(state => state.auth.user);
   const loginuser = useSelector(state => state.auth.loginuser);
+  const rateData = useSelector(state => state.transaction.rateData);
+  const rate_per_hour = user?.firstbook
+  ? rateData?.per_hour_hour
+  : Math.round(rateData?.per_hour_hour * (1 - 0.386));
 console.log("userEnteredlocation",userEnteredLocation)
   useEffect(() => {
     {
@@ -280,7 +284,7 @@ console.log("userEnteredlocation",userEnteredLocation)
                 <View>
                   <Text style={styles.drivtxt}>{item?.name}</Text>
                   <Text style={styles.drivinftxt}>{t("Experience/Lesson Type")}</Text>
-                  <Text style={styles.drivtxt}>{Currency} {item?.rate_per_hour}/h</Text>
+                  <Text style={styles.drivtxt}>{Currency} {rate_per_hour}/h</Text>
                 </View>
               </View>
               <View>

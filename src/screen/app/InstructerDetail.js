@@ -36,8 +36,6 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { goBack, navigate, reset } from '../../../utils/navigationRef';
 import { createBooking } from '../../../redux/booking/bookingAction';
 import { useTranslation } from 'react-i18next';
-import moment from 'moment';
-import { getAuthToken } from '../../../utils/storage';
 
 const InstructerDetail = props => {
   const data = props?.route?.params;
@@ -49,6 +47,10 @@ const InstructerDetail = props => {
   const userLocation = useSelector(state => state.location.userLocation);
   const userEnteredAddress = useSelector(state => state.location.userEnteredAddress);
   const user = useSelector(state => state.auth.user);
+  const rateData = useSelector(state => state.transaction.rateData);
+  const rate_per_hour = user?.firstbook
+  ? rateData?.per_hour_hour
+  : Math.round(rateData?.per_hour_hour * (1 - 0.386));
   const [timeconf, settimeconf] = useState(false);
   const [selectedTime, setSelectedTime] = useState();
   const [times, setTimes] = useState();
@@ -57,29 +59,29 @@ const InstructerDetail = props => {
     setTimes(generatedSlots);
     setSelectedTime(generatedSlots[0]);
   }, []);
-   const submit = async () => {
-    const body={
-    instructer: data?._id,
-    date: new Date(),
-    total: data?.rate_per_hour,
-    selectedTime: selectedTime,
-    payment_mode:"online",
-    user_location: {
-        type: 'Point',
-        coordinates: [data?.selloc?.long?data?.selloc?.long:userLocation?.long, data?.selloc?.lat?data?.selloc?.lat:userLocation?.lat],
-      },
-    pickup_address: userEnteredAddress?userEnteredAddress:userAddress
-    }
-      dispatch(createBooking(body))
-        .unwrap()
-        .then(res => {
-          console.log('res', res);
-          reset("BookingConfirm",{name:data?.name,image:data?.image,selectedTime})
-        })
-        .catch(error => {
-          console.error('Booking failed:', error);
-        });
-    };
+  //  const submit = async () => {
+  //   const body={
+  //   instructer: data?._id,
+  //   date: new Date(),
+  //   total: data?.rate_per_hour,
+  //   selectedTime: selectedTime,
+  //   payment_mode:"online",
+  //   user_location: {
+  //       type: 'Point',
+  //       coordinates: [data?.selloc?.long?data?.selloc?.long:userLocation?.long, data?.selloc?.lat?data?.selloc?.lat:userLocation?.lat],
+  //     },
+  //   pickup_address: userEnteredAddress?userEnteredAddress:userAddress
+  //   }
+  //     dispatch(createBooking(body))
+  //       .unwrap()
+  //       .then(res => {
+  //         console.log('res', res);
+  //         reset("BookingConfirm",{name:data?.name,image:data?.image,selectedTime})
+  //       })
+  //       .catch(error => {
+  //         console.error('Booking failed:', error);
+  //       });
+  //   };
   // console.log('times', times);
   function generateTimeSlots(start = '00:00', end = '23:50', gapMinutes = 30) {
     const now = new Date();
@@ -135,7 +137,7 @@ const pollInterval = useRef(null);
   const body={
     instructer: data?._id,
     date: new Date(),
-    total: data?.rate_per_hour,
+    // total: rate_per_hour,
     selectedTime: selectedTime,
     payment_mode:"online",
     user_location: {
@@ -143,7 +145,7 @@ const pollInterval = useRef(null);
         coordinates: [data?.selloc?.long?data?.selloc?.long:userLocation?.long, data?.selloc?.lat?data?.selloc?.lat:userLocation?.lat],
       },
     pickup_address: userEnteredAddress?userEnteredAddress:userAddress,
-    amount: data?.rate_per_hour,
+    amount: rate_per_hour,
     message: 'Order payment',
     user:user?._id
     }
@@ -383,7 +385,7 @@ const updateRemainingTime = () => {
         <Text style={styles.biotxt}>{data?.bio}</Text>
         <Text style={{marginTop:7}}>
           <Text style={styles.drivnametxt}>{t("Rate")} </Text>
-          <Text style={styles.vehinam}>{Currency} {data?.rate_per_hour}/{t("Hour")}</Text>
+          <Text style={styles.vehinam}>{Currency} {rate_per_hour}/{t("Hour")}</Text>
         </Text>
         <Text style={styles.ratetxt}>
           <Text style={styles.drivnametxt}>{t("Session Duration")} </Text>
@@ -565,11 +567,11 @@ const updateRemainingTime = () => {
         fontFamily: FONTS.Bold,
         marginBottom: 15
       }}>
-        Complete Your Payment
+        {t("Complete Your Payment")}
       </Text>
 
       <Text style={{ fontSize: 16, marginBottom: 10,fontFamily: FONTS.Regular }}>
-        Please complete payment in Swish app.
+        {t("Please complete payment in Swish app.")}
       </Text>
 
       <Text style={{
@@ -588,7 +590,7 @@ const updateRemainingTime = () => {
         textAlign: 'center',
         fontFamily: FONTS.Regular,
       }}>
-        Do not leave this page until payment is completed.
+        {t("Do not leave this page until payment is completed.")}
       </Text>
     </View>
   </View>
