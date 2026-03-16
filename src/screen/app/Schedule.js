@@ -1,6 +1,5 @@
 import {
   Alert,
-  FlatList,
   Image,
   Linking,
   Modal,
@@ -13,7 +12,7 @@ import {
 } from 'react-native';
 import React, { createRef, useEffect, useRef, useState } from 'react';
 import Constants, { FONTS } from '../../Assets/Helpers/constant';
-import { BackIcon, CalenderIcon, ClockIcon, CrossIcon, PinIcon, } from '../../../Theme';
+import { BackIcon, CalenderIcon, ClockIcon, CrossIcon, PinIcon, StripeLabelIcon, StripeLogoIcon, SwishLogoIcon, } from '../../../Theme';
 import { hp, wp } from '../../../utils/responsiveScreen';
 import MapView, {
   Marker,
@@ -27,15 +26,20 @@ import moment from 'moment';
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { Picker } from 'react-native-wheel-pick';
 import ActionSheet from 'react-native-actions-sheet';
-import { createBooking } from '../../../redux/booking/bookingAction';
 import { showToaster } from '../../../utils/toaster';
 import { useTranslation } from 'react-i18next';
+import { useStripe } from '@stripe/stripe-react-native';
+import { createBooking, postStripe } from '../../../redux/payment/paymentAction';
 
 const Schedule = () => {
   const { t } = useTranslation();
+  const {initPaymentSheet, presentPaymentSheet, confirmPayment} = useStripe();
   const [vehicleType, setvehicleType] = useState('automatic');
   const [sheduleDate, setSheduleDate] = useState();
   const [dateModel, setDateModel] = useState(false);
+
+  const [paymentMethod, setPaymentMethod] = useState(null); // null | 'stripe' | 'swish'
+
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.user);
   const userAddress = useSelector(state => state.location.userAddress);
@@ -47,6 +51,7 @@ const Schedule = () => {
   ? rateData?.per_hour_hour
   : Math.round(rateData?.per_hour_hour * (1 - 0.386));
   const timeRef = createRef();
+  const paymentRef = createRef();
   const [selectedTime, setSelectedTime] = useState();
     const [times, setTimes] = useState();
     useEffect(() => {
@@ -135,14 +140,6 @@ function generateTimeSlots(start = '07:00', end = '22:00', gapMinutes = 30) {
     
     const pollInterval = useRef(null);
       const startSwishPayment = async () => {
-        if (!selectedTime) {
-    showToaster('error',"Please select the time");
-    return
-  }
-  if (!sheduleDate) {
-    showToaster('error',"Please select the date");
-    return
-  }
         try {
       console.log("Initiating Swish payment...");
     
@@ -150,7 +147,7 @@ function generateTimeSlots(start = '07:00', end = '22:00', gapMinutes = 30) {
         selectedTime: selectedTime,
     sheduleDate: sheduleDate,
     sheduleSeesion:true,
-        payment_mode:"online",
+    payment_mode:"swish",
              user_location: {
         type: 'Point',
         coordinates: [userEnteredLocation?.long?userEnteredLocation.long:userLocation?.long, userEnteredLocation?.lat?userEnteredLocation.lat:userLocation?.lat],
@@ -249,15 +246,15 @@ function generateTimeSlots(start = '07:00', end = '22:00', gapMinutes = 30) {
           const resdata = await res.json();
           console.log('Payment status:', resdata);
     
-          if (resdata?.data?.status === 'PAID') {
+          if (resdata?.data?.payment_status === 'PAID') {
             clearInterval(pollInterval.current);
             clearInterval(countdownRef.current);
             setShowPaymentModal(false);
-            reset("BookingConfirm",{name:data?.name,image:data?.image,selectedTime})
+            navigate("App",{screen:"History"})
             Alert.alert("Success", "Payment completed!");
           }
     
-          if (resdata?.data?.status === 'DECLINED' || resdata?.data?.status === 'ERROR') {
+          if (resdata?.data?.payment_status === 'DECLINED' || resdata?.data?.payment_status === 'ERROR') {
       clearInterval(pollInterval.current);
       clearInterval(countdownRef.current);
     
@@ -337,6 +334,59 @@ function generateTimeSlots(start = '07:00', end = '22:00', gapMinutes = 30) {
         Alert.alert("Timeout", "Payment time expired. Please try again.");
       }
     };
+
+    const startStripePayment = () => {
+      if (!selectedTime) {
+    showToaster('error',"Please select the time");
+    return
+  }
+  if (!sheduleDate) {
+    showToaster('error',"Please select the date");
+    return
+  }
+        dispatch(postStripe({price: Number(rate_per_hour), currency: 'sek', version: 1})).unwrap().then(
+          async res => {
+            console.log(res);
+            const {error} = await initPaymentSheet({
+              merchantDisplayName: 'BokaKorning',
+              paymentIntentClientSecret: res.clientSecret,
+            });
+            if (error) {
+              console.log(error);
+              return;
+            }
+            setTimeout(async () => {
+            const { error: paymentError } = await presentPaymentSheet();
+            if (paymentError) {
+              console.log(`Error code: ${paymentError.code}`, paymentError.message);
+              setModalVisible(true)
+            } else {
+              const body={
+        paymentid:res.clientSecret,
+        selectedTime: selectedTime,
+        sheduleDate: sheduleDate,
+        sheduleSeesion:true,
+        payment_mode:"swish",
+        user_location: {
+        type: 'Point',
+        coordinates: [userEnteredLocation?.long?userEnteredLocation.long:userLocation?.long, userEnteredLocation?.lat?userEnteredLocation.lat:userLocation?.lat],
+        },
+        pickup_address: userEnteredAddress?userEnteredAddress:userAddress,
+        amount: rate_per_hour,
+        message: 'Order payment',
+        user:user?._id,
+        payment_status:'PAID'
+        }
+
+              dispatch(createBooking(body)).unwrap().then(()=>navigate("App",{screen:"History"}));
+            }
+          }, 100);
+                },
+                err => {
+                  setLoading(false);
+                  console.log(err);
+                },
+              );};
 
   return (
     <View style={styles.container}>
@@ -461,13 +511,7 @@ function generateTimeSlots(start = '07:00', end = '22:00', gapMinutes = 30) {
         containerStyle={{ backgroundColor: Constants.white }}
       >
         <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            paddingVertical: 15,
-            paddingHorizontal: 10,
-          }}
+          style={styles.actshetcov}
         >
           <Text style={styles.sheetheadtxt}>
             {t("Pickup Time ")}
@@ -515,9 +559,64 @@ function generateTimeSlots(start = '07:00', end = '22:00', gapMinutes = 30) {
           </Text>
         </TouchableOpacity>
       </ActionSheet>
-      {(!dateModel||Platform.OS==='android')&&<TouchableOpacity style={styles.shdbtn} onPress={()=>startSwishPayment()}>
+      {(!dateModel||Platform.OS==='android')&&<TouchableOpacity style={styles.shdbtn} onPress={()=>paymentRef?.current?.show()}>
         <Text style={styles.shdbtntxt}>{t("Confirm")}</Text>
       </TouchableOpacity>}
+
+      <ActionSheet
+        ref={paymentRef}
+        closeOnTouchBackdrop={true}
+        containerStyle={{ backgroundColor: Constants.white }}
+      >
+        <View
+          style={styles.actshetcov}
+        >
+         <Text style={styles.sheetheadtxt}>
+            {t("Select payment method")}
+          </Text>
+          <CrossIcon
+            style={styles.popupcross}height={26}width={26}
+            onPress={() => {paymentRef.current.hide();setPaymentMethod(null);}}
+          />
+        </View>
+
+  <View style={styles.paymentGrid}>
+    <TouchableOpacity
+      style={[styles.paymentCard,styles.paymentCard2, paymentMethod === 'stripe' && styles.paymentCardSelected]}
+      onPress={() => setPaymentMethod('stripe')}
+    >
+      <Text><StripeLogoIcon height={25} width={35}/><StripeLabelIcon height={25} width={55}/></Text>
+      <Text style={styles.paymentCardName}>{t('Card payment')}</Text>
+      <Text style={styles.paymentCardDesc}>Visa, Mastercard, Amex</Text>
+    </TouchableOpacity>
+
+    <TouchableOpacity
+      style={[styles.paymentCard,styles.paymentCard2, paymentMethod === 'swish' && styles.paymentCardSelected]}
+      onPress={() => setPaymentMethod('swish')}
+    >
+      {/* Swish logo + label */}
+      <SwishLogoIcon height={35} width={85}/>
+      <Text style={styles.paymentCardName}>{t('Swish payment')}</Text>
+      <Text style={styles.paymentCardDesc}>{t('Swedish mobile pay')}</Text>
+    </TouchableOpacity>
+  </View>
+
+        <TouchableOpacity
+          style={[styles.shdpaybtn, { marginBottom: 20, marginTop: 10,opacity:!paymentMethod?0.6:1 }]}
+          disabled={!paymentMethod}
+          onPress={() => {
+    paymentRef.current.hide();
+    if (paymentMethod === 'swish') {
+      startSwishPayment();
+    } else {
+      startStripePayment();
+    }
+  }}>
+          <Text style={styles.shdbtntxt}>
+            { paymentMethod === 'swish'? t('Pay with Swish'): t('Pay with Stripe')}
+          </Text>
+        </TouchableOpacity>
+      </ActionSheet>
 
       <Modal
   visible={showPaymentModal}
@@ -825,5 +924,95 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: Constants.customgrey4,
+  },
+
+  actshetcov:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+          },
+  paymentGrid: {
+  flexDirection: 'row',
+  gap: 10,
+  paddingHorizontal: 16,
+  marginBottom: 16,
+},
+paymentCard: {
+  flex: 1,
+  borderWidth: 0.5,
+  borderColor: '#D3D1C7',
+  borderRadius: 12,
+  padding: 14,
+  alignItems: 'flex-start',
+  gap: 6,
+  backgroundColor: '#fff',
+},
+paymentCard2: {
+  borderWidth: 1.5,
+  // borderColor: '#D3D1C7',
+},
+paymentCardSelected: {
+  borderWidth: 2,
+  borderColor: '#378ADD',
+  backgroundColor: '#E6F1FB',
+},
+paymentCardName: {
+  fontSize: 13,
+  fontWeight: '500',
+  color: '#1a1a1a',
+},
+paymentCardDesc: {
+  fontSize: 11,
+  color: '#888780',
+  lineHeight: 16,
+},
+paymentCardTag: {
+  fontSize: 10,
+  fontWeight: '500',
+  paddingHorizontal: 7,
+  paddingVertical: 2,
+  borderRadius: 20,
+  overflow: 'hidden',
+  marginTop: 2,
+},
+paymentCardTagStripe: {
+  backgroundColor: '#EAF3DE',
+  color: '#3B6D11',
+},
+paymentCardTagSwish: {
+  backgroundColor: '#E6F1FB',
+  color: '#185FA5',
+},
+paymentRadioOuter: {
+  width: 16,
+  height: 16,
+  borderRadius: 8,
+  borderWidth: 1.5,
+  borderColor: '#B4B2A9',
+  alignItems: 'center',
+  justifyContent: 'center',
+  alignSelf: 'flex-end',
+  marginBottom: 4,
+},
+paymentRadioOuterSelected: {
+  borderColor: '#378ADD',
+  backgroundColor: '#378ADD',
+},
+paymentRadioInner: {
+  width: 6,
+  height: 6,
+  borderRadius: 3,
+  backgroundColor: '#fff',
+},
+shdpaybtn: {
+    backgroundColor: Constants.custom_blue,
+    borderRadius: 40,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: wp(90),
+    alignSelf: 'center',
   },
 });

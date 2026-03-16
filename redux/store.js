@@ -8,6 +8,7 @@ import locationSlice from './location/locationSlice';
 import bookingSlice from './booking/bookingSlice';
 import notificationSlice from './notification/notificationSlice';
 import transactionSlice from './transaction/transactionSlice';
+import paymentSlice from './payment/paymentSlice';
 import progressSlice from './progress/progressSlice';
 
 export const store = configureStore({
@@ -16,6 +17,7 @@ export const store = configureStore({
     location: locationSlice,
     booking: bookingSlice,
     transaction: transactionSlice,
+    payment: paymentSlice,
     notification: notificationSlice,
     progress: progressSlice,
   },

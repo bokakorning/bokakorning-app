@@ -26,6 +26,9 @@ import {
   LeftarrowIcon,
   LocationIcon,
   PinIcon,
+  StripeLabelIcon,
+  StripeLogoIcon,
+  SwishLogoIcon,
 } from '../../../Theme';
 import Constants, { Currency, FONTS } from '../../Assets/Helpers/constant';
 import { hp, wp } from '../../../utils/responsiveScreen';
@@ -34,13 +37,19 @@ import ActionSheet from 'react-native-actions-sheet';
 import { mapStyle } from '../../../Theme/MapStyle';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { goBack, navigate, reset } from '../../../utils/navigationRef';
-import { createBooking } from '../../../redux/booking/bookingAction';
 import { useTranslation } from 'react-i18next';
+import { useStripe } from '@stripe/stripe-react-native';
+import { createBooking, postStripe } from '../../../redux/payment/paymentAction';
 
 const InstructerDetail = props => {
   const data = props?.route?.params;
   const { t } = useTranslation();
+  const {initPaymentSheet, presentPaymentSheet, confirmPayment} = useStripe();
   // console.log('data', data);
+
+  const [paymentMethod, setPaymentMethod] = useState(null); // null | 'stripe' | 'swish'
+    const [paymentconf, setPaymentconf] = useState(false);
+
   const timeRef = createRef();
   const dispatch = useDispatch();
   const userAddress = useSelector(state => state.location.userAddress);
@@ -139,7 +148,7 @@ const pollInterval = useRef(null);
     date: new Date(),
     // total: rate_per_hour,
     selectedTime: selectedTime,
-    payment_mode:"online",
+    payment_mode:"swish",
     user_location: {
         type: 'Point',
         coordinates: [data?.selloc?.long?data?.selloc?.long:userLocation?.long, data?.selloc?.lat?data?.selloc?.lat:userLocation?.lat],
@@ -238,7 +247,7 @@ const pollPaymentStatus = (paymentId) => {
       const resdata = await res.json();
       console.log('Payment status:', resdata);
 
-      if (resdata?.data?.status === 'PAID') {
+      if (resdata?.data?.payment_status === 'PAID') {
         clearInterval(pollInterval.current);
         clearInterval(countdownRef.current);
         setShowPaymentModal(false);
@@ -246,7 +255,7 @@ const pollPaymentStatus = (paymentId) => {
         Alert.alert("Success", "Payment completed!");
       }
 
-      if (resdata?.data?.status === 'DECLINED' || resdata?.data?.status === 'ERROR') {
+      if (resdata?.data?.payment_status === 'DECLINED' || resdata?.data?.payment_status === 'ERROR') {
   clearInterval(pollInterval.current);
   clearInterval(countdownRef.current);
 
@@ -326,6 +335,48 @@ const updateRemainingTime = () => {
     Alert.alert("Timeout", "Payment time expired. Please try again.");
   }
 };
+
+const startStripePayment = () => {
+    dispatch(postStripe({price: Number(rate_per_hour), currency: 'sek', version: 1})).unwrap().then(
+      async res => {
+        console.log(res);
+        const {error} = await initPaymentSheet({
+          merchantDisplayName: 'BokaKorning',
+          paymentIntentClientSecret: res.clientSecret,
+        });
+        if (error) {
+          console.log(error);
+          return;
+        }
+        setTimeout(async () => {
+        const { error: paymentError } = await presentPaymentSheet();
+        if (paymentError) {
+          console.log(`Error code: ${paymentError.code}`, paymentError.message);
+          setModalVisible(true)
+        } else {
+          const body={
+    instructer: data?._id,
+    date: new Date(),
+    selectedTime: selectedTime,
+    payment_mode:"stripe",
+    user_location: {
+        type: 'Point',
+        coordinates: [data?.selloc?.long?data?.selloc?.long:userLocation?.long, data?.selloc?.lat?data?.selloc?.lat:userLocation?.lat],
+      },
+    pickup_address: userEnteredAddress?userEnteredAddress:userAddress,
+    amount: rate_per_hour,
+    paymentid:res.clientSecret,
+    payment_status:'PAID'
+    }
+          dispatch(createBooking(body)).unwrap().then(()=>reset("BookingConfirm",{name:data?.name,image:data?.image,selectedTime}));
+        }
+      }, 100);
+            },
+            err => {
+              setLoading(false);
+              console.log(err);
+            },
+          );};
 
   return (
     <View style={styles.container}>
@@ -433,16 +484,20 @@ const updateRemainingTime = () => {
             paddingHorizontal: 10,
           }}
         >
+         {paymentconf? <Text style={styles.sheetheadtxt}>
+            {t("Select payment method")}
+          </Text>:
           <Text style={styles.sheetheadtxt}>
             {t("Pickup")} {timeconf ? t('Location') : t('Time')}
-          </Text>
+          </Text>}
           <CrossIcon
             style={styles.popupcross}
             height={26}
             width={26}
-            onPress={() => {timeRef.current.hide(); settimeconf(false)}}
+            onPress={() => {timeRef.current.hide(); settimeconf(false),setPaymentconf(false);setPaymentMethod(null);}}
           />
         </View>
+        {!paymentconf&&<View>
         {!timeconf && <View style={styles.horline}></View>}
         {timeconf&&<Text style={styles.mapinstxt}>{t("Your instructor will some pick you up at location below")}</Text>}
         {timeconf ? (
@@ -525,21 +580,50 @@ const updateRemainingTime = () => {
           </TouchableOpacity>
         </View>
         </View>}
+        </View>}
+
+        {paymentconf && timeconf && (
+  <View style={styles.paymentGrid}>
+    <TouchableOpacity
+      style={[styles.paymentCard,styles.paymentCard2, paymentMethod === 'stripe' && styles.paymentCardSelected]}
+      onPress={() => setPaymentMethod('stripe')}
+    >
+      <Text><StripeLogoIcon height={25} width={35}/><StripeLabelIcon height={25} width={55}/></Text>
+      <Text style={styles.paymentCardName}>{t('Card payment')}</Text>
+      <Text style={styles.paymentCardDesc}>Visa, Mastercard, Amex</Text>
+    </TouchableOpacity>
+
+    <TouchableOpacity
+      style={[styles.paymentCard,styles.paymentCard2, paymentMethod === 'swish' && styles.paymentCardSelected]}
+      onPress={() => setPaymentMethod('swish')}
+    >
+      {/* Swish logo + label */}
+      <SwishLogoIcon height={35} width={85}/>
+      <Text style={styles.paymentCardName}>{t('Swish payment')}</Text>
+      <Text style={styles.paymentCardDesc}>{t('Swedish mobile pay')}</Text>
+    </TouchableOpacity>
+  </View>
+)}
 
         <TouchableOpacity
-          style={[styles.shdbtn, { marginBottom: 20, marginTop: 10 }]}
+          style={[styles.shdbtn, { marginBottom: 20, marginTop: 10,opacity:paymentconf&&!paymentMethod?0.6:1 }]}
+          disabled={paymentconf&&!paymentMethod}
           onPress={() => {
-            if (timeconf) {
-              timeRef.current.hide();
-              // submit()
-              startSwishPayment()
-            } else {
-              settimeconf(true);
-            }
-          }}
-        >
+  if (!timeconf) {
+    settimeconf(true);
+  } else if (!paymentconf) {
+    setPaymentconf(true);  // Step 2 → Step 3: show payment selection
+  } else {
+    // Step 3: fire chosen gateway
+    timeRef.current.hide();
+    if (paymentMethod === 'swish') {
+      startSwishPayment();
+    } else {
+      startStripePayment();
+    }
+  }}}>
           <Text style={styles.shdbtntxt}>
-            {timeconf ? t('Proceed to Pay') : t('Confirm Time')}
+            {!timeconf? t('Confirm Time'): !paymentconf? t('Proceed to Pay'): paymentMethod === 'swish'? t('Pay with Swish'): t('Pay with Stripe')}
           </Text>
         </TouchableOpacity>
       </ActionSheet>
@@ -831,5 +915,78 @@ const styles = StyleSheet.create({
   ratetxt:{ 
     marginTop: 7,
     marginBottom: 30,
-   }
+   },
+   paymentGrid: {
+  flexDirection: 'row',
+  gap: 10,
+  paddingHorizontal: 16,
+  marginBottom: 16,
+},
+paymentCard: {
+  flex: 1,
+  borderWidth: 0.5,
+  borderColor: '#D3D1C7',
+  borderRadius: 12,
+  padding: 14,
+  alignItems: 'flex-start',
+  gap: 6,
+  backgroundColor: '#fff',
+},
+paymentCard2: {
+  borderWidth: 1.5,
+  // borderColor: '#D3D1C7',
+},
+paymentCardSelected: {
+  borderWidth: 2,
+  borderColor: '#378ADD',
+  backgroundColor: '#E6F1FB',
+},
+paymentCardName: {
+  fontSize: 13,
+  fontWeight: '500',
+  color: '#1a1a1a',
+},
+paymentCardDesc: {
+  fontSize: 11,
+  color: '#888780',
+  lineHeight: 16,
+},
+paymentCardTag: {
+  fontSize: 10,
+  fontWeight: '500',
+  paddingHorizontal: 7,
+  paddingVertical: 2,
+  borderRadius: 20,
+  overflow: 'hidden',
+  marginTop: 2,
+},
+paymentCardTagStripe: {
+  backgroundColor: '#EAF3DE',
+  color: '#3B6D11',
+},
+paymentCardTagSwish: {
+  backgroundColor: '#E6F1FB',
+  color: '#185FA5',
+},
+paymentRadioOuter: {
+  width: 16,
+  height: 16,
+  borderRadius: 8,
+  borderWidth: 1.5,
+  borderColor: '#B4B2A9',
+  alignItems: 'center',
+  justifyContent: 'center',
+  alignSelf: 'flex-end',
+  marginBottom: 4,
+},
+paymentRadioOuterSelected: {
+  borderColor: '#378ADD',
+  backgroundColor: '#378ADD',
+},
+paymentRadioInner: {
+  width: 6,
+  height: 6,
+  borderRadius: 3,
+  backgroundColor: '#fff',
+},
 });

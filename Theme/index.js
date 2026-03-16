@@ -43,3 +43,6 @@ export { default as LanguageIcon } from '../src/Assets/Icon/language.svg';
 export { default as CheckIcon } from '../src/Assets/Icon/check.svg';
 export { default as UncheckIcon } from '../src/Assets/Icon/uncheck.svg';
 export { default as LogoIcon } from '../src/Assets/Icon/logo.svg';
+export { default as StripeLogoIcon } from '../src/Assets/Icon/stripe_logo.svg';
+export { default as StripeLabelIcon } from '../src/Assets/Icon/stripe_label.svg';
+export { default as SwishLogoIcon } from '../src/Assets/Icon/swish_logo.svg';

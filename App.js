@@ -14,9 +14,11 @@ import Splash from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import i18n from './i18n';
 import { setLanguage } from './redux/location/locationSlice';
+import { StripeProvider } from '@stripe/stripe-react-native';
 
 const App = () => {
   const APP_ID = 'df0d1c60-c14f-4226-8ba1-927c55e75f3a';
+  const PUBLISH_KEY = 'pk_live_51T52bJBmzPNLAJuSai65qwOgQEfhZpiH9ndXPOCQMuoVGylcvIq1fTnA5DFCR0eiO1YlMwU3SsBKxuMXO3eIOoon00DRcbSGCx';
 
   useEffect(() => {
     OneSignal.initialize(APP_ID);
@@ -43,22 +45,25 @@ const App = () => {
     };
 
   return (
-    <Provider store={store}>
-      <SafeAreaView
-        edges={
-          Platform.OS === 'ios'
-            ? ['left', 'top', 'right']
-            : ['bottom', 'left', 'right', 'top']
-        }
-        style={styles.container}
-      >
-        <StatusBar barStyle="dark-content" backgroundColor={Constants.white} />
-        <NetError />
-        <Spinner />
-        <Navigation />
-        <Toast />
-      </SafeAreaView>
-    </Provider>
+    <StripeProvider
+      publishableKey={PUBLISH_KEY}>
+      <Provider store={store}>
+        <SafeAreaView
+          edges={
+            Platform.OS === 'ios'
+              ? ['left', 'top', 'right']
+              : ['bottom', 'left', 'right', 'top']
+          }
+          style={styles.container}
+        >
+          <StatusBar barStyle="dark-content" backgroundColor={Constants.white} />
+          <NetError />
+          <Spinner />
+          <Navigation />
+          <Toast />
+        </SafeAreaView>
+      </Provider>
+    </StripeProvider>
   );
 };
 
