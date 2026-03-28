@@ -241,5 +241,12 @@
   "CANCELLED": "Avbruten",
   "Complete Your Payment": "Slutför din betalning",
   "Please complete payment in Swish app.": "Vänligen slutför betalningen i Swish-appen.",
-  "Do not leave this page until payment is completed.": "Lämna inte denna sida förrän betalningen är slutförd."
+  "Do not leave this page until payment is completed.": "Lämna inte denna sida förrän betalningen är slutförd.",
+  "Select payment method": "Välj betalningsmetod",
+  "Card payment": "Kortbetalning",
+  "Visa, Mastercard, Amex": "Visa, Mastercard, Amex",
+  "Swish payment": "Swish-betalning",
+  "Swedish mobile pay": "Svensk mobilbetalning",
+  "Pay with Swish": "Betala med Swish",
+  "Pay with Stripe": "Betala med Stripe"
 }

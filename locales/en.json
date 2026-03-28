@@ -242,6 +242,12 @@
   "Complete Your Payment":"Complete Your Payment",
   "Please complete payment in Swish app.":"Please complete payment in Swish app.",
   "Do not leave this page until payment is completed.":"Do not leave this page until payment is completed.",
-  "Search by location":"Search by location"
+  "Select payment method":"Select payment method",
+  "Card payment":"Card payment",
+  "Visa, Mastercard, Amex":"Visa, Mastercard, Amex",
+  "Swish payment":"Swish payment",
+  "Swedish mobile pay":"Swedish mobile pay",
+  "Pay with Swish":"Pay with Swish",
+  "Pay with Stripe":"Pay with Stripe"
   
 }

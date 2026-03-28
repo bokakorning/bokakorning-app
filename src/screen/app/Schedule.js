@@ -344,12 +344,18 @@ function generateTimeSlots(start = '07:00', end = '22:00', gapMinutes = 30) {
     showToaster('error',"Please select the date");
     return
   }
+  if (Number(rate_per_hour)<3) {
+    showToaster('error',"Price must be at least 3 SEK")
+    return;
+  }
         dispatch(postStripe({price: Number(rate_per_hour), currency: 'sek', version: 1})).unwrap().then(
           async res => {
             console.log(res);
             const {error} = await initPaymentSheet({
               merchantDisplayName: 'BokaKorning',
               paymentIntentClientSecret: res.clientSecret,
+              allowsDelayedPaymentMethods: true,
+              returnURL: "BokaKorning://stripe-redirect",
             });
             if (error) {
               console.log(error);
@@ -587,7 +593,7 @@ function generateTimeSlots(start = '07:00', end = '22:00', gapMinutes = 30) {
     >
       <Text><StripeLogoIcon height={25} width={35}/><StripeLabelIcon height={25} width={55}/></Text>
       <Text style={styles.paymentCardName}>{t('Card payment')}</Text>
-      <Text style={styles.paymentCardDesc}>Visa, Mastercard, Amex</Text>
+      <Text style={styles.paymentCardDesc}>{t("Visa, Mastercard, Amex")}</Text>
     </TouchableOpacity>
 
     <TouchableOpacity

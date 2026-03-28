@@ -78,5 +78,12 @@
     </array>
   </dict>
 </array>
+<key>CFBundleAllowMixedLocalizations</key>
+<true/>
+<key>CFBundleLocalizations</key>
+<array>
+  <string>en</string>
+  <string>sv</string>
+</array>
 </dict>
 </plist>
